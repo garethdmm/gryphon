@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+<script src='/static/js/libs/jquery.flot.js'></script>
+<script src='/static/js/libs/jquery.flot.pie.js'></script>
+<script type='text/javascript' src='/static/js/exchange_colours.js'></script>
+
+<script type='text/javascript'>
+
+var trading_fee_data = [
+  {% for exchange_name, fees in args['fees_by_exchange'].items() %}
+    {
+      label: '{{ exchange_name }}',
+      data: {{ fees.amount }},
+      color: exchange_colours['{{ exchange_name.lower() }}'],
+    },
+  {% end %}
+];
+
+var wire_fee_data = [
+  {% for exchange_name, wire_fees in args['wire_fees_by_exchange'].items() %}
+    {
+      label: '{{ exchange_name }}',
+      data: {{ wire_fees.to('USD').amount }},
+      color: exchange_colours['{{ exchange_name.lower() }}'],
+    },
+  {% end %}
+];
+
+pie_options = {
+  series: {
+    pie: {
+      show: true,
+    }
+  },
+}
+
+$(document).ready(function() {
+  $.plot($('#trading-fee-chart'), trading_fee_data, pie_options)
+  $.plot($('#wire-fee-chart'), wire_fee_data, pie_options)
+});
+</script>
+
+{% end %}
+
+{% block css %}
+<style type="text/css">
+
+#trading-fee-chart, #wire-fee-chart {
+  height: 300px;
+}
+
+h5#total-trading, h5#total-wire {
+  margin-top: 20px;
+}
+
+</style>
+{% end %}
+
+{% block title %}
+  <title>Trading and Wire Fees</title>
+{% end %}
+
+{% block page_title %}
+{% end %}
+
+{% block content %}
+<div class='row' id='title-row'>
+  <div class='col'>
+    <h4>Fees</h4>
+  </div>
+  {% module StartEnd(args['start_end_widget']['start_time'], args['start_end_widget']['end_time']) %}
+</div>
+<div class='row justify-content-center'>
+  <div class='col-11'>
+    <h5 id='total-trading'>Trading Fees: {{ args['total_trading_fees'] }}</h5>
+    <div class='row' id='trading-fees'>
+      <div class='col-6'>
+        <table class='table'>
+          <thead>
+            <td>Exchange</td>
+            <td>Fees</td>
+          </thead>
+          {% for exchange_name, fees in args['fees_by_exchange'].items() %}
+            <tr>
+              <td>{{ exchange_name }}</td>
+              <td>{{ fees }}</td>
+            </tr>
+          {% end %}
+        </table>
+      </div>
+      <div class='col-6'>
+        <div id='trading-fee-chart'></div>
+      </div>
+    </div>
+    <h5 id='total-wire'>Wire Fees: {{ args['total_wire_fees'] }}</h5>
+    <div class='row' id='wire-fees'>
+      <div class='col-6'>
+        <table class='table'>
+          <thead>
+            <td>Exchange</td>
+            <td>Fees</td>
+          </thead>
+          {% for exchange_name, fees in args['wire_fees_by_exchange'].items() %}
+            <tr>
+              <td>{{ exchange_name }}</td>
+              <td>{{ fees }}</td>
+            </tr>
+          {% end %}
+        </table>
+      </div>
+      <div class='col-6'>
+        <div id='wire-fee-chart'></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% end %}

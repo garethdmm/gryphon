@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel='stylesheet' type='text/css' href='/static/css/strategy.css'>
+{% end %}
+
+{% block scripts %}
+<script type='text/javascript' src='/static/js/libs/jquery.flot.js'></script>
+<script type='text/javascript' src='/static/js/libs/jquery.flot.time.js'></script>
+<script type='text/javascript' src='/static/js/libs/jquery.flot.resize.js'></script>
+<script type='text/javascript' src='/static/js/exchange_colours.js'></script>
+
+<script type='text/javascript'>
+  var start_timestamp = {% raw json_encode(args['start_timestamp']) %};
+  var end_timestamp = {% raw json_encode(args['end_timestamp']) %};
+  var trade_data = {% raw json_encode(args['trade_data']) %};
+  var fundamental_values_data = {% raw json_encode([]) %};
+  var revenue_series = {% raw json_encode(args['revenue_series']) %};
+  var position_series = {% raw json_encode(args['position_series']) %};
+
+  var BASE_POINT_RADIUS = {% raw json_encode(args['base_point_radius']) %};
+  var position_graph_min = {% raw json_encode(args['position_graph_min']) %};
+  var position_graph_max = {% raw json_encode(args['position_graph_max']) %};
+</script>
+
+<script type='text/javascript' src='/static/js/point.js'></script>
+<script type='text/javascript' src='/static/js/strategy.js'></script>
+{% end %}
+
+{% block title %}
+  <title>
+    {{ "%+.2f %s" % (args['revenue'].amount, args['display_name']) }} - Trading
+  </title>
+{% end %}
+
+{% block content %}
+<div class='row' id='title-row'>
+  <div class='col'>
+    <h4>{{ args['display_name'] }} Trading</h4>
+  </div>
+  {% module StartEnd(args['start_end_widget']['start_time'], args['start_end_widget']['end_time']) %}
+</div>
+<div class='row justify-content-center' id="report">
+  <div class='col-1'>
+    {% if args['end_timestamp'] < args['now_timestamp'] %}
+      <h2>Net</h2>
+    {% else %}
+      <h2>Current</h2>
+    {% end %}
+    <h3>{{ '%s %.2f' % (args['open_position'].currency, args['open_position'].amount) }}</h3>
+    <h3>{{ '%s %.2f' % (args['open_pl'].currency, args['open_pl'].amount) }}</h3>
+  </div>
+  <div class='col-1'>
+    <h2>Volume</h2>
+    <h3>{{ '%s %.2f' % (args['volume'].currency, args['volume'].amount) }}</h3>
+  </div>
+  <div class='col-2'>
+    <h2 title="Profit: {{ args['profit'] }}">
+      Revenue/Fees <small title="matched">(m)</small>
+    </h2>
+    <h3>{{ args['revenue'] }}</h3>
+    <h3>
+      {{ args['matched_fees'] }}
+      {% if args['matched_volume_currency_fees'] %}
+        <br/>
+        ({{ "%s %0.2f" % (
+          args['volume_currency'],
+          args['matched_volume_currency_fees'].amount,
+        )}})
+      {% end %}
+    </h3>
+  </div>
+</div>
+<div class='row' id='graph-row'>
+  <div class='col d-flex flex-column'>
+    <div class='flex-grow-1' id='gryphon-graph'></div>
+  </div>
+</div>
+<div class='row' id='revenue-graph-row'>
+  <div class='col d-flex flex-column'>
+    <div class='flex-grow-1' id='revenue-graph'></div>
+  </div>
+</div>
+
+{% end %}

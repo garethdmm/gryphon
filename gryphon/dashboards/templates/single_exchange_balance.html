@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+<script src='/static/js/libs/jquery.flot.js'></script>
+<script type='text/javascript' src='/static/js/libs/jquery.flot.time.js'></script>
+<script src='/static/js/libs/jquery.flot.pie.js'></script>
+
+<script type='text/javascript'>
+
+var usd_balances = {% raw json_encode(args.get('usd_balances')) %};
+var btc_balances = {% raw json_encode(args.get('btc_balances')) %};
+var threshold = {% raw json_encode(args.get('threshold')) %};
+
+var start_timestamp = {% raw json_encode(args.get('start_timestamp')) %};
+var end_timestamp = {% raw json_encode(args.get('end_timestamp')) %};
+
+var plot_data = [
+  {data: usd_balances, label: 'USD', yaxis: 1, color: 'green'},
+  {data: btc_balances, label: 'BTC', yaxis: 2},
+  {data: threshold, label: 'USD Down Threshold', yaxis: 1, color: 'red'},
+]
+
+$(document).ready(function() {
+  $.plot("#balances-graph", plot_data, {
+    xaxes: [{ 
+      mode: 'time',
+      min: start_timestamp,
+      max: end_timestamp,
+    }], yaxes: [{
+      position: 'left',
+    }, {
+      position: 'right',
+    }],
+  });
+});
+
+</script>
+{% end %}
+
+{% block css %}
+
+<style type='text/css'>
+
+div.row.section-container {
+  margin-top: 20px;
+}
+
+</style>
+
+{% end %}
+
+{% block title %}
+  <title>{{ args['page_title'] }}</title>
+{% end %}
+
+{% block page_title %}
+  <h1>{{ args['page_title'] }}</h1>
+{% end %}
+
+{% block content %}
+<div class='row'>
+  <div class='col-md-11 col-md-offset-1'>
+    <div id='balances-graph' style='height:700px;'></div>
+  </div>
+</div>
+<div class='row'>
+  <div class='col-md-11 col-md-offset-1'>
+    <div class='row'>
+      <div class='col-md-3'>
+        <h2>Fiat Downtime: {{ "%.2f" % args.get('fiat_downtime') }}%</h2>
+      </div>
+      <div class='col-md-3'>
+        <h2>Bitcoin Downtime: {{ "%.2f" % args.get('btc_downtime') }}%</h2>
+      </div>
+    </div>
+  </div>
+</div>
+{% end %}

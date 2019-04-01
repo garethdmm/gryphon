@@ -1,0 +1,52 @@
+#!/bin/bash
+#
+# pagerduty-resolve is a wrapper around the PagerDuty API to close an incident
+# from the command line.
+#
+# Copyright (c) 2012 Cold Brew Labs, Inc. See LICENSE for details.
+
+# from https://github.com/pinterest/pagerduty-monit
+
+# .env should have bash style env var declarations, eg:
+# export GRYPHON_PAGERDUTY_KEY="xxxxxxx
+
+my_dir="$(dirname "$0")"
+source "$my_dir/.env"
+
+if [ -z "$1" ] || [ -z "$2" ]; then
+  echo "Usage: $0 <service> <event>"
+  exit 1
+elif [ ! -x "/usr/local/bin/pagerduty" ]; then
+  echo "Failed to resolve event: /usr/local/bin/pagerduty does not exist or is not executable."
+  exit 1
+fi
+
+SERVICE="$1"
+EVENT="$2"
+HOST=`hostname -s`
+INCIDENT_KEY=`echo "$HOST:$SERVICE:$EVENT" | md5sum | cut -f 1 -d ' '`
+TMP_FILE="/tmp/pagerduty-$INCIDENT_KEY"
+
+if [ "$SERVICE" = "gryphon" ]; then
+  PAGERDUTY_SERVICE_KEY=$GRYPHON_PAGERDUTY_KEY
+elif [ "$SERVICE" = "emerald" ]; then
+  PAGERDUTY_SERVICE_KEY=$EMERALD_PAGERDUTY_KEY
+elif [ "$SERVICE" = "gryphon-experimental" ]; then
+  PAGERDUTY_SERVICE_KEY=$GRYPHON_EXPERIMENTAL_PAGERDUTY_KEY
+else
+  echo "Invalid <service>"
+  exit 1
+fi
+
+DESCRIPTION="$SERVICE: $EVENT resolved on $HOST"
+
+rm -f $TMP_FILE
+/usr/local/bin/pagerduty -k "$PAGERDUTY_SERVICE_KEY" -i "$INCIDENT_KEY" --description="$DESCRIPTION" resolve
+
+if [ "$?" -ne "0" ]; then
+  echo "Failed to resolve incident"
+  exit 1
+fi
+
+echo "Incident resolved successfully"
+exit 0

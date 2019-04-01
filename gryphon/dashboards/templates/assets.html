@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+<script src='/static/js/libs/jquery.flot.js'></script>
+<script type='text/javascript' src='/static/js/libs/jquery.flot.time.js'></script>
+
+<script type='text/javascript'>
+
+var usd_net_assets_series = {% raw json_encode(args['flot_usd_net_assets_series']) %};
+var usd_assets_series = {% raw json_encode(args['flot_usd_assets_series']) %};
+var usd_liabilities_series = {% raw json_encode(args['flot_usd_liabilities_series']) %};
+
+var net_assets_plot_data = [
+  {
+    data: usd_net_assets_series,
+    label: 'Net USD Assets',
+  }
+]
+var total_assets_plot_data = [
+  {
+    data: usd_assets_series,
+    label: 'Total USD Assets',
+  }
+]
+var total_liabilities_plot_data = [
+  {
+    data: usd_liabilities_series,
+    label: 'Total USD Liabilities',
+  },
+]
+
+function usdFormatter(v, axis) {
+  return "$" + v.toLocaleString();
+}
+
+plot_config = {
+  xaxis: {
+    mode: 'time',
+  },
+  yaxis: {
+    tickFormatter: usdFormatter,
+  },
+}
+
+$(document).ready(function() {
+  $.plot("#net-assets-graph", net_assets_plot_data, plot_config);
+  $.plot("#total-assets-graph", total_assets_plot_data, plot_config);
+  $.plot("#total-liabilities-graph", total_liabilities_plot_data, plot_config);
+});
+
+</script>
+{% end %}
+
+{% block css %}
+
+<style type='text/css'>
+
+.assets-graph {
+  height: 300px;
+}
+
+p.instruction {
+  font-size: 12px;
+  color: #999;
+}
+
+p.instruction a,
+p.instruction a:hover {
+  text-decoration: underline;
+  color: #999;
+}
+
+div.row.content-row {
+  margin-top: 30px;
+}
+
+div.row.content-row h4 {
+  margin-bottom: 15px;
+}
+
+</style>
+
+{% end %}
+
+{% block title %}
+  <title>Net Assets</title>
+{% end %}
+
+{% block content %}
+<div class='row' id='title-row'>
+  <div class='col'>
+    <h4>Net Assets</h4>
+  </div>
+  {% module StartEnd(args['start_end_widget']['start_time'], args['start_end_widget']['end_time']) %}
+</div>
+<div class='row justify-content-center'>
+  <div class='col-11'>
+    <div class='row'>
+      <div class='col-2'>
+        <h5>Revenue</h5>
+        <h5>{{ args['revenue'] }}</h5>
+      </div>
+      <div class='col-2'>
+        <h5>Fees<sup><small title='Trading: {{ args["trading_fees"] }}&#xA;Wire: {{ args["wire_fees"] }}'>?</small></sup></h5>
+        <h5>{{ args['trading_fees'] + args['wire_fees'] }}</h5>
+      </div>
+      <div class='col-2'>
+        <h5>Burn</h5>
+        {% if args['burn_transactions'] is not None %}
+          <h5>{{ args['burn'] }}</h5>
+        {% else %}
+          <p class='instruction'><a href='https://gryphon-framework.readthedocs.io/en/latest'>Read the docs</a> to turn on burn-tracking.</h5>
+        {% end %}
+      </div>
+      <div class='col-2'>
+        <h5>Forex Flux</h5>
+        <h5>{{ args['forex_flux'] }}</h5>
+      </div>
+      <div class='col-2'>
+        <h5>Change <small>(expected)</small></h5>
+        <h5>{{ args['expected_change'] }}</h5>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-2'>
+        <h5>Starting</h5>
+        <h5>{{ args['starting_usd_balance'] }}</h5>
+      </div>
+      <div class='col-2'>
+        <h5>Final</h5>
+        <h5>{{ args['final_usd_balance'] }}</h5>
+      </div>
+      <div class='col-2 col-offset-4'>
+        <h5>Change <small>(actual)</small></h5>
+        <h5>{{ args['change'] }}</h5>
+      </div>
+      <div class='col-2'>
+        <h5>Discrepancy</h5>
+        <h5>{{ args['discrepancy'] }}</h5>
+      </div>
+    </div>
+    <div class='row content-row'>
+      <div class='col-md-12'>
+        <h4>Net Assets</h4>
+        <div id='net-assets-graph' class='assets-graph'></div>
+      </div>
+    </div>
+    <div class='row content-row'>
+      <div class='col-md-12'>
+        <h4>Total Assets</h4>
+        <div id='total-assets-graph' class='assets-graph'></div>
+      </div>
+    </div>
+    <div class='row content-row'>
+      <div class='col-md-12'>
+        <h4>Total Liabilities</h4>
+        <div id='total-liabilities-graph' class='assets-graph'></div>
+      </div>
+    </div>
+    <div class='row content-row'>
+      <div class='col-md-12'>
+        <h4>Burn Transactions</h4>
+        <table id='ledger' class='table table-striped'>
+          <thead>
+            <tr>
+              <td>Type</td>
+              <td>Amount</td>
+              <td>Description</td>
+              <td>Date (UTC)</td>
+            </tr>
+          </thead>
+          {% if args['burn_transactions'] is not None %}
+            {% for burn_transaction in args['burn_transactions'] %}
+              {% if burn_transaction.transaction_type == 'DEPOSIT' %}
+                <tr>
+              {% else %}
+                <tr class='success'>
+              {% end %}
+                <td>{{ 'BURN' if burn_transaction.transaction_type == 'DEPOSIT' else 'REVERSE' }}</td>
+                <td>{{ burn_transaction.amount }}</td>
+                {% if 'description' in burn_transaction.transaction_details %}
+                  <td>{{ burn_transaction.transaction_details['description'] }}</td>
+                {% else %}
+                  <td>{{ burn_transaction.transaction_details.get('notes', '') }}</td>
+                {% end %}
+                <td>{{ burn_transaction.time_completed }}</td>
+              </tr>
+            {% end %}
+          {% else %}
+            <p class='instruction'>
+              <a href='https://gryphon-framework.readthedocs.io/en/latest'>Read the docs</a>
+               to turn on burn-tracking.
+            </p>
+          {% end %}
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% end %}

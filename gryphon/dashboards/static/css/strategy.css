@@ -1,0 +1,44 @@
+html, body {
+  height: 100%;
+}
+
+h2 {
+  font-size:20px !important;
+}
+
+h3 {
+  font-size:18px !important;
+}
+
+#gryphon-graph {
+  width: 100%;
+}
+
+#revenue-graph {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+#prev_next .btn {
+  width: 100%;
+}
+
+.pending {
+  opacity: 0.2;
+}
+
+#report {
+  height: 13%;
+}
+ 
+#graph-row {
+  height: 40%;
+} 
+
+#revenue-graph-row {
+  height: 40%;
+}
+
+#title-row {
+  height: 7%;
+}

@@ -1,0 +1,66 @@
+#!/bin/bash
+#
+# pagerduty-trigger is a wrapper around the PagerDuty API to open a new
+# incident from the command line. This script is designed to help integrate
+# monit with PagerDuty.
+#
+# Copyright (c) 2012 Cold Brew Labs, Inc. See LICENSE for details.
+
+# from https://github.com/pinterest/pagerduty-monit
+
+# .env should have bash style env var declarations, eg:
+# export GRYPHON_PAGERDUTY_KEY="xxxxxxx"
+
+my_dir="$(dirname "$0")"
+source "$my_dir/.env"
+
+if [ -z "$1" ] || [ -z "$2" ]; then
+  echo "Usage: $0 <service> <event>"
+  exit 1
+elif [ ! -x "/usr/local/bin/pagerduty" ]; then
+  echo "Failed to trigger event: /usr/local/bin/pagerduty does not exist or is not executable."
+  exit 1
+fi
+
+SERVICE="$1"
+EVENT="$2"
+HOST=`hostname -s`
+INCIDENT_KEY=`echo "$HOST:$SERVICE:$EVENT" | md5sum | cut -f 1 -d ' '`
+TMP_FILE="/tmp/pagerduty-$INCIDENT_KEY"
+
+if [ "$SERVICE" = "gryphon" ]; then
+  PAGERDUTY_SERVICE_KEY=$GRYPHON_PAGERDUTY_KEY
+elif [ "$SERVICE" = "emerald" ]; then
+  PAGERDUTY_SERVICE_KEY=$EMERALD_PAGERDUTY_KEY
+elif [ "$SERVICE" = "gryphon-experimental" ]; then
+  PAGERDUTY_SERVICE_KEY=$GRYPHON_EXPERIMENTAL_PAGERDUTY_KEY
+else
+  echo "Invalid <service>"
+  exit 1
+fi
+
+
+if [ -f "$TMP_FILE" ]; then
+  # re-trigger after 4 hrs 1 min (the extra minute is to ensure the incident auto-resolved with PagerDuty)
+  if [ "$(( $(date +"%s") - $(stat -c "%Y" $TMP_FILE) ))" -lt "14460" ]; then
+    echo "$TMP_FILE exists, aborting"
+    exit 0
+  else
+    echo "$TMP_FILE exists but is older than 4 hours; re-triggering"
+  fi
+fi
+
+DESCRIPTION="$SERVICE: $EVENT failed on $HOST"
+DATE=`date`
+
+echo "$DATE: $DESCRIPTION" >> $TMP_FILE
+
+/usr/local/bin/pagerduty -k "$PAGERDUTY_SERVICE_KEY" -i "$INCIDENT_KEY" --description="$DESCRIPTION" trigger
+
+if [ "$?" -ne "0" ]; then
+  echo "Failed to trigger incident"
+  exit 1
+fi
+
+echo "Incident triggered successfully"
+exit 0

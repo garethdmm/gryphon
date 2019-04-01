@@ -1,0 +1,363 @@
+{% extends "base.html" %}
+{% block scripts %}
+<script src='/static/js/libs/jquery.flot.js'></script>
+<script type='text/javascript' src='/static/js/libs/jquery.flot.time.js'></script>
+<script type='text/javascript' src='/static/js/exchange_colours.js'></script>
+
+<script type='text/javascript'>
+
+var highlight_ours = {% raw json_encode(args['highlight_ours']) %}
+var show_sides = {% raw json_encode(args['show_sides']) %}
+var start_timestamp = {% raw json_encode(args.get('start_timestamp')) %};
+var end_timestamp = {% raw json_encode(args.get('end_timestamp')) %};
+
+var symbol_alpha = 0.7;
+var symbol_line_width = 2;
+var highlight_symbol_alpha = 0.7;
+var highlight_symbol_line_width = 4;
+
+var symbol_size_constant = 5;
+
+var price_data = {
+  {% for exchange_name, trade_data in args.get('trade_data_by_exchange').items() %}
+    '{{ exchange_name }}': {
+      data: {% raw json_encode(trade_data['prices']) %},
+      label: '{{ exchange_name }}',
+      color: exchange_colours['{{ exchange_name.lower() }}'],
+      points: {
+        show: true,
+        symbol: partial(point, '{{ exchange_name }}', symbol_alpha),
+      },
+      lines: {
+        show: false,
+      },
+    },
+  {% end %}
+}
+
+volume_data = {
+  {% for exchange_name, trade_data in args.get('trade_data_by_exchange').items() %}
+    '{{ exchange_name }}': {
+      'volumes': {% raw json_encode(trade_data['volumes']) %},
+      'ours': {% raw json_encode(trade_data['ours']) %},
+      'trade_types': {% raw json_encode(trade_data['trade_type']) %},
+    },
+  {% end %}
+}
+
+var plot_options = {
+  series: {
+    curvedLines: {
+      active: true
+    },
+  },
+  xaxes: [{
+    mode: 'time',
+    min: start_timestamp,
+    max: end_timestamp,
+  }],
+  yaxis: {},
+  yaxes: [],
+  legend: { show: false, position: 'sw' },
+  grid: {
+    hoverable: true,
+  }
+}
+
+function partial(func /*, 0..n args */) {
+  var args = Array.prototype.slice.call(arguments, 1);
+  return function() {
+    var allArguments = args.concat(Array.prototype.slice.call(arguments));
+    return func.apply(this, allArguments);
+  };
+}
+
+function point(exchange_name, alpha, ctx, x, y, radius, shadow) {
+  data = volume_data[exchange_name]
+
+  if (data.count == undefined) {
+    data.count = 0;
+    // max hacks yo. The only persistent reference we have to a point is it's xy coords
+    // so we use that to store its volume-based radius
+    // then when flot redraws the point (for the hover effect) we can look it up
+    data.x_y_radius_map = {}
+  }
+
+  x_y_key = x + "," + y
+
+  if(data.count < data['volumes'].length) {
+    // first pass through the data (the main graph draw)
+    radius = symbol_size_constant * Math.sqrt(data['volumes'][data.count]);
+    data.x_y_radius_map[x_y_key] = radius;
+  } else if (x_y_key in data.x_y_radius_map) {
+    // if we are redrawing a point on the same coordinates
+    // it is because flot wants to draw a hover highlight
+    // we look up the correct radius for that point
+    // so that the hover blur fits the radius of the point
+    radius = data.x_y_radius_map[x_y_key];
+  } else {
+    // if we are redrawing a point on different coordinates
+    // it is because the window (and graph) have been resized
+    // we want to reset everything, because the old xy coords are invalid
+    // after this reset, flot will redraw all the points on new coords
+    // which will hit the "first pass" case above since we have reset the count
+    data.count = 0;
+    data.x_y_radius_map = {};
+    // but we still need to handle this one initial point
+    radius = symbol_size_constant * Math.sqrt(data['volumes'][data.count]);
+    data.x_y_radius_map[x_y_key] = radius;
+  }
+
+  if (highlight_ours == true && data['ours'][data.count] == true) {
+    ctx.lineWidth = highlight_symbol_line_width;
+    ctx.globalAlpha = highlight_symbol_alpha;
+    ctx.fillStyle = exchange_colours[exchange_name.toLowerCase()];
+
+    side_length = Math.sqrt(2) * radius;
+    rect_x_start = x - side_length / 2;
+    rect_y_start = y - side_length / 2;
+
+    side = data['trade_types'][data.count]
+
+    ctx.beginPath();
+
+    if (show_sides == true) {
+      ctx.arc(x, y, radius, 0, shadow ? Math.PI : Math.PI * 1.0, side == 'ASK');
+    } else {
+      ctx.arc(x, y, radius, 0, 2*Math.PI);
+    }
+
+    ctx.closePath();
+
+    ctx.fill();
+  } else {
+    ctx.lineWidth = symbol_line_width;
+    ctx.globalAlpha = symbol_alpha;
+
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, 2*Math.PI);
+    ctx.closePath();
+  }
+
+  data.count++;
+}
+
+update_url = function(series) {
+  var url = document.location.protocol + '//' +
+    document.location.host +
+    document.location.pathname;
+
+  url += '?';
+
+  if (document.location.search.indexOf('start') != -1) {
+    // The slicing here removes the milliseconds in this date representation, which
+    // our server-side library doesn't parse well.
+    start_time = new Date(start_timestamp).toISOString().slice(0,-5);
+
+    url += '&start=' + start_time;
+  }
+
+  if (document.location.search.indexOf('start') != -1) {
+    end_time = new Date(end_timestamp).toISOString().slice(0,-5);
+
+    url += '&end=' + end_time;
+  }
+
+  if (series.length > 0) {
+    var exchanges = '&exchanges=';
+
+    for (var i=0; i < series.length; i++) {
+      exchanges += series[i].toLowerCase() + ','
+    }
+
+    url += exchanges;
+  }
+
+  if (highlight_ours == true) {
+    url += '&highlight_ours=true';
+  }
+
+  if (show_sides == true) {
+    url += '&show_sides=true';
+  }
+
+  window.history.pushState('','', url);
+}
+
+draw_graph_with_series = function(series) {
+  var plot_data = Array();
+
+  for (var i=0; i < series.length; i++) {
+    plot_data.push(price_data[series[i]]);
+  }
+
+  $.plot("#trade-graph", plot_data, plot_options);
+}
+
+redraw_graph = function(should_update_url) {
+  var series_to_graph = Array();
+
+  $('#series-buttons button.btn-primary').each(function() {
+    series_to_graph.push($(this).attr('data-series-name'));
+  });
+
+  if (should_update_url == true) {
+    update_url(series_to_graph);
+  }
+
+  if (highlight_ours == true) {
+      symbol_line_width = 1;
+  } else {
+      symbol_line_width = 2;
+  }
+
+  draw_graph_with_series(series_to_graph);
+}
+
+$(document).ready(function() {
+  redraw_graph(false);
+
+  $('#series-buttons button').click(function() {
+    if ($(this).hasClass('btn-primary')) {
+      $(this).removeClass('btn-primary');
+      $(this).addClass('btn-default');
+    } else {
+      $(this).addClass('btn-primary');
+      $(this).removeClass('btn-default');
+    }
+
+    redraw_graph(true);
+  });
+
+  $('#highlight-ours-button').click(function() {
+    if ($(this).hasClass('btn-primary')) {
+      $(this).removeClass('btn-primary');
+      $(this).addClass('btn-default');
+    } else {
+      $(this).addClass('btn-primary');
+      $(this).removeClass('btn-default');
+    }
+
+    highlight_ours = !highlight_ours;
+    redraw_graph(true);
+  });
+
+  $('#show-sides-button').click(function() {
+    if ($(this).hasClass('btn-primary')) {
+      $(this).removeClass('btn-primary');
+      $(this).addClass('btn-default');
+    } else {
+      $(this).addClass('btn-primary');
+      $(this).removeClass('btn-default');
+    }
+
+    show_sides = !show_sides;
+    redraw_graph(true);
+  });
+
+  // I don't actually know this is done in JS not just in regular html/css, but it
+  // appears to not work the regular way.
+  $("<div id='tooltip'></div>").css({
+    position: "absolute",
+    display: "none",
+    border: "3px solid #dbd5a8",
+    padding: "2px 10px",
+    "background-color": "#F3ECBC",
+    opacity: 0.80
+  }).appendTo("body");
+
+  $("#trade-graph").bind("plothover", function (event, pos, item) {
+    if (item) {
+      // item.datapoint only has the graphable data (timestamp and price)
+      // but it gives us access to the full series data
+      var exchange_name = item.series.label;
+      var price = item.datapoint[1]
+      var volume = volume_data[exchange_name]['volumes'][item.dataIndex];
+
+      var content =
+        "<p>" +
+          exchange_name + "</br>" +
+          volume + " @ " + price + "</br>" +
+        "</p>";
+
+      $("#tooltip").html(content)
+        .css({top: item.pageY+20, left: item.pageX+20})
+        .fadeIn(200);
+    } else {
+      $("#tooltip").hide();
+    }
+  })
+});
+
+</script>
+{% end %}
+
+{% block css %}
+
+<style type='text/css'>
+
+body, html {
+  height: 100%;
+}
+
+div.row.section-container {
+  margin-top: 20px;
+}
+
+</style>
+
+{% end %}
+
+{% block title %}
+  <title>Trade View</title>
+{% end %}
+
+{% block content %}
+<div class='row' id='title-row'>
+  <div class='col'>
+    <h4>Trade View</h4>
+  </div>
+</div>
+<div class='row h-75'>
+  <div class='col d-flex flex-column'>
+    <div class='flex-grow-1' id='trade-graph'></div>
+  </div>
+</div>
+<div class='row'>
+  <div class='col-10'>
+    <div id='series-buttons' class='btn-group'>
+      {% for exchange_name in args['trade_data_by_exchange'].keys() %}
+        <button
+          id='{{ exchange_name }}-button'
+          data-series-name='{{ exchange_name }}'
+        {% if len(args['active_exchanges']) == 0 or exchange_name in args['active_exchanges'] %}
+          class='btn btn-primary'
+        {% else %}
+          class='btn btn-dark'
+        {% end %}
+        >{{ exchange_name }}</button>
+      {% end %}
+    </div>
+  </div>
+</div>
+<div class='row' style='margin-top: 20px'>
+  <div class='col-10'>
+    <div id='options-buttons' class='btn-group'>
+      <button id='highlight-ours-button' data-series-name='highlight-ours'
+        {% if args['highlight_ours'] %}
+          class='btn btn-primary'
+        {% else %}
+          class='btn btn-dark'
+        {% end %}
+      >Highlight Our Trades</button>
+      <button id='show-sides-button' data-series-name='show-side'
+        {% if args['show_sides'] %}
+          class='btn btn-primary'
+        {% else %}
+          class='btn btn-dark'
+        {% end %}
+      >Show Sides</button>
+    </div>
+  </div>
+</div>
+{% end %}

@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+<script src='/static/js/libs/jquery.flot.js'></script>
+<script type='text/javascript' src='/static/js/libs/jquery.flot.time.js'></script>
+<script src='/static/js/libs/jquery.flot.pie.js'></script>
+<script src='/static/js/libs/jquery.flot.stackbars.negatives.js'></script>
+<script type='text/javascript' src='/static/js/exchange_colours.js'></script>
+
+<script type='text/javascript'>
+
+var bitcoin_withdrawals = {% raw json_encode(args.get('bitcoin_withdrawals')) %};
+var bitcoin_deposits = {% raw json_encode(args.get('bitcoin_deposits')) %};
+
+var start_timestamp = {% raw json_encode(args.get('start_timestamp')) %};
+var end_timestamp = {% raw json_encode(args.get('end_timestamp')) %};
+
+var usd_plot_data = [ 
+  {% for exchange_name, balance_series in args['usd_balances_series'].items() %}
+    {
+      data: {% raw json_encode(balance_series) %},
+      label: '{{ exchange_name.capitalize() }} USD',
+      color: exchange_colours['{{ exchange_name.lower() }}'],
+    },
+  {% end %}
+]
+
+var btc_plot_data = [ 
+  {% for exchange_name, balance_series in args['btc_balances_series'].items() %}
+    {
+      data: {% raw json_encode(balance_series) %},
+      label: '{{ exchange_name.capitalize() }} BTC',
+      color: exchange_colours['{{ exchange_name.lower() }}'],
+    },
+  {% end %}
+  {data: bitcoin_deposits, label: 'Deposit', color: 'blue', points: {show: true}, lines: {show: false}},
+  {data: bitcoin_withdrawals, label: 'Withdrawal', color: 'red', points: {show: true}, lines: {show: false}},
+]
+
+$(document).ready(function() {
+  $.plot("#bitcoin-balances-graph", btc_plot_data, {
+    xaxes: [{ 
+      mode: 'time',
+      min: start_timestamp,
+      max: end_timestamp,
+    }],
+  });
+
+  $.plot("#usd-balances-graph", usd_plot_data, {
+    xaxes: [{
+      mode: 'time',
+      min: start_timestamp,
+      max: end_timestamp,
+    }],
+  });
+});
+
+</script>
+{% end %}
+
+{% block css %}
+
+<style type='text/css'>
+
+body, html {
+  height: 100%;
+}
+
+div.row.section-container {
+  margin-top: 20px;
+}
+
+div#crypto-balance-row,
+div#fiat-balance-row {
+  height: 46.5%;
+}
+
+</style>
+
+{% end %}
+
+{% block title %}
+  <title>System Balances</title>
+{% end %}
+
+
+{% block content %}
+<div class='row' id='title-row'>
+  <div class='col'>
+    <h4>Balances</h4>
+  </div>
+  {% module StartEnd(args['start_end_widget']['start_time'], args['start_end_widget']['end_time']) %}
+</div>
+<div class='row' id='crypto-balance-row'>
+  <div class='col d-flex flex-column'>
+    <h5>Bitcoin</h5>
+    <div class='flex-grow-1' id='bitcoin-balances-graph'></div>
+  </div>
+</div>
+<div class='row' id='fiat-balance-row'>
+  <div class='col d-flex flex-column'>
+    <h5>Fiat</h5>
+    <div class='flex-grow-1' id='usd-balances-graph'></div>
+  </div>
+</div>
+{% end %}

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+<script type='text/javascript' src='/static/js/libs/tablesorter/jquery.tablesorter.min.js'></script>
+<script type="text/javascript">
+$(document).ready(function()
+  {
+    $("#ledger").tablesorter();
+  }
+);
+</script>
+{% end %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/js/libs/tablesorter/blue/style.css">
+
+<style type='text/css'>
+
+table#ledger {
+  font-size: 12px;
+  margin-top: 30px;
+}
+
+table#ledger td {
+  padding: 8px;
+}
+
+</style>
+
+{% end %}
+
+{% block title %}
+  {% set currency_title = '' %}
+  {% if args['currency'] %}
+    {% set currency_title = ' ' + args['currency'] %}
+  {% end %}
+
+  <title>{{ args['exchange_name'] }}{{ currency_title }} Ledger</title>
+{% end %}
+
+{% block content %}
+<div class='row' id='title-row'>
+  <div class='col'>
+    <h4>{{ args['exchange_name'] }}{{ currency_title }} Ledger </h4>
+  </div>
+  {% module StartEnd(args['start_end_widget']['start_time'], args['start_end_widget']['end_time']) %}
+</div>
+<div class='row'>
+  </div>
+</div>
+<div class='row justify-content-center'>
+  <div class='col-10'>
+    {% set fiat_currency = args['fiat_currency'] %}
+    {% set currency = args['currency'] %}
+    <table id='ledger' class='table tablesorter'>
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Credit</th>
+          <th>Debit</th>
+          {% if not currency or currency == 'BTC' %}
+            <th>BTC Balance</th>
+          {% end %}
+          {% if not currency or currency == fiat_currency %}
+            <th>{{ fiat_currency }} Balance</th>
+          {% end %}
+          <th>Date (UTC)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for table_entry in args.get('ledger_table') %}
+          <tr>
+            <td>{{ table_entry.get('description', '') }}</td>
+            <td>{{ table_entry.get('credit', '') }}</td>
+            <td>{{ table_entry.get('debit', '') }}</td>
+            {% if not currency or currency == 'BTC' %}
+              <td>{{ table_entry['balance'].get('BTC') }}</td>
+            {% end %}
+            {% if not currency or currency == fiat_currency %}
+              <td>{{ table_entry['balance'].get(fiat_currency) }}</td>
+            {% end %}
+            <td>{{ table_entry.get('date') }}</td>
+          </tr>
+        {% end %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% end %}

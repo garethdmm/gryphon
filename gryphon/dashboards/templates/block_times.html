@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+<script src='/static/js/libs/jquery.flot.js'></script>
+<script type='text/javascript' src='/static/js/libs/jquery.flot.time.js'></script>
+
+<script type='text/javascript'>
+
+var plot_data = [
+  {% for block_name, block_time_series in sorted(args['all_block_time_series'].items(), key=lambda pair: pair[0]) %}
+    {
+      data: {% raw json_encode(block_time_series) %},
+      label: '{{ block_name.capitalize() }}',
+    },
+  {% end %}
+]
+
+plot_options = {
+  series: {
+    lines: {
+      show: true,
+    }
+  },
+  xaxes: [{
+    mode: 'time',
+  }],
+}
+
+$(document).ready(function() {
+    $.plot(
+      '#block-times-graph',
+      plot_data,
+      plot_options
+    );
+});
+
+</script>
+{% end %}
+
+{% block css %}
+<style type='text/css'>
+
+#block-times-graph {
+  height: 600px;
+}
+
+</style>
+{% end %}
+
+{% block title %}
+  <title>Tick Block Times</title>
+{% end %}
+
+{% block page_title %}
+  <h1>{{ args['page_title'] }}</h1>
+{% end %}
+
+{% block content %}
+<div class='row'>
+  <div class='col-md-11 col-md-offset-1'>
+    <div id='block-times-graph'></div>
+  </div>
+</div>
+{% end %}

@@ -1,0 +1,18 @@
+# Simple bash script for starting emerald. This won't work outside the emerald dir
+# right now, need to find some way of running runt.py main through these procfiles.
+# Should be possible.
+
+if [ "$1" = '--no-archive' ]
+then
+    echo "PRODUCER: python runt.py BITSTAMP KRAKEN KRAKEN_USD KRAKEN_CAD ITBIT QUADRIGA OKCOIN GEMINI BITFINEX BITSTAMP_ETH_BTC GEMINI_ETH_BTC POLONIEX_ETH_BTC BITSTAMP_ETH_USD GEMINI_ETH_USD BITSTAMP_ETH_EUR BITSTAMP_BCH_EUR BITSTAMP_BCH_USD BITSTAMP_BCH_BTC BITSTAMP_BTC_EUR" > Procfile_tmp
+else
+    echo "PRODUCER: python runt.py BITSTAMP KRAKEN KRAKEN_USD KRAKEN_CAD ITBIT QUADRIGA OKCOIN GEMINI BITFINEX BITSTAMP_ETH_BTC GEMINI_ETH_BTC POLONIEX_ETH_BTC BITSTAMP_ETH_USD GEMINI_ETH_USD BITSTAMP_ETH_EUR BITSTAMP_BCH_EUR BITSTAMP_BCH_USD BITSTAMP_BCH_BTC BITSTAMP_BTC_EUR
+    ORDERBOOK_CONSUMER: python orderbook_consumer.py
+    TRADES_CONSUMER: python trades_consumer.py
+    VOLUMES_CONSUMER: python exchange_volume_consumer.py" > Procfile_tmp
+
+fi
+
+foreman start --procfile Procfile_tmp
+
+rm Procfile_tmp

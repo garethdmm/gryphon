@@ -1,0 +1,2 @@
+This is an empty directory for the live_runner to put heartbeat files in.
+These files are checked by monit to make sure that the bots are actually running.

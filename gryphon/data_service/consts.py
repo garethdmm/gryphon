@@ -1,0 +1,12 @@
+EXCHANGE = 'trades_exchange'
+EXCHANGE_TYPE = 'topic'
+TRADES_QUEUE = 'trades_durable'
+TRADES_BINDING_KEY = '*.trades.tinker'
+ORDERBOOK_QUEUE = 'orderbook_durable'
+ORDERBOOK_BINDING_KEY = '*.orderbook.tinker'
+EXCHANGE_VOLUME_QUEUE = 'exchange_volume_durable'
+EXCHANGE_VOLUME_BINDING_KEY = '*.exchange_volume.tinker'
+
+TRADES_QUEUE_OLD = 'trades'
+ORDERBOOK_QUEUE_OLD = 'orderbook'
+EXCHANGE_VOLUME_QUEUE_OLD = 'exchange_volume'

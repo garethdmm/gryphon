@@ -1,0 +1,4 @@
+PRODUCER: python runt.py BITSTAMP_BTC_USD COINBASE_BTC_USD GEMINI_BTC_USD
+ORDERBOOK_CONSUMER: python orderbook_consumer.py
+TRADES_CONSUMER: python trades_consumer.py
+VOLUMES_CONSUMER: python exchange_volume_consumer.py

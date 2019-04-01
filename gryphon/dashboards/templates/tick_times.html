@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+<script src='/static/js/libs/jquery.flot.js'></script>
+<script type='text/javascript' src='/static/js/libs/jquery.flot.time.js'></script>
+<script type='text/javascript' src='/static/js/exchange_colours.js'></script>
+
+<script type='text/javascript'>
+
+{% for exchange_name, tick_time_series in args['all_tick_time_series'].items() %}
+var {{ exchange_name.lower() }}_plot_data = [
+  {
+    data: {% raw json_encode(tick_time_series) %},
+    label: '{{ exchange_name.capitalize() }}',
+    color: exchange_colours['{{ exchange_name.lower() }}'],
+  },
+]
+{% end %}
+
+plot_options = {
+  series: {
+    lines: {
+      show: true,
+    }
+  },
+  xaxes: [{
+    mode: 'time',
+  }],
+}
+
+$(document).ready(function() {
+  {% for exchange_name in args['all_tick_time_series'].keys() %}
+    $.plot(
+      "#{{ exchange_name.lower() }}-ticktimes-graph",
+      {{ exchange_name.lower() }}_plot_data,
+      plot_options
+    );
+  {% end %}
+});
+
+</script>
+{% end %}
+
+{% block css %}
+<style type='text/css'>
+
+div.ticktime-graph {
+  height: 300px;
+}
+
+</style>
+{% end %}
+
+{% block title %}
+  <title>Tick Times</title>
+{% end %}
+
+{% block page_title %}
+  <h1>Tick Times</h1>
+{% end %}
+
+{% block content %}
+<div class='row'>
+  {% for exchange_name in args['all_tick_time_series'].keys() %}
+  <div class='col-md-11 col-md-offset-1'>
+    <div id='{{ exchange_name.lower() }}-ticktimes-graph' class='ticktime-graph'></div>
+  </div>
+  {% end %}
+</div>
+{% end %}

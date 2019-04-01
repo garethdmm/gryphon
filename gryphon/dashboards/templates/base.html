@@ -1,0 +1,222 @@
+<!DOCTYPE html> <html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#"
+  xmlns:fb="http://www.facebook.com/2008/fbml"> <head> <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    {% block css %}
+    {% end %}
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900|Roboto+Mono:300,400" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/main.css">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style type = 'text/css'>
+        #title-row {
+          height: 7%;
+        }
+
+        #title-row h4 {
+          margin-top: 15px;
+        }
+
+        div.multicolumn-2 {
+          width: 500px;
+          padding-bottom: 5px;
+        }
+
+        div.multicolumn {
+          width: 600px;
+          padding-bottom: 5px;
+        }
+
+        div.multicolumn > ul > li > a,
+        div.multicolumn-2 > ul > li > a {
+          display: block;
+          padding: 3px 20px;
+          clear: both;
+          font-weight: 400;
+          line-height: 1.42857143;
+          color: #333;
+          white-space: nowrap;
+        }
+
+        div.multicolumn-2 ul:nth-child(2) {
+          padding-left: 0px;
+        }
+
+        p.empty-column {
+          margin: 25px;
+          font-size: 12px;
+          color: #999;
+        }
+
+        p.empty-row {
+          font-size: 12px;
+          color: #999;
+          margin-left: 30px;
+          margin-top: 5px;
+          margin-bottom: 15px;
+        }
+
+        img#gryphon-brand {
+          height: 30px;
+        }
+
+        div#datepicker-widget {
+          text-align: right;
+          padding-top: 15px;
+        }
+
+        div#datepicker-widget span {
+          font-size: 0.875rem;
+          vertical-align: middle;
+          margin-right: 10px;
+        }
+    </style>
+
+    {% block title %}
+    <title>Pentecost</title>
+    {% end %}
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
+
+  </head>
+  <body class='d-flex flex-column'>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" role="navigation">
+        <a class="navbar-brand" href="/">
+          <img id='gryphon-brand' src='/static/img/gryphon-logo-blue.png'/>
+        </a>
+        {% if user %}
+          <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+              <li class="nav-item dropdown">
+                <a class='nav-link dropdown-toggle' href='#' data-toggle='dropdown' role='button'>Trading<span class="caret"></span></a>
+                <div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                  <h5>Builtin Strategies<h5>
+                  <a class='dropdown-item' href="/strategies/manual">Manual</a>
+                  <a class='dropdown-item' href="/strategies/multiexchange_linear">Multiexchange Linear BTC</a>
+                  <a class='dropdown-item' href="/strategies/simple_arb">Simple Arbitrage</a>
+                  <a class='dropdown-item' href="/strategies/simple_mm">Simple Market Making</a>
+                  <div class='dropdown-divider'></div>
+                  <h5>Custom Strategies<h5>
+                    {% if len(args['custom_strategies']) > 0 %}
+                      {% for url_name, config in args['custom_strategies'].items() %}
+                        <li role='presentation'>
+                          <a role='menuitem' tabindex='-1' href="/strategies/{{url_name}}">{{ config['display_name'] }}</a>
+                        </li>
+                      {% end %}
+                    {% else %}
+                      <!--<p class='empty-row'>Learn how to add your own strategies <a href='https://gryphon-framework.readthedocs.io/en/latest'>here</a>.</p>-->
+                    {% end %}
+                  <div class='dropdown-divider'></div>
+                  <a class='dropdown-item' href="/status">Status</a>
+                </div>
+              </li>
+            </ul>
+            <ul class="navbar-nav">
+              <li class="dropdown">
+                <a class='nav-link dropdown-toggle' href='#' data-toggle='dropdown'>Market Data<span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                  <li>
+                    <div class='row multicolumn'>
+                      <ul class='list-unstyled col-md-4' role='menu'>
+                        <li class="dropdown-header"><h4>Bitcoin</h4></li>
+                        <li class='divider'></li>
+                        <li class="dropdown-header">Orderbooks</li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/orderbooks/btcusd/">BTC USD</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/orderbooks/btceur/">BTC EUR</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/orderbooks/btccad/">BTC CAD</a></li>
+                        <li class='divider'></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/tradeview">Trades</a></li>
+                      </ul>
+                      <ul class='list-unstyled col-md-4'>
+                        <li class="dropdown-header"><h4>Ethereum</h4></li>
+                        <li class='divider'></li>
+                        <li class="dropdown-header">Orderbooks</li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/orderbooks/ethusd/">ETH USD</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/orderbooks/etheur/">ETH EUR</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/orderbooks/ethbtc/">ETH BTC</a></li>
+                        <li class='divider'></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/tradeview">Trades</a></li>
+                      </ul>
+                      <ul class='list-unstyled col-md-4'>
+                        <li class="dropdown-header"><h4>Bitcoin Cash</h4></li>
+                        <li class='divider'></li>
+                        <li class="dropdown-header">Orderbooks</li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/orderbooks/bchusd/">BCH USD</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/orderbooks/bchbtc/">BCH BTC</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/orderbooks/bcheur/">BCH EUR</a></li>
+                        <li class='divider'></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/tradeview">Trades</a></li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <ul class="navbar-nav">
+              <li class="dropdown">
+                <a class='nav-link dropdown-toggle' href='#' data-toggle='dropdown'>Financial Data<span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                  <li>
+                    <div class='row multicolumn-2'>
+                      <ul class='list-unstyled col-md-6'> <li class="dropdown-header"><h4>Fund</h4></li>
+                        <li class='divider'></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/assets">Assets</a></li>
+                        <li role='presentation'><a role='menuitem' tabindex='-1' href='/fees'>Fees</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/balances">Balances</a></li>
+                      </ul>
+                      <ul class='list-unstyled col-md-6'>
+                        <li class="dropdown-header"><h4>Ledgers</h4></li>
+                        <li class='divider'></li>
+                        {% if len(args['exchanges']) > 0 %}
+                          {% for key, name in args['exchanges'].iteritems() %}
+                            <li role='presentation'>
+                              {% set url = "/ledger/%s" % key %}
+                              <a role='menuitem' tabindex='-1' href="{{ url }}">{{ name }}</a>
+                            </li>
+                          {% end %}
+                        {% else %}
+                          <p class='empty-column'><a href='https://gryphon-framework.readthedocs.io/en/latest'/>Read the docs</a> to find out how to start exchange ledgers in your trading database.</p>
+                        {% end %}
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+              <li class='nav-item'>
+                <a class='nav-link' href='javascript:$("#logout-form").submit();'>
+                  Logout
+                  <span class='glyphicon glyphicon-user'></span>
+                </a>
+                <form id='logout-form' action='/logout' method='post'>
+                  {% raw xsrf_form_html() %}
+                </form>
+              </li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        {% end %}
+    </nav>
+    {% if error_message %}
+      <div class="alert alert-warning">{{ error_message }}</div>
+    {% end %}
+
+    <div class="container-fluid flex-grow-1">
+      {% block content %} 
+      {% end %}
+    </div>
+    
+    <script
+      src="http://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+    {% block scripts %}
+    {% end %}
+  </body>
+</html>

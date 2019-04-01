@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+<script src='/static/js/libs/jquery.flot.js'></script>
+<script src='/static/js/libs/jquery.flot.pie.js'></script>
+<script type='text/javascript' src='/static/js/exchange_colours.js'></script>
+
+<script type='text/javascript'>
+// the way these colours are done is a bit weird.
+
+var data = [
+  {% for exchange in args['all_exchanges'] %}
+    {% if exchange['balance']['USD'] %}
+      {% set exchange_balance = exchange['balance']['USD'] %}
+    {% elif exchange['balance']['CAD'] %}
+      {% set exchange_balance = exchange['balance']['CAD'].to('USD')  %}
+    {% elif exchange['balance']['EUR'] %}
+      {% set exchange_balance = exchange['balance']['EUR'].to('USD')  %}
+    {% else %}
+      {% set exchange_balance = None %}
+    {% end %}
+    {
+      label: '{{ exchange['name'] }}' + ' {{ exchange_balance }}',
+      {% if exchange_balance %}
+        data: {{ exchange_balance.amount }},
+      {% else %}
+        data: 0,
+      {% end %}
+        color: exchange_colours['{{ exchange['name'].lower() }}'],
+    },
+  {% end %}
+];
+
+function labelFormatter(label, series) {
+    return "<div style='font-size:8pt; text-align:center; padding:2px; color: " + series.color + ";'>" + label + "</div>";
+}
+
+$(document).ready(function() {
+  $.plot($('#balance-chart'), data, {
+    series: {
+      pie: {
+        show: true,
+        label: {
+          formatter: labelFormatter,
+          threshold: 0.03,
+        },
+      }
+    },
+    legend: {
+      show: false,
+    }
+  })
+});
+
+</script>
+
+{% end %}
+
+{% block css %}
+<style type="text/css">
+
+#uptime-table-container {
+  margin-top: 20px;
+}
+
+#balance-chart {
+  height: 400px;
+}
+
+</style>
+{% end %}
+
+{% block title %}
+  <title>Exchange Account Status</title>
+{% end %}
+
+{% block page_title %}
+  <h1>Account Status</h1>
+{% end %}
+
+{% block content %}
+<div class='row'>
+  <div id='uptime-table-container' class='col-md-7 col-md-offset-1'>
+    <table class='table'>
+      {% for exchange in args['all_exchanges'] %}
+        {% if exchange['is_up'] == True %}
+          <tr class='success'>
+        {% else %}
+          <tr class='danger'>
+        {% end %}
+            <td>{{ exchange['name'] }}
+            {% if exchange['is_up'] == True %}
+              <td>{{ exchange['up_since'].seconds }} seconds ago</td>
+            {% else %}
+              <td></td>
+            {% end %}
+            <td>{{ exchange['balance']['BTC'] }}</td>
+            <td>
+              {% if exchange['balance']['USD'] %}
+              {{ exchange['balance']['USD'] }}
+              {% elif exchange['balance']['CAD'] %}
+              {{ exchange['balance']['CAD'] }}
+              {% elif exchange['balance']['EUR'] %}
+              {{ exchange['balance']['EUR'] }}
+              {% else %}
+              None
+              {% end %}
+            </td>
+          </tr>
+      {% end %}
+      <tr></tr>
+        <td></td>
+        <td></td>
+        <td>{{ args['system_balances']['BTC'] }}</td>
+        <td></td>
+        <td></td>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+          {{ args['system_balances']['USD'] }}
+          <br/><br/>
+          {{ args['system_balances']['CAD'] }}
+          <br/><br/>
+          {{ args['system_balances']['EUR'] }}
+        </td>
+        <td>
+          <br/><br/><br/><br/>
+          {{ args['total_fiat'] }}
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div id='balance-chart-container' class='col-md-4'>
+    <div id='balance-chart'>
+    </div>
+  </div>
+</div>
+<div class='row'>
+  <div class='col-md-7 col-md-offset-1'>
+    <h2>Trading Bank Accounts</h2>
+    <table class='table'>
+      {% for account in args['bank_accounts'] %}
+        {% if account['highlight'] %}
+          <tr class='success'>
+        {% else %}
+          <tr>
+        {% end %}
+          <td>{{ account['name'] }}</td>
+          <td>{{ account['balance'] }}</td>
+        </tr>
+      {% end %}
+    </table>
+  </div>
+</div>
+<div class='row'>
+  <div id='transactions-table-container' class='col-md-7 col-md-offset-1'>
+    <h2>Pending Wire Deposits</h2>
+    <table class='table'>
+      <thead>
+        <tr>
+          <td>Type</td>
+          <td>Amount</td>
+          <td>Exchange</td>
+          <td>Time Began</td>
+        </tr>
+      </thead>
+      {% for tx in args['in_transit_fiat_txs'] %}
+        <tr>
+          <td>{{ tx.transaction_type }}</td>
+          <td>{{ tx.amount }}</td>
+          <td>{{ tx.exchange.name }}</td>
+          <td>{{ tx.time_created }}</td>
+        </tr>
+      {% end %}
+    </table>
+  </div>
+</div>
+<div class='row'>
+  <div id='transactions-table-container' class='col-md-7 col-md-offset-1'>
+    <h2>Pending Bitcoin Deposits</h2>
+    <table class='table'>
+      <thead>
+        <tr>
+          <td>Type</td>
+          <td>Amount</td>
+          <td>Exchange</td>
+          <td>Time Began</td>
+          <td>Confirmations</td>
+        </tr>
+      </thead>
+      {% for tx in args['in_transit_btc_txs'] %}
+        {% if tx.is_stuck() %}
+          <tr class="danger">
+        {% else %}
+          <tr>
+        {% end %}
+          <td>{{ tx.transaction_type }}</td>
+          <td>{{ tx.amount }}</td>
+          <td>{{ tx.exchange.name }}</td>
+          <td>{{ tx.time_created }}</td>
+          <td>
+            {% try %}
+              {{ tx.confirmations() }}
+            {% except %}
+              ERROR
+            {% end %}
+          </td>
+        </tr>
+      {% end %}
+    </table>
+  </div>
+</div>
+<div class='row'>
+  <div id='recent-transactions-table-container' class='col-md-6 col-md-offset-1'>
+    <h2>Recent Transactions</h2>
+    <table class='table'>
+      {% for tx in args['recent_transactions'] %}
+        {% if tx.transaction_type == 'DEPOSIT' %}
+        <tr class='info'>
+        {% else %}
+        <tr class='warning'>
+        {% end %}
+          <td>{{ tx.transaction_type }}</td>
+          <td>
+            {{ round(tx.amount.amount, 4) }}
+            <span style='margin-left:10px; margin-right:10px;'>
+              {% if tx.transaction_type == 'DEPOSIT' %}
+                into
+              {% else %}
+                from
+              {% end %}
+            </span>
+            {{ tx.exchange.name }}
+          </td>
+          <td>{{ tx.time_created }}</td>
+        </tr>
+      {% end %}
+    </table>
+  </div>
+  <div id='net-flows-table-container' class='col-md-5'>
+    <h2>24 Hour Movements</h2>
+    <table class='table'>
+      {% for flow in args['net_flows'] %}
+        {% if flow['deposits'] > 0 or flow['withdrawals'] > 0 %}
+          {% if flow['deposits'] >= flow['withdrawals'] %}
+            <tr class='info'>
+          {% else %}
+            <tr class='warning'>
+          {% end %}
+              <td>{{ flow['exchange_name'] }}</td>
+              <td>{{ "%+.2f" % (flow['deposits'] - flow['withdrawals']) }}</td>
+              <td>(+{{ flow['deposits'] }} -{{ flow['withdrawals'] }}]</td>
+            </tr>
+        {% end %}
+      {% end %}
+    </table>
+  </div>
+</div>
+{% end %}
