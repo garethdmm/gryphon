@@ -6,7 +6,7 @@ from cdecimal import Decimal
 
 from gryphon.lib.exchange.itbit_btc_usd import ItbitBTCUSDExchange
 from gryphon.lib.money import Money
-from tests.logic.configuration.exchange import BaseConfiguration
+from gryphon.tests.logic.configuration.exchange import BaseConfiguration
 
 
 class ItBitConfigurationTest(BaseConfiguration, unittest.TestCase):

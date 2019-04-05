@@ -6,7 +6,7 @@ from cdecimal import Decimal
 
 from gryphon.lib.exchange.gemini_btc_usd import GeminiBTCUSDExchange
 from gryphon.lib.money import Money
-from tests.logic.configuration.exchange import BaseConfiguration
+from gryphon.tests.logic.configuration.exchange import BaseConfiguration
 
 
 class GeminiConfigurationTest(BaseConfiguration, unittest.TestCase):

@@ -1,7 +1,7 @@
 import pyximport; pyximport.install()
 
 from gryphon.lib.exchange.coinbase_btc_usd import CoinbaseBTCUSDExchange
-from tests.logic.exchange_wrappers.public_methods import ExchangePublicMethodsTests
+from gryphon.tests.logic.exchange_wrappers.public_methods import ExchangePublicMethodsTests
 
 
 class TestCoinbaseBTCUSDPublicMethods(ExchangePublicMethodsTests):

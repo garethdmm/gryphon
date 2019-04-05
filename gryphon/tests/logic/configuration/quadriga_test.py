@@ -6,7 +6,7 @@ from cdecimal import Decimal
 
 from gryphon.lib.exchange.quadriga_btc_cad import QuadrigaBTCCADExchange
 from gryphon.lib.money import Money
-from tests.logic.configuration.exchange import BaseConfiguration
+from gryphon.tests.logic.configuration.exchange import BaseConfiguration
 
 
 class QuadrigaConfigurationTest(BaseConfiguration, unittest.TestCase):

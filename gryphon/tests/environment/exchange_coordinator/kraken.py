@@ -5,8 +5,8 @@ import os
 
 from gryphon.lib.exchange.kraken_btc_eur import KrakenBTCEURExchange
 from gryphon.fury.harness.exchange_coordinator import ExchangeCoordinator
-from tests.logic.exchange_coordinator.public_methods import ExchangePublicMethodsTests
-from tests.logic.exchange_coordinator.auth_methods import ExchangeAuthMethodsTests
+from gryphon.tests.logic.exchange_coordinator.public_methods import ExchangePublicMethodsTests
+from gryphon.tests.logic.exchange_coordinator.auth_methods import ExchangeAuthMethodsTests
 from gryphon.lib.session import get_a_mysql_session
 from gryphon.lib.money import Money
 from gryphon.lib.exchange.consts import Consts

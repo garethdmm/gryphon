@@ -1,7 +1,7 @@
 import pyximport; pyximport.install()
 
 from gryphon.lib.exchange.kraken_btc_eur import KrakenBTCEURExchange
-from tests.exceptional.exchange_wrappers.live_orders import LiveOrdersTest
+from gryphon.tests.exceptional.exchange_wrappers.live_orders import LiveOrdersTest
 
 
 class TestKrakenBTCEURLiveOrders(LiveOrdersTest):

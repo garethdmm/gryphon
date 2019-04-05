@@ -6,7 +6,7 @@ from cdecimal import Decimal
 
 from gryphon.lib.exchange.bitstamp_bch_eur import BitstampBCHEURExchange
 from gryphon.lib.money import Money
-from tests.logic.configuration.exchange import BaseConfiguration
+from gryphon.tests.logic.configuration.exchange import BaseConfiguration
 
 
 class BitstampBCHEURConfigurationTest(BaseConfiguration, unittest.TestCase):

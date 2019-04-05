@@ -1,7 +1,7 @@
 import pyximport; pyximport.install()
 
 from gryphon.lib.exchange.quadriga_btc_cad import QuadrigaBTCCADExchange
-from tests.exceptional.exchange_wrappers.live_orders import LiveOrdersTest
+from gryphon.tests.exceptional.exchange_wrappers.live_orders import LiveOrdersTest
 
 
 class TestQuadrigaLiveOrders(LiveOrdersTest):
