@@ -26,7 +26,7 @@ with open('README.md', 'r') as f:
 
 
 setuptools.setup(
-    name='gryphon',
+    name='gryphon-alpha',
     packages=setuptools.find_packages(),
     version='0.12',
     author='MacLeod & Robinson, Inc.',
