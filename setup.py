@@ -26,8 +26,9 @@ with open('README.md', 'r') as f:
 
 
 setuptools.setup(
-    name='gryphon-framework',
-    version='0.5',
+    name='gryphon-alpha',
+    packages=setuptools.find_packages(),
+    version='0.12',
     author='MacLeod & Robinson, Inc.',
     author_email='hello@tinkercorp.com',
     description='A framework for running algorithmic trading strategies on cryptocurrency markets.',
@@ -36,12 +37,12 @@ setuptools.setup(
     url='http://www.gryphonframework.org',
     classifiers=(
         'Programming Language :: Python :: 2.7',
-        'License :: OSI Approved :: Apache Software License'
         'Operating System :: OS Independent',
+        'License :: Other/Proprietary License',
     ),
     entry_points={
         'console_scripts': [
-            'gryphon-runtests=runtests:main',
+            'gryphon-runtests=gryphon.tests.runtests:main',
             'gryphon-execute=gryphon.execution.app:main',
             'gryphon-cli=gryphon.execution.console:main',
             'gryphon-dashboards=gryphon.dashboards.app:main',
