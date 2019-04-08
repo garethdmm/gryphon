@@ -101,6 +101,8 @@ html_static_path = ['_static']
 #
 # html_sidebars = {}
 
+# Logo
+html_logo = '_static/gryphon-logo-blue.png'
 
 # -- Options for HTMLHelp output ---------------------------------------------
 

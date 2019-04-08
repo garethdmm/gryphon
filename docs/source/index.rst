@@ -3,16 +3,28 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to gryphon-framework's documentation!
+Gryphon Trading Framework 0.12 Documentation
 =============================================
 
+Welcome.
+
+Starting Out
+============
+
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :hidden:
+
+   installation
+   architecture
+
+:doc:`installation`
+   How to set up gryphon for different use-cases.
+
+:doc:`architecture`
+   Understand the high-level architecture of the framework.
 
 
-
-Indices and tables
+Appendices
 ==================
 
 * :ref:`genindex`
