@@ -10,8 +10,8 @@
 
 | **`Documentation`** |
 |-----------------|
-| [![Documentation](https://img.shields.io/badge/api-reference-blue.svg)](https://www.tensorflow.org/api_docs/) |
-
+| [![Documentation](https://img.shields.io/badge/api-reference-blue.svg)](https://gryphon.readthedocs.io/en/latest/) |
+| [![Documentation Status](https://readthedocs.org/projects/gryphon/badge/?version=latest)](https://gryphon.readthedocs.io/en/latest/?badge=latest) |
 
 ## What's included
 
