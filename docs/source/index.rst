@@ -15,17 +15,17 @@ Starting Out
    :hidden:
 
    installation
-   architecture
+   usage
 
 :doc:`installation`
    How to set up gryphon for different use-cases.
 
-:doc:`architecture`
-   Understand the high-level architecture of the framework.
+:doc:`usage`
+   The basics on how to have a good time in the markets with gryphon.
 
 
 Appendices
-==================
+==========
 
 * :ref:`genindex`
 * :ref:`modindex`
