@@ -35,7 +35,7 @@ Install the library
 
    .. code-block:: bash
 
-      pip install gryphon
+      pip install gryphon-alpha
 
 #. Gryphon installs a command line tool for running it's unit test suite. It's good practice to run it at this stage.
 
