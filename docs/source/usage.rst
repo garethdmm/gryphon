@@ -64,6 +64,7 @@ A very simple gryphon-root looks like this:
     my-gryphon-root/
       strategies/
         mystrat.py
+        __init__.py
       .env
 
 This may seem like overkill right now, but once you have many of your own strategies,
