@@ -16,6 +16,7 @@ Starting Out
 
    installation
    usage
+   dashboards
 
 :doc:`installation`
    How to set up gryphon for different use-cases.
