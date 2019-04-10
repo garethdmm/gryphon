@@ -39,7 +39,7 @@ class Strategy(ConfigurableObject):
         self.volume_currency = 'BTC'
 
         # How long the strategy pauses between ticks.
-        self.tick_sleep = 30  
+        self.tick_sleep = 5
 
         # Exchanges that the strategy declares it's interested in up-front. It's
         # convenient to have these at startup sometimes.
