@@ -1,2 +1,6 @@
 global-include *.pyx
 global-include *.pxd
+global-include *.ini
+include gryphon/execution/migrations/versions/*.py
+include gryphon/data_service/migrations/versions/*.py
+include gryphon/dashboards/migrations/versions/*.py
