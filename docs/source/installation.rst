@@ -27,6 +27,10 @@ Install the library
       sudo apt update
       sudo apt install python2.7 python-pip libmysqlclient-dev
 
+.. _virtualenv: https://docs.python-guide.org/dev/virtualenvs/#lower-level-virtualenv
+
+#. While technically optional, we highly recommend that you use virtualenv_ to create an isolated python environment in which to install Gryphon.
+
 #. Install the gryphon package.
 
    .. code-block:: bash
