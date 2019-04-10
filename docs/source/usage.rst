@@ -167,8 +167,8 @@ copy this text into it.
 
             executable_volume = arb.get_executable_volume(
                 cross,
-                self.harness.coinbase_btc_usd.get_balance(),
                 self.harness.gemini_btc_usd.get_balance(),
+                self.harness.coinbase_btc_usd.get_balance(),
             )   
 
             if cross and executable_volume:
