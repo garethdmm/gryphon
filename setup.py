@@ -28,7 +28,7 @@ with open('README.md', 'r') as f:
 setuptools.setup(
     name='gryphon-alpha',
     packages=setuptools.find_packages(),
-    version='0.12.3',
+    version='0.12.4',
     author='MacLeod & Robinson, Inc.',
     author_email='hello@tinkercorp.com',
     description='A framework for running algorithmic trading strategies on cryptocurrency markets.',
