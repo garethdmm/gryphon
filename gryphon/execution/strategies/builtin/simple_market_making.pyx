@@ -1,17 +1,7 @@
 """
-This is a very simple market making strategy to demonstrate use of the Gryphon
-framework. For being only 23 lines of code, this strategy has some very subtle logic to
-it.
-
-Every tick, we place orders on both sides of the orderbook at a 1% spread back from the
-midpoint on the Coinbase BTCUSD pair. The orders start at a size of 2 BTC. If either of 
-these orders are filled in any volume, the strategy is now at a net position. We want to
-limit our absolute risk, so the strategy has a maximum position it will enter. To avoid
-going past our max position, the order size on the side of our position is decreased
-so that we should never be offering an order that would take us past our maximum if it
-were filled.
-
-This strategy is just an example, and should not be used for real trading.
+This is a simple market making strategy to demonstrate use of the Gryphon
+framework. It follows the same tick-logic as SuperSimpleMarketMaking, but it's target
+exchange, spread, and base volume, are all configurable.
 """
 
 from cdecimal import Decimal
@@ -23,21 +13,45 @@ from gryphon.lib.exchange.consts import Consts
 
 
 class SimpleMarketMaking(Strategy):
+    def __init__(self, db, harness, strategy_configuration):
+        super(SimpleMarketMaking, self).__init__(db, harness)
+
+        # Configurable properties with defaults.
+        self.spread = Decimal('0.01')
+        self.base_volume = Money('0.005', 'BTC')
+        self.exchange = None
+
+        self.configure(strategy_configuration)
+
+    def configure(self, strategy_configuration):
+        super(SimpleMarketMaking, self).configure(strategy_configuration)
+
+        self.init_configurable('spread', strategy_configuration)
+        self.init_configurable('base_volume', strategy_configuration)
+        self.init_configurable('exchange', strategy_configuration)
+        self.init_primary_exchange()
+
+    def init_primary_exchange(self):
+        self.primary_exchange = self.harness.exchange_from_key(self.exchange)
+
+        # This causes us to always audit our primary exchange.
+        self.target_exchanges = [self.primary_exchange.name]
+
     def tick(self, current_orders):
-        self.harness.bitstamp_btc_usd.cancel_all_open_orders()
+        self.primary_exchange.cancel_all_open_orders()
 
-        ob = self.harness.bitstamp_btc_usd.get_orderbook()
+        ob = self.primary_exchange.get_orderbook()
 
-        bid_price, ask_price = mm.midpoint_centered_fixed_spread(ob, Decimal('0.01'))
+        bid_price, ask_price = mm.midpoint_centered_fixed_spread(ob, self.spread)
 
         bid_volume, ask_volume = mm.simple_position_responsive_sizing(
-            Money('2', 'BTC'),
+            self.base_volume,
             self.position,
         )
 
         if bid_volume > 0:
-            self.harness.bitstamp_btc_usd.limit_order(Consts.BID, bid_volume, bid_price)
+            self.primary_exchange.limit_order(Consts.BID, bid_volume, bid_price)
 
         if ask_volume > 0:
-            self.harness.bitstamp_btc_usd.limit_order(Consts.ASK, ask_volume, ask_price)
+            self.primary_exchange.limit_order(Consts.ASK, ask_volume, ask_price)
 
