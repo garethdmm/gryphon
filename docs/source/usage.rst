@@ -84,7 +84,8 @@ it's necessary to initialize a ledger for it, which can be done easily with a ut
 function in :code:`gryphon-execute`.
 
 First, add the API credentials for that exchange to our dotenv. You can
-find what credentials your chosen exchange needs in the :ref:`dotenv_reference`.
+find out what credentials your chosen exchange needs in the :ref:`environment_exchanges`
+reference.
 
 Then run the :code:`initialize_exchange_ledgers` script.
 
@@ -191,5 +192,4 @@ log messages to the strategy that tell the viewer what is going on, but we'll ge
 that.
 
 Congratulations, you are trading with Gryphon!
-
 
