@@ -64,6 +64,7 @@ A very simple gryphon-root looks like this:
     my-gryphon-root/
       strategies/
         mystrat.py
+        __init__.py
       .env
 
 This may seem like overkill right now, but once you have many of your own strategies,
@@ -83,7 +84,8 @@ it's necessary to initialize a ledger for it, which can be done easily with a ut
 function in :code:`gryphon-execute`.
 
 First, add the API credentials for that exchange to our dotenv. You can
-find what credentials your chosen exchange needs in the :ref:`dotenv_reference`.
+find out what credentials your chosen exchange needs in the :ref:`environment_exchanges`
+reference.
 
 Then run the :code:`initialize_exchange_ledgers` script.
 
@@ -113,28 +115,39 @@ Run a built-in strategy
 Gryphon ships with a few simple built-in strategies. These aren't designed for serious
 trading but can be useful for testing and learning the framework.
 
-One such strategy is called 'Simple Market Making'. It can be run as follows:
+One such strategy is called 'Simple Market Making', which runs a very simple strategy on
+bitstamp's btc-usd pair. It can be run as follows:
 
 .. code-block:: bash
 
     gryphon-execute strategy simple_market_making --builtin
 
+If you don't use bitstamp, you can point the same strategy at any other btc-usd pair
+supported by gryphon by adding the command line argument
+:code:`--exchange [exchange_pair_name]`, such as
+
+.. code-block:: bash
+
+    gryphon-execute strategy simple_market_making --builtin --exchange coinbase_btc_usd
+
 This will run the strategy in no-execute mode. If you want it to place real orders, add
 the :code:`--execute` flag to the same command. If you are running from a completely
-clean installation, you'll find that throws an error like this:
+clean installation, this might throw an error like this:
 
 .. code-block:: bash
 
     KeyError: u'BITSTAMP_BTC_USD_API_KEY'
 
-That is because Simple Market Making runs on bitstamp, and you haven't added your API
-keys for bitstamp to your dotenv file yet. To do so, add these keys to your dotenv:
+That is because you need to have the API credentials set up in your :code:`.env` file
+for gryphon to communicate with the exchange. For bitstamp, these look like this:
 
 .. code-block:: bash
 
     BITSTAMP_BTC_USD_API_KEY=[YOUR KEY]
     BITSTAMP_BTC_USD_API_SECRET=[YOUR SECRET]
     BITSTAMP_BTC_USD_API_PASSPHRASE=[YOUR PASSPHRASE]
+
+You can find entries that you need for other exchanges in :ref:`environment_exchanges`.
 
 Now, try running the strategy again. You should start to see some simple logging
 that shows the platform is ticking.
@@ -166,8 +179,8 @@ copy this text into it.
 
             executable_volume = arb.get_executable_volume(
                 cross,
-                self.harness.coinbase_btc_usd.get_balance(),
                 self.harness.gemini_btc_usd.get_balance(),
+                self.harness.coinbase_btc_usd.get_balance(),
             )   
 
             if cross and executable_volume:
@@ -190,5 +203,4 @@ log messages to the strategy that tell the viewer what is going on, but we'll ge
 that.
 
 Congratulations, you are trading with Gryphon!
-
 

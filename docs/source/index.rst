@@ -12,11 +12,11 @@ Starting Out
 ============
 
 .. toctree::
+   :caption: Starting Out
    :hidden:
 
    installation
    usage
-   dashboards
 
 :doc:`installation`
    How to set up gryphon for different use-cases.
@@ -24,6 +24,12 @@ Starting Out
 :doc:`usage`
    The basics on how to have a good time in the markets with gryphon.
 
+.. toctree::
+   :caption: Reference
+   :hidden:
+
+   dashboards
+   environment
 
 Appendices
 ==========

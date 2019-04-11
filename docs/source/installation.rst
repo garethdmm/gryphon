@@ -27,11 +27,15 @@ Install the library
       sudo apt update
       sudo apt install python2.7 python-pip libmysqlclient-dev
 
+.. _virtualenv: https://docs.python-guide.org/dev/virtualenvs/#lower-level-virtualenv
+
+#. While technically optional, we highly recommend that you use virtualenv_ to create an isolated python environment in which to install Gryphon.
+
 #. Install the gryphon package.
 
    .. code-block:: bash
 
-      pip install gryphon
+      pip install gryphon-alpha
 
 #. Gryphon installs a command line tool for running it's unit test suite. It's good practice to run it at this stage.
 
@@ -52,7 +56,7 @@ Set up the trading harness
 --------------------------
 
 The trading harness is the executable that runs trading strategies. It's installed in
-the PATH as gryphon-execute. It has a few more dependencies than the pure library.
+the PATH as :code:`gryphon-execute`. It has a few more dependencies than the pure library.
 
 #. Install memcached
 
