@@ -114,6 +114,3 @@ tracking requests and bugs.**
 * [Gryphon Website](https://www.gryphonframework.org)
 participate.
 
-## License
-
-[Apache License 2.0](LICENSE)
