@@ -42,7 +42,6 @@ setuptools.setup(
     ),
     entry_points={
         'console_scripts': [
-            'gryphon-runtests=gryphon.tests.runtests:main',
             'gryphon-execute=gryphon.execution.app:main',
             'gryphon-cli=gryphon.execution.console:main',
             'gryphon-dashboards=gryphon.dashboards.app:main',
