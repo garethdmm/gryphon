@@ -39,3 +39,11 @@ def simple_position_responsive_sizing(max_position, current_position):
 
     return bid_volume, ask_volume
 
+
+def fuzzy_difference(self, old, new, diff=Money('0.01', 'USD')):
+    assert(old.currency == new.currency)
+
+    diff = diff.to(old.currency)
+
+    return diff < abs(old - new)
+

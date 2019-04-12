@@ -116,10 +116,3 @@ class Strategy(ConfigurableObject):
 
         return self._position
 
-    def are_different_enough(self, old, new, diff=Money('0.01', 'CAD')):
-        assert(old.currency == new.currency)
-
-        diff = diff.to(old.currency)
-
-        return diff < abs(old - new)
-
