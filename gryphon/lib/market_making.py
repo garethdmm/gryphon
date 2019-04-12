@@ -3,6 +3,7 @@ A simple library for common tasks in market making strategies.
 """
 
 from gryphon.lib.metrics import midpoint as midpoint_lib
+from gryphon.lib.money import Money
 
 
 def midpoint_centered_fixed_spread(orderbook, spread, quote_depth=None):
@@ -38,4 +39,12 @@ def simple_position_responsive_sizing(max_position, current_position):
         ask_volume = ask_volume - min((-1) * current_position, max_position)
 
     return bid_volume, ask_volume
+
+
+def fuzzy_difference(self, old, new, diff=Money('0.01', 'USD')):
+    assert(old.currency == new.currency)
+
+    diff = diff.to(old.currency)
+
+    return diff < abs(old - new)
 
