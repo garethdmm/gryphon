@@ -19,6 +19,12 @@ from gryphon.lib.logger import get_logger
 environment.load_environment_variables()
 
 
+def exclude_loggers(loggers):
+    for logger_name in loggers:
+        logger = get_logger(logger_name)
+        logger.setLevel(logging.WARNING)
+
+
 def turn_on_debug(loggers):
     for logger_name in loggers:
         logger = get_logger(logger_name)
@@ -215,6 +221,52 @@ class OrderBookController(controller.CementBaseController):
         our_orders = self.app.pargs.our_orders
         include_fees = self.app.pargs.include_fees
         order_book(exchange_key, our_orders, include_fees)
+
+
+class TestController(controller.CementBaseController):
+    """This controller commands are 'stacked' onto the base controller."""
+
+    class Meta:
+        label = 'tests'
+        interface = controller.IController
+        stacked_on = 'base'
+        stacked_type = 'nested'
+        description = 'Test Controller'
+        arguments = []
+
+    @controller.expose()
+    def default(self):
+        import money  # Bizarre bug with nose's custom importer requires this import.
+        import nose
+        from pkg_resources import resource_filename
+        import sys
+
+        # For some reason there are modules who think they can log during tests. This
+        # requires some debugging for why this is necessary.
+        exclude_loggers([
+            'urllib3',
+            'gryphon.lib.exchange.exchange_api_wrapper',
+        ])
+
+        test_dir = resource_filename('gryphon', 'tests/logic')
+
+        if 'extra' in sys.argv:
+            test_dir = resource_filename('gryphon', 'tests/extra')
+        elif 'environment' in sys.argv:
+            test_dir = resource_filename('gryphon', 'tests/environment')
+
+        args = [
+            '-s',
+            '--rednose',
+            '--where=%s' % test_dir,
+        ]
+
+        result = nose.run(argv=args)
+
+        if result is True:
+            sys.exit(0)
+        else:
+            sys.exit(1)
 
 
 class AuditController(controller.CementBaseController):
@@ -457,6 +509,7 @@ class GryphonFury(foundation.CementApp):
             WithdrawFiatController,
             TransactionCompleteController,
             ScriptController,
+            TestController,
         ]
 
 

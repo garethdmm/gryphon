@@ -11,4 +11,4 @@ python:
 install:
   - pip install .
 
-script: gryphon-runtests
+script: gryphon-execute tests
