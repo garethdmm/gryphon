@@ -45,5 +45,3 @@ class TestSimpleStrategy(unittest.TestCase):
         assert strat.spread == Decimal('1')
         assert strat.base_volume == Money('1', 'BTC')
 
-    def tests_failure(self):
-        assert True == False
