@@ -3,6 +3,7 @@ A simple library for common tasks in market making strategies.
 """
 
 from gryphon.lib.metrics import midpoint as midpoint_lib
+from gryphon.lib.money import Money
 
 
 def midpoint_centered_fixed_spread(orderbook, spread, quote_depth=None):
