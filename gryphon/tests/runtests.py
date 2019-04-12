@@ -28,4 +28,9 @@ def main():
         '--where=%s' % test_dir,
     ]
 
-    nose.run(argv=args)
+    result = nose.run(argv=args)
+
+    if result is True:
+        sys.exit(0)
+    else:
+        sys.exit(1)
