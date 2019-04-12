@@ -116,17 +116,6 @@ class Strategy(ConfigurableObject):
 
         return self._position
 
-    def max_position(self):
-        # self._max_position gets reset on every tick, so we are just memoizing it for
-        # 1 tick.
-
-        if self._max_position == None:
-            # We could run some analysis here that would change our max_position for
-            # 1 tick.
-            self._max_position = self.config.get('max_position')
-
-        return self._max_position
-
     def are_different_enough(self, old, new, diff=Money('0.01', 'CAD')):
         assert(old.currency == new.currency)
 
