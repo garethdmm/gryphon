@@ -29,3 +29,5 @@ def main():
     ]
 
     nose.run(argv=args)
+
+    sys.exit(1)
