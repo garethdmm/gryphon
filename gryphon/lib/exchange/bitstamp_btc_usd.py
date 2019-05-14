@@ -46,6 +46,7 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
         self.currency = u'USD'
         self.volume_currency = 'BTC'
         self.price_decimal_precision = 2
+        self.volume_decimal_precision = 8
 
         # Configurables defaults.
         self.market_order_fee = self.fee
@@ -258,9 +259,21 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
         else:
             raise ValueError('mode must be one of ask/bid')
 
-        # This is required by Bitstamp API.
-        price = price.round_to_decimal_places(2) # Max is 7 digits.
-        volume = volume.round_to_decimal_places(8) # Max is 8 decimal places.
+        if mode == Consts.BID:
+            price = price.round_to_decimal_places(
+                self.price_decimal_precision,
+                ROUND_DOWN,
+            )
+        else:
+            price = price.round_to_decimal_places(
+                self.price_decimal_precision,
+                ROUND_UP,
+            )
+
+        volume = volume.round_to_decimal_places(
+            self.volume_decimal_precision,
+            ROUND_DOWN,
+        )
 
         try:
             payload = {
