@@ -214,7 +214,7 @@ class StrategyTradingHandler(AdminBaseHandler, StartAndEndTimeMixin, Configurabl
             open_pl = revenue_lib.open_pl(
                 position_trades,
                 fundamental_value,
-                currency,
+                price_currency=currency,
                 volume_currency=self.volume_currency,
             )
         else:
