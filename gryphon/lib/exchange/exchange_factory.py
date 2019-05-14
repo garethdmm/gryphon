@@ -70,12 +70,12 @@ def map_pair_name_to_exchange_name(pair_name):
     but most accounting functions take place on the ExchangeData object. Thus, we need
     a mapping of ExchangeWrapper -> ExchangeData. This function will serve that purpose
     for now.
-    """
 
-    if pair_name == 'GEMINI_ETH_USD':
-        return 'GEMINI_BTC_USD'
-    else:
-        return pair_name
+    To add a master-slave relationship to a pair, add a line like this:
+        if pair_name == 'GEMINI_ETH_USD':  # [slave pair]
+            return 'GEMINI_BTC_USD'  # [master pair]
+    """
+    return pair_name
 
 
 def make_exchange_from_key(key):
