@@ -323,8 +323,6 @@ class Harness(ConfigurableObject):
         if volume_change == Money('0', self.strategy.volume_currency):
             return
 
-        price_per_unit_volume = abs(fiat_change) / abs(volume_change).amount
-
         if volume_change > 0:  # Bought tokens.
             self.log(
                 'Bought %s at a price of %s',
