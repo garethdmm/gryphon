@@ -4,6 +4,7 @@ from gryphon.lib.exchange import exceptions
 
 
 ALL_EXCHANGE_KEYS = [
+    'bitstamp_btc_eur',
     'bitstamp_btc_usd',
     'bitstamp_eth_usd',
     'bitstamp_eth_btc',

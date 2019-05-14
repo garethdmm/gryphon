@@ -61,6 +61,7 @@ except Exception as e:
 console_shortcuts = {
   'COINBASE_BTC_USD': 'cb',
   'BITSTAMP_BTC_USD': 'b',
+  'BITSTAMP_BTC_EUR': 'be',
   'BITSTAMP_BCH_USD': 'bbch',
   'BITSTAMP_ETH_USD': 'beu',
   'BITSTAMP_ETH_BTC': 'beb',
