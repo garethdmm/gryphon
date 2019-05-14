@@ -123,7 +123,8 @@ class StrategyTradingHandler(AdminBaseHandler, StartAndEndTimeMixin, Configurabl
                 trade_data[key][side]['prices'] = []
                 trade_data[key][side]['volumes'] = []
 
-        total_volume = 0
+        total_volume = Money('0', self.volume_currency)
+
         daily_volumes = defaultdict(lambda: 0)
 
         # start from yesterday's open position
