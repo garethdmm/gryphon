@@ -5,6 +5,9 @@ from gryphon.lib.exchange import exceptions
 
 ALL_EXCHANGE_KEYS = [
     'bitstamp_btc_usd',
+    'bitstamp_eth_usd',
+    'bitstamp_eth_btc',
+    'bitstamp_bch_usd',
     'bitfinex_btc_usd',
     'kraken_btc_eur',
     'kraken_btc_usd',
@@ -14,6 +17,8 @@ ALL_EXCHANGE_KEYS = [
     'coinbase_btc_usd',
     'quadriga_btc_cad',
     'gemini_btc_usd',
+    'gemini_eth_btc',
+    'gemini_eth_usd',
 ]
 
 HISTORICAL_EXCHANGE_KEYS = [
