@@ -32,7 +32,7 @@ class GeminiETHUSDExchange(GeminiBTCUSDExchange):
 
         self.fiat_balance_tolerance = Money('0.0001', 'USD')
         self.volume_balance_tolerance = Money('0.00000001', 'ETH')
-        self.min_order_size = Money('0.00001', 'ETH')
+        self.min_order_size = Money('0.001', 'ETH')
 
         if configuration:
             self.configure(configuration)

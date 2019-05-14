@@ -1,3 +1,7 @@
+"""
+Reference for minimums: https://docs.gemini.com/rest-api/#symbols-and-minimums
+"""
+
 # -*- coding: utf-8 -*-
 import base64
 from collections import OrderedDict
@@ -26,11 +30,14 @@ class GeminiETHBTCExchange(GeminiBTCUSDExchange):
         self.friendly_name = u'Gemini ETH-BTC'
         self.currency = 'BTC'
         self.volume_currency = 'ETH'
+        self.price_decimal_precision = 5
+        self.volume_decimal_precision = 6
+        self.gemini_pair_symbol = 'ethbtc'
 
         # Configurables with defaults.
         self.fiat_balance_tolerance = Money('0.0001', 'BTC')
         self.volume_balance_tolerance = Money('0.00000001', 'ETH')
-        self.min_order_size = Money('0.00001', 'ETH')
+        self.min_order_size = Money('0.001', 'ETH')
 
         if configuration:
             self.configure(configuration)
