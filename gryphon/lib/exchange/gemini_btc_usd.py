@@ -401,7 +401,7 @@ class GeminiBTCUSDExchange(ExchangeAPIWrapper):
         if 'message' in response:
             errors_string = str(response['message'])
 
-            if 'InsufficientFunds' in errors_string:
+            if 'InsufficientFunds' or 'insufficient funds' in errors_string:
                 raise exceptions.InsufficientFundsError()
             elif 'Order' in errors_string and 'not found' in errors_string:
                 raise exceptions.CancelOrderNotFoundError()
