@@ -12,6 +12,7 @@ import time
 
 from cdecimal import *
 
+from gryphon.lib.exchange.consts import Consts
 from gryphon.lib.exchange.exchange_api_wrapper import ExchangeAPIWrapper
 from gryphon.lib.exchange import exceptions
 from gryphon.lib.exchange import order_types
@@ -33,6 +34,8 @@ class GeminiBTCUSDExchange(ExchangeAPIWrapper):
         self.volume_currency = 'BTC'
         self.bid_string = 'buy'
         self.ask_string = 'sell'
+        self.price_decimal_precision = 2
+        self.volume_decimal_precision = 8
 
         self.gemini_pair_symbol = 'btcusd'
 
@@ -167,14 +170,30 @@ class GeminiBTCUSDExchange(ExchangeAPIWrapper):
         if volume.currency not in ['BTC', 'ETH']:
             raise ValueError('Invalid volume currency %s' % volume.currency)
 
-        # TODO should this be rounding based on BID/ASK instead of always truncating?
-        price_str = '%.2f' % price.amount
-        volume_str = '%.8f' % volume.amount
+        # Round for the pair's price/volume decimal precision. We round conservatively,
+        # meaning bid prices are rounded down and ask prices are rounded up, sos that
+        # the price entered on the exchange is in no case "worse" than the one given by
+        # the user.
+        if mode == Consts.BID:
+            price = price.round_to_decimal_places(
+                self.price_decimal_precision,
+                decimal.ROUND_DOWN,
+            )
+        else:
+            price = price.round_to_decimal_places(
+                self.price_decimal_precision,
+                decimal.ROUND_UP,
+            )
+
+        volume = volume.round_to_decimal_places(
+            self.volume_decimal_precision,
+            decimal.ROUND_DOWN,
+        )
 
         payload = {
             'symbol': self.gemini_pair_symbol,
-            'amount': volume_str,
-            'price': price_str,
+            'amount': str(volume.amount),
+            'price': str(price.amount),
             'side': side,
             'type': 'exchange limit',
         }
