@@ -9,6 +9,7 @@ ALL_EXCHANGE_KEYS = [
     'bitstamp_eth_eur',
     'bitstamp_eth_usd',
     'bitstamp_eth_btc',
+    'bitstamp_bch_btc',
     'bitstamp_bch_eur',
     'bitstamp_bch_usd',
     'bitfinex_btc_usd',

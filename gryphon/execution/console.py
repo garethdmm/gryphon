@@ -64,6 +64,7 @@ console_shortcuts = {
   'BITSTAMP_BTC_EUR': 'be',
   'BITSTAMP_BCH_USD': 'bbch',
   'BITSTAMP_BCH_EUR': 'bbche',
+  'BITSTAMP_BCH_BTC': 'bbchb',
   'BITSTAMP_ETH_EUR': 'bee',
   'BITSTAMP_ETH_USD': 'beu',
   'BITSTAMP_ETH_BTC': 'beb',
