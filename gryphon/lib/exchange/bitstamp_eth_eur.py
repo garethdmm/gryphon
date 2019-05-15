@@ -44,7 +44,3 @@ class BitstampETHEURExchange(BitstampBTCUSDExchange):
         self.balance_url = 'balance/'
         self.trade_cancel_url = 'cancel_order/'
 
-        # TODO: Implement deposit/withdrawal urls for bitstamp eth usd.
-        self.withdrawl_requests_url = ''
-        self.deposit_address_url = ''
-
