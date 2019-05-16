@@ -46,6 +46,7 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
         self.currency = u'USD'
         self.volume_currency = 'BTC'
         self.price_decimal_precision = 2
+        self.volume_decimal_precision = 8
 
         # Configurables defaults.
         self.market_order_fee = self.fee
@@ -71,13 +72,13 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
         self.trade_cancel_url = 'cancel_order/'
         self.withdrawl_requests_url = 'withdrawal_requests/'
         self.withdraw_url = 'https://priv-api.bitstamp.net/api/bitcoin_withdrawal/'
- 
+
     def resp(self, req):
         response = super(BitstampBTCUSDExchange, self).resp(req)
 
         try:
             errors = response.get('error', None)
-        except AttributeError: # Some endpoints return a list.
+        except AttributeError:  # Some endpoints return a list.
             errors = None
 
         if errors:
@@ -169,7 +170,7 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
 
         return matching_trades
 
-    ###### Common Exchange Methods ######
+    # Common Exchange Methods #
 
     def load_creds(self):
         try:
@@ -244,7 +245,7 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
 
         if epoch(timestamp) < now.last_minute(10):
             raise exceptions.ExchangeAPIErrorException(
-                self, 
+                self,
                 'Orderbook is more than 10 minutes old',
             )
 
@@ -258,9 +259,21 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
         else:
             raise ValueError('mode must be one of ask/bid')
 
-        # This is required by Bitstamp API.
-        price = price.round_to_decimal_places(2) # Max is 7 digits.
-        volume = volume.round_to_decimal_places(8) # Max is 8 decimal places.
+        if mode == Consts.BID:
+            price = price.round_to_decimal_places(
+                self.price_decimal_precision,
+                ROUND_DOWN,
+            )
+        else:
+            price = price.round_to_decimal_places(
+                self.price_decimal_precision,
+                ROUND_UP,
+            )
+
+        volume = volume.round_to_decimal_places(
+            self.volume_decimal_precision,
+            ROUND_DOWN,
+        )
 
         try:
             payload = {
@@ -372,7 +385,7 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
 
             try:
                 time_created = min([t['time'] for t in our_trades])
-            except ValueError: # This is raised if there are no trades.
+            except ValueError:  # This is raised if there are no trades.
                 time_created = None
 
             data[order_id] = {
@@ -470,7 +483,7 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
 
     def fiat_deposit_fee(self, deposit_amount):
         min_fee = Money('7.5', self.currency)
-        percentage_fee = deposit_amount * Decimal('0.0005') # 0.05%
+        percentage_fee = deposit_amount * Decimal('0.0005')  # 0.05%
 
         # As of September 2016 we're getting charged an extra $15 on deposits. Bitstamp
         # says it isn't them so it's likely an intermediary bank. TODO look into this
@@ -481,6 +494,6 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
 
     def fiat_withdrawal_fee(self, withdrawal_amount):
         min_fee = Money('15', 'USD')
-        percentage_fee = withdrawal_amount * Decimal('0.0009') # 0.09%
+        percentage_fee = withdrawal_amount * Decimal('0.0009')  # 0.09%
 
         return max(min_fee, percentage_fee)

@@ -1,21 +1,6 @@
 # -*- coding: utf-8 -*-
-from collections import OrderedDict
-import hashlib
-import hmac
-import time
-
-from cdecimal import *
-from delorean import Delorean, parse, epoch
-
-from base import *
-from exceptions import *
-from gryphon.lib.exchange.consts import Consts
-from gryphon.lib.models.exchange import Balance
-from gryphon.lib.money import Money
 from gryphon.lib.exchange.bitstamp_btc_usd import BitstampBTCUSDExchange
-
-from gryphon.lib.logger import get_logger
-logger = get_logger(__name__)
+from gryphon.lib.money import Money
 
 
 class BitstampETHEURExchange(BitstampBTCUSDExchange):
@@ -43,8 +28,4 @@ class BitstampETHEURExchange(BitstampBTCUSDExchange):
         self.trade_status_url = 'user_transactions/etheur/'
         self.balance_url = 'balance/'
         self.trade_cancel_url = 'cancel_order/'
-
-        # TODO: Implement deposit/withdrawal urls for bitstamp eth usd.
-        self.withdrawl_requests_url = ''
-        self.deposit_address_url = ''
 

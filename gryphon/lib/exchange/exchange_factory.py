@@ -4,7 +4,14 @@ from gryphon.lib.exchange import exceptions
 
 
 ALL_EXCHANGE_KEYS = [
+    'bitstamp_btc_eur',
     'bitstamp_btc_usd',
+    'bitstamp_eth_eur',
+    'bitstamp_eth_usd',
+    'bitstamp_eth_btc',
+    'bitstamp_bch_btc',
+    'bitstamp_bch_eur',
+    'bitstamp_bch_usd',
     'bitfinex_btc_usd',
     'kraken_btc_eur',
     'kraken_btc_usd',
@@ -14,6 +21,10 @@ ALL_EXCHANGE_KEYS = [
     'coinbase_btc_usd',
     'quadriga_btc_cad',
     'gemini_btc_usd',
+    'gemini_eth_btc',
+    'gemini_eth_usd',
+    'gemini_ltc_usd',
+    'gemini_zec_usd',
 ]
 
 HISTORICAL_EXCHANGE_KEYS = [
@@ -70,12 +81,12 @@ def map_pair_name_to_exchange_name(pair_name):
     but most accounting functions take place on the ExchangeData object. Thus, we need
     a mapping of ExchangeWrapper -> ExchangeData. This function will serve that purpose
     for now.
-    """
 
-    if pair_name == 'GEMINI_ETH_USD':
-        return 'GEMINI_BTC_USD'
-    else:
-        return pair_name
+    To add a master-slave relationship to a pair, add a line like this:
+        if pair_name == 'GEMINI_ETH_USD':  # [slave pair]
+            return 'GEMINI_BTC_USD'  # [master pair]
+    """
+    return pair_name
 
 
 def make_exchange_from_key(key):
@@ -199,6 +210,12 @@ def get_api_wrapper_class_by_name(exchange_name):
     elif exchange_name == 'GEMINI_ETH_BTC':
         from gryphon.lib.exchange.gemini_eth_btc import GeminiETHBTCExchange
         return GeminiETHBTCExchange
+    elif exchange_name == 'GEMINI_LTC_USD':
+        from gryphon.lib.exchange.gemini_ltc_usd import GeminiLTCUSDExchange
+        return GeminiLTCUSDExchange
+    elif exchange_name == 'GEMINI_ZEC_USD':
+        from gryphon.lib.exchange.gemini_zec_usd import GeminiZECUSDExchange
+        return GeminiZECUSDExchange
     elif exchange_name == 'POLONIEX_ETH_BTC':
         from gryphon.lib.exchange.poloniex_eth_btc import PoloniexETHBTCExchange
         return PoloniexETHBTCExchange

@@ -233,10 +233,15 @@ class Trade(Base):
         return self.convert_to_currency(self.price, currency)
 
     def fee_in_currency(self, currency):
-        if self.fee.currency == "BTC":
+        # TODO: This code was designed to calculate fees when they are charged in the
+        # volume currency. I'm not sure if this is true for any supported pairs as of
+        # May 2019, it appears Kraken has shifted to charging fees in the price currency
+        # in most cases.
+        if self.fee.currency == "BTC" and currency != "BTC":
             fundamental_value = self.fundamental_value
             # converts BTC fee into currency of fundamental_value
             fee = fundamental_value * self.fee.amount
         else:
             fee = self.fee
+
         return self.convert_to_currency(fee, currency)

@@ -12,6 +12,7 @@ import time
 
 from cdecimal import *
 
+from gryphon.lib.exchange.consts import Consts
 from gryphon.lib.exchange.exchange_api_wrapper import ExchangeAPIWrapper
 from gryphon.lib.exchange import exceptions
 from gryphon.lib.exchange import order_types
@@ -33,6 +34,8 @@ class GeminiBTCUSDExchange(ExchangeAPIWrapper):
         self.volume_currency = 'BTC'
         self.bid_string = 'buy'
         self.ask_string = 'sell'
+        self.price_decimal_precision = 2
+        self.volume_decimal_precision = 8
 
         self.gemini_pair_symbol = 'btcusd'
 
@@ -70,8 +73,8 @@ class GeminiBTCUSDExchange(ExchangeAPIWrapper):
     def get_balance_resp(self, req):
         raw_balances = self.resp(req)
 
-        btc_available = None
-        usd_available = None
+        volume_currency_available = None
+        price_currency_available = None
 
         for raw_balance in raw_balances:
             if raw_balance['currency'] == self.volume_currency:
@@ -164,17 +167,33 @@ class GeminiBTCUSDExchange(ExchangeAPIWrapper):
 
         if price.currency not in ['USD', 'BTC']:
             raise ValueError('Invalid price currency %s' % price.currency)
-        if volume.currency not in ['BTC', 'ETH']:
+        if volume.currency not in ['BTC', 'ETH', 'LTC', 'ZEC']:
             raise ValueError('Invalid volume currency %s' % volume.currency)
 
-        # TODO should this be rounding based on BID/ASK instead of always truncating?
-        price_str = '%.2f' % price.amount
-        volume_str = '%.8f' % volume.amount
+        # Round for the pair's price/volume decimal precision. We round conservatively,
+        # meaning bid prices are rounded down and ask prices are rounded up, sos that
+        # the price entered on the exchange is in no case "worse" than the one given by
+        # the user.
+        if mode == Consts.BID:
+            price = price.round_to_decimal_places(
+                self.price_decimal_precision,
+                decimal.ROUND_DOWN,
+            )
+        else:
+            price = price.round_to_decimal_places(
+                self.price_decimal_precision,
+                decimal.ROUND_UP,
+            )
+
+        volume = volume.round_to_decimal_places(
+            self.volume_decimal_precision,
+            decimal.ROUND_DOWN,
+        )
 
         payload = {
             'symbol': self.gemini_pair_symbol,
-            'amount': volume_str,
-            'price': price_str,
+            'amount': str(volume.amount),
+            'price': str(price.amount),
             'side': side,
             'type': 'exchange limit',
         }
@@ -190,7 +209,7 @@ class GeminiBTCUSDExchange(ExchangeAPIWrapper):
             return {'success': True, 'order_id': order_id}
         except KeyError:
             raise exceptions.ExchangeAPIErrorException(
-                self, 
+                self,
                 'response does not contain an order id',
             )
 
@@ -285,7 +304,7 @@ class GeminiBTCUSDExchange(ExchangeAPIWrapper):
 
             try:
                 time_created = min([t['time'] for t in our_trades])
-            except ValueError: # no trades
+            except ValueError:  # No trades
                 time_created = None
 
             data[order_id] = {
@@ -401,7 +420,7 @@ class GeminiBTCUSDExchange(ExchangeAPIWrapper):
         if 'message' in response:
             errors_string = str(response['message'])
 
-            if 'InsufficientFunds' in errors_string:
+            if 'InsufficientFunds' or 'insufficient funds' in errors_string:
                 raise exceptions.InsufficientFundsError()
             elif 'Order' in errors_string and 'not found' in errors_string:
                 raise exceptions.CancelOrderNotFoundError()
