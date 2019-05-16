@@ -167,7 +167,7 @@ class GeminiBTCUSDExchange(ExchangeAPIWrapper):
 
         if price.currency not in ['USD', 'BTC']:
             raise ValueError('Invalid price currency %s' % price.currency)
-        if volume.currency not in ['BTC', 'ETH']:
+        if volume.currency not in ['BTC', 'ETH', 'LTC', 'ZEC']:
             raise ValueError('Invalid volume currency %s' % volume.currency)
 
         # Round for the pair's price/volume decimal precision. We round conservatively,
