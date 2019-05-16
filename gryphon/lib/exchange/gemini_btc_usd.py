@@ -73,8 +73,8 @@ class GeminiBTCUSDExchange(ExchangeAPIWrapper):
     def get_balance_resp(self, req):
         raw_balances = self.resp(req)
 
-        btc_available = None
-        usd_available = None
+        volume_currency_available = None
+        price_currency_available = None
 
         for raw_balance in raw_balances:
             if raw_balance['currency'] == self.volume_currency:
@@ -209,7 +209,7 @@ class GeminiBTCUSDExchange(ExchangeAPIWrapper):
             return {'success': True, 'order_id': order_id}
         except KeyError:
             raise exceptions.ExchangeAPIErrorException(
-                self, 
+                self,
                 'response does not contain an order id',
             )
 
@@ -304,7 +304,7 @@ class GeminiBTCUSDExchange(ExchangeAPIWrapper):
 
             try:
                 time_created = min([t['time'] for t in our_trades])
-            except ValueError: # no trades
+            except ValueError:  # No trades
                 time_created = None
 
             data[order_id] = {
