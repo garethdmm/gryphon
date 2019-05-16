@@ -3,23 +3,8 @@ Precisions and limits are available at:
 https://www.bitstamp.net/api/v2/trading-pairs-info/
 """
 # -*- coding: utf-8 -*-
-from collections import OrderedDict
-import hashlib
-import hmac
-import time
-
-from cdecimal import *
-from delorean import Delorean, parse, epoch
-
-from base import *
-from exceptions import *
 from gryphon.lib.exchange.bitstamp_btc_usd import BitstampBTCUSDExchange
-from gryphon.lib.exchange.consts import Consts
-from gryphon.lib.models.exchange import Balance
 from gryphon.lib.money import Money
-
-from gryphon.lib.logger import get_logger
-logger = get_logger(__name__)
 
 
 class BitstampBCHBTCExchange(BitstampBTCUSDExchange):
