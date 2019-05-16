@@ -71,6 +71,7 @@ console_shortcuts = {
   'GEMINI_BTC_USD': 'g',
   'GEMINI_ETH_USD': 'geu',
   'GEMINI_ETH_BTC': 'geb',
+  'GEMINI_LTC_USD': 'glu',
   'GEMINI_ZEC_USD': 'gzu',
   'ITBIT_BTC_USD': 'i',
   'KRAKEN_BTC_USD': 'k',

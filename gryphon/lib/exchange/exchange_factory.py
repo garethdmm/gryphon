@@ -23,6 +23,7 @@ ALL_EXCHANGE_KEYS = [
     'gemini_btc_usd',
     'gemini_eth_btc',
     'gemini_eth_usd',
+    'gemini_ltc_usd',
     'gemini_zec_usd',
 ]
 
@@ -209,6 +210,9 @@ def get_api_wrapper_class_by_name(exchange_name):
     elif exchange_name == 'GEMINI_ETH_BTC':
         from gryphon.lib.exchange.gemini_eth_btc import GeminiETHBTCExchange
         return GeminiETHBTCExchange
+    elif exchange_name == 'GEMINI_LTC_USD':
+        from gryphon.lib.exchange.gemini_ltc_usd import GeminiLTCUSDExchange
+        return GeminiLTCUSDExchange
     elif exchange_name == 'GEMINI_ZEC_USD':
         from gryphon.lib.exchange.gemini_zec_usd import GeminiZECUSDExchange
         return GeminiZECUSDExchange

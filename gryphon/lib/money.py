@@ -12,7 +12,7 @@ import money as super_money
 
 class Money(super_money.Money):
     FIAT_CURRENCIES = ["USD", "CAD", "EUR"]
-    CRYPTO_CURRENCIES = ["BTC", "ETH", "BCH", "ZEC"]
+    CRYPTO_CURRENCIES = ["BTC", "ETH", "BCH", "ZEC", "LTC"]
     CURRENCIES = FIAT_CURRENCIES + CRYPTO_CURRENCIES
 
     def __init__(self, amount="0", currency=None):
