@@ -1,26 +1,9 @@
 """
 Reference for minimums: https://docs.gemini.com/rest-api/#symbols-and-minimums
 """
-
 # -*- coding: utf-8 -*-
-import base64
-from collections import OrderedDict
-import decimal
-import hashlib
-import hmac
-import json
-import time
-
-from cdecimal import *
-
-from base import *
-from exceptions import *
 from gryphon.lib.exchange.gemini_btc_usd import GeminiBTCUSDExchange
-from gryphon.lib.models.exchange import Balance
 from gryphon.lib.money import Money
-from gryphon.lib.logger import get_logger
-
-logger = get_logger(__name__)
 
 
 class GeminiETHBTCExchange(GeminiBTCUSDExchange):

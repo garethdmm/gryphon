@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from gryphon.lib.exchange.gemini_btc_usd import GeminiBTCUSDExchange
-from gryphon.lib.models.exchange import Balance
 from gryphon.lib.money import Money
 
 
