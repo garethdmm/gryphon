@@ -72,13 +72,13 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
         self.trade_cancel_url = 'cancel_order/'
         self.withdrawl_requests_url = 'withdrawal_requests/'
         self.withdraw_url = 'https://priv-api.bitstamp.net/api/bitcoin_withdrawal/'
- 
+
     def resp(self, req):
         response = super(BitstampBTCUSDExchange, self).resp(req)
 
         try:
             errors = response.get('error', None)
-        except AttributeError: # Some endpoints return a list.
+        except AttributeError:  # Some endpoints return a list.
             errors = None
 
         if errors:
@@ -170,7 +170,7 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
 
         return matching_trades
 
-    ###### Common Exchange Methods ######
+    # Common Exchange Methods #
 
     def load_creds(self):
         try:
@@ -245,7 +245,7 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
 
         if epoch(timestamp) < now.last_minute(10):
             raise exceptions.ExchangeAPIErrorException(
-                self, 
+                self,
                 'Orderbook is more than 10 minutes old',
             )
 
@@ -385,7 +385,7 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
 
             try:
                 time_created = min([t['time'] for t in our_trades])
-            except ValueError: # This is raised if there are no trades.
+            except ValueError:  # This is raised if there are no trades.
                 time_created = None
 
             data[order_id] = {
@@ -483,7 +483,7 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
 
     def fiat_deposit_fee(self, deposit_amount):
         min_fee = Money('7.5', self.currency)
-        percentage_fee = deposit_amount * Decimal('0.0005') # 0.05%
+        percentage_fee = deposit_amount * Decimal('0.0005')  # 0.05%
 
         # As of September 2016 we're getting charged an extra $15 on deposits. Bitstamp
         # says it isn't them so it's likely an intermediary bank. TODO look into this
@@ -494,6 +494,6 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
 
     def fiat_withdrawal_fee(self, withdrawal_amount):
         min_fee = Money('15', 'USD')
-        percentage_fee = withdrawal_amount * Decimal('0.0009') # 0.09%
+        percentage_fee = withdrawal_amount * Decimal('0.0009')  # 0.09%
 
         return max(min_fee, percentage_fee)
