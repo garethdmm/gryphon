@@ -32,7 +32,7 @@ Application suite:
 The gryphon library can be installed directly through pip.
 
 ```shell
-$ pip install gryphon-framework
+$ pip install gryphon
 ```
 
 To use gryphon for trading, there are extra install steps to set up the execution environment. See this page for details: [Installing Gryphon](https://gryphon-docs-test.readthedocs.io/en/latest/).
