@@ -91,9 +91,8 @@ Then run the :code:`initialize_exchange_ledgers` script.
 
 .. code-block:: bash
 
-    gryphon-exec script initialize_exchange_ledgers\
-        --exchanges [comma-separated list of exchanges]\
-        --execute
+    gryphon-exec initializeledger [comma-separated list of exchanges]\
+        [--execute]
 
 This script is one of the utility functions that is also available through
 :code:`gryphon-exec`. It queries your balance information from the exchange API

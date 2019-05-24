@@ -437,6 +437,33 @@ class ScriptController(controller.CementBaseController):
         main_function(script_arguments=script_arguments, execute=execute)
 
 
+class InitializeLedgerController(controller.CementBaseController):
+    """This controller commands are 'stacked' onto the base controller."""
+
+    class Meta:
+        label = 'initializeledger'
+        interface = controller.IController
+        stacked_on = 'base'
+        stacked_type = 'nested'
+        description = 'Initialize Ledger Controller'
+        arguments = [
+            (['exchanges'], {
+                'action': 'store',
+                'help': 'comma-separated list of names of trading pairs',
+            }),
+            (['--execute'], {'action': 'store_true', 'help': 'really save to the db'}),
+        ]
+
+    @controller.expose(help='Start a ledger for a trading pair')
+    def default(self):
+        from gryphon.execution.controllers import initialize_ledger
+
+        exchanges = self.app.pargs.exchanges
+        execute = self.app.pargs.execute
+
+        initialize_ledger.main(exchanges, execute)
+
+
 class GryphonFury(foundation.CementApp):
     class Meta:
         label = 'gryphon-fury'
@@ -457,6 +484,7 @@ class GryphonFury(foundation.CementApp):
             WithdrawFiatController,
             TransactionCompleteController,
             ScriptController,
+            InitializeLedgerController,
         ]
 
 

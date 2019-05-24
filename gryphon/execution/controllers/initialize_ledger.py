@@ -113,9 +113,8 @@ def initialize_exchange_ledger(db, wrapper_obj):
     vol_currency_tx.complete()
 
 
-def main(script_arguments, execute):
-    exchanges = configuration.parse_configurable_as_list(script_arguments['exchanges'])
-
+def main(exchanges, execute):
+    exchanges = configuration.parse_configurable_as_list(exchanges)
     db = session.get_a_trading_db_mysql_session()
 
     for exchange_name in exchanges:
