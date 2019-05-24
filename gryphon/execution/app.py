@@ -464,6 +464,33 @@ class InitializeLedgerController(controller.CementBaseController):
         initialize_ledger.main(exchanges, execute)
 
 
+class RunMigrationsController(controller.CementBaseController):
+    """This controller commands are 'stacked' onto the base controller."""
+
+    class Meta:
+        label = 'run-migrations'
+        interface = controller.IController
+        stacked_on = 'base'
+        stacked_type = 'nested'
+        description = 'Initialize Ledger Controller'
+        arguments = [
+            (['database'], {
+                'action': 'store',
+                'help': 'DB to upgrade, one of \'trading\', \'dashboard\', or \'gds\''
+            }),
+            (['--execute'], {'action': 'store_true', 'help': 'really save to the db'}),
+        ]
+
+    @controller.expose(help='Upgrade a database schema to the latest version')
+    def default(self):
+        from gryphon.execution.controllers import run_migrations
+
+        target_db = self.app.pargs.database
+        execute = self.app.pargs.execute
+
+        run_migrations.main(target_db, execute)
+
+
 class GryphonFury(foundation.CementApp):
     class Meta:
         label = 'gryphon-fury'
@@ -485,6 +512,7 @@ class GryphonFury(foundation.CementApp):
             TransactionCompleteController,
             ScriptController,
             InitializeLedgerController,
+            RunMigrationsController,
         ]
 
 
