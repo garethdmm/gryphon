@@ -42,7 +42,7 @@ Success! You should be able to log in with the new credentials now.'\
 """
 
 
-def main(script_arguments, execute):
+def main(execute):
     print tc.colored(WARNING_MESSAGE, 'red')
     informed_consent = raw_input(WARNING_PROMPT)
 

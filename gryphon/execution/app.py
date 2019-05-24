@@ -491,6 +491,28 @@ class RunMigrationsController(controller.CementBaseController):
         run_migrations.main(target_db, execute)
 
 
+class CreateDashboardUserController(controller.CementBaseController):
+    """This controller commands are 'stacked' onto the base controller."""
+
+    class Meta:
+        label = 'create-dashboard-user'
+        interface = controller.IController
+        stacked_on = 'base'
+        stacked_type = 'nested'
+        description = 'Create a new user in the dashboard database.'
+        arguments = [
+            (['--execute'], {'action': 'store_true', 'help': 'really save to the db'}),
+        ]
+
+    @controller.expose(help='Upgrade a database schema to the latest version')
+    def default(self):
+        from gryphon.execution.controllers import create_dashboard_user
+
+        execute = self.app.pargs.execute
+
+        create_dashboard_user.main(execute)
+
+
 class GryphonFury(foundation.CementApp):
     class Meta:
         label = 'gryphon-fury'
@@ -513,6 +535,7 @@ class GryphonFury(foundation.CementApp):
             ScriptController,
             InitializeLedgerController,
             RunMigrationsController,
+            CreateDashboardUserController,
         ]
 
 
