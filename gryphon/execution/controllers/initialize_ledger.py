@@ -11,8 +11,8 @@ For us to start trading we need to create that entry in the Exchange table, and 
 dummy transactions that represent the starting balance of the exchange.
 
 Usage:
-    gryphon-execute script initialize_exchange_ledger
-        --exchanges [comma-separated list of exchange pairs, e.g. bitstamp_btc_usd]
+    gryphon-exec initialize-ledger
+        [comma-separated list of exchange pairs, e.g. 'bitstamp_btc_usd,gemini_btc_usd']
         [--execute]
 """
 
@@ -113,9 +113,8 @@ def initialize_exchange_ledger(db, wrapper_obj):
     vol_currency_tx.complete()
 
 
-def main(script_arguments, execute):
-    exchanges = configuration.parse_configurable_as_list(script_arguments['exchanges'])
-
+def main(exchanges, execute):
+    exchanges = configuration.parse_configurable_as_list(exchanges)
     db = session.get_a_trading_db_mysql_session()
 
     for exchange_name in exchanges:

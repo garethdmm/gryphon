@@ -1,5 +1,5 @@
 """
-`gryphon-execute strategy` takes configration parameters both from the commannd line and
+`gryphon-exec strategy` takes configration parameters both from the command line and
 from a .conf file. This library is concerned with standardizing the format of the
 config dictionary that is passed into the harness, and handling the rules for combining
 configuration settings from both sources.

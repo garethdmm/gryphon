@@ -437,6 +437,82 @@ class ScriptController(controller.CementBaseController):
         main_function(script_arguments=script_arguments, execute=execute)
 
 
+class InitializeLedgerController(controller.CementBaseController):
+    """This controller commands are 'stacked' onto the base controller."""
+
+    class Meta:
+        label = 'initialize-ledger'
+        interface = controller.IController
+        stacked_on = 'base'
+        stacked_type = 'nested'
+        description = 'Initialize Ledger Controller'
+        arguments = [
+            (['exchanges'], {
+                'action': 'store',
+                'help': 'comma-separated list of names of trading pairs',
+            }),
+            (['--execute'], {'action': 'store_true', 'help': 'really save to the db'}),
+        ]
+
+    @controller.expose(help='Start a ledger for a trading pair')
+    def default(self):
+        from gryphon.execution.controllers import initialize_ledger
+
+        exchanges = self.app.pargs.exchanges
+        execute = self.app.pargs.execute
+
+        initialize_ledger.main(exchanges, execute)
+
+
+class RunMigrationsController(controller.CementBaseController):
+    """This controller commands are 'stacked' onto the base controller."""
+
+    class Meta:
+        label = 'run-migrations'
+        interface = controller.IController
+        stacked_on = 'base'
+        stacked_type = 'nested'
+        description = 'Run Migrations Controller'
+        arguments = [
+            (['database'], {
+                'action': 'store',
+                'help': 'DB to upgrade, one of \'trading\', \'dashboard\', or \'gds\''
+            }),
+            (['--execute'], {'action': 'store_true', 'help': 'really save to the db'}),
+        ]
+
+    @controller.expose(help='Upgrade a database schema to the latest version')
+    def default(self):
+        from gryphon.execution.controllers import run_migrations
+
+        target_db = self.app.pargs.database
+        execute = self.app.pargs.execute
+
+        run_migrations.main(target_db, execute)
+
+
+class CreateDashboardUserController(controller.CementBaseController):
+    """This controller commands are 'stacked' onto the base controller."""
+
+    class Meta:
+        label = 'create-dashboard-user'
+        interface = controller.IController
+        stacked_on = 'base'
+        stacked_type = 'nested'
+        description = 'Create a new user in the dashboard database.'
+        arguments = [
+            (['--execute'], {'action': 'store_true', 'help': 'really save to the db'}),
+        ]
+
+    @controller.expose(help='Create a new user in the dashboard database')
+    def default(self):
+        from gryphon.execution.controllers import create_dashboard_user
+
+        execute = self.app.pargs.execute
+
+        create_dashboard_user.main(execute)
+
+
 class GryphonFury(foundation.CementApp):
     class Meta:
         label = 'gryphon-fury'
@@ -457,6 +533,9 @@ class GryphonFury(foundation.CementApp):
             WithdrawFiatController,
             TransactionCompleteController,
             ScriptController,
+            InitializeLedgerController,
+            RunMigrationsController,
+            CreateDashboardUserController,
         ]
 
 
