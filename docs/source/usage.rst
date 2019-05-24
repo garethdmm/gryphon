@@ -91,7 +91,7 @@ Then run the :code:`initialize_exchange_ledgers` script.
 
 .. code-block:: bash
 
-    gryphon-exec initializeledger [comma-separated list of exchanges]\
+    gryphon-exec initialize-ledger [comma-separated list of exchanges]\
         [--execute]
 
 This script is one of the utility functions that is also available through
