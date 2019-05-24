@@ -13,12 +13,12 @@ Strat-runner executable
 -----------------------
 
 Gryphon installs four command line tools in your PATH. The most important by far is the
-strategy-runner: :code:`gryphon-execute`. It's primary function is to load and execute
+strategy-runner: :code:`gryphon-exec`. It's primary function is to load and execute
 your strategies on the markets, which is done as follows:
 
 .. code-block:: bash
 
-    gryphon-execute strategy [strategy_file] [--builtin] [--execute]
+    gryphon-exec strategy [strategy_file] [--builtin] [--execute]
 
 If you run a strategy without the :code:`--execute` flag, the strategy file executes in
 full, but no order-placement calls will be made to exchanges. This is very useful
@@ -45,7 +45,7 @@ These files are a simple list of key=value pairs. For example, the entries in yo
     COINBASE_BTC_USD_API_SECRET=[YOUR SECRET]
     COINBASE_BTC_USD_API_PASSPHRASE=[YOUR PASSPHRASE]
 
-:code:`gryphon-execute` and the other tools always read from the dotenv file in the
+:code:`gryphon-exec` and the other tools always read from the dotenv file in the
 current working directory. This means we recommend that you have only a single such file
 on your machine in a directory designated for running gryphon.
 
@@ -81,7 +81,7 @@ Gryphon tracks every order, trade, deposit, and withdrawal your strategies make 
 trading database. The set of these records that are associated with a given
 exchange are called it's 'Exchange Ledger'. Before we can use an exchange with gryphon
 it's necessary to initialize a ledger for it, which can be done easily with a utility
-function in :code:`gryphon-execute`.
+function in :code:`gryphon-exec`.
 
 First, add the API credentials for that exchange to our dotenv. You can
 find out what credentials your chosen exchange needs in the :ref:`environment_exchanges`
@@ -91,12 +91,12 @@ Then run the :code:`initialize_exchange_ledgers` script.
 
 .. code-block:: bash
 
-    gryphon-execute script initialize_exchange_ledgers\
+    gryphon-exec script initialize_exchange_ledgers\
         --exchanges [comma-separated list of exchanges]\
         --execute
 
 This script is one of the utility functions that is also available through
-:code:`gryphon-execute`. It queries your balance information from the exchange API
+:code:`gryphon-exec`. It queries your balance information from the exchange API
 and creates an entry in the trading database to represent this exchange account.
 
 Whenever you want to add a new exchange to trade on, run this script first to start a
@@ -120,7 +120,7 @@ bitstamp's btc-usd pair. It can be run as follows:
 
 .. code-block:: bash
 
-    gryphon-execute strategy simple_market_making --builtin
+    gryphon-exec strategy simple_market_making --builtin
 
 If you don't use bitstamp, you can point the same strategy at any other btc-usd pair
 supported by gryphon by adding the command line argument
@@ -128,7 +128,7 @@ supported by gryphon by adding the command line argument
 
 .. code-block:: bash
 
-    gryphon-execute strategy simple_market_making --builtin --exchange coinbase_btc_usd
+    gryphon-exec strategy simple_market_making --builtin --exchange coinbase_btc_usd
 
 This will run the strategy in no-execute mode. If you want it to place real orders, add
 the :code:`--execute` flag to the same command. If you are running from a completely
@@ -195,7 +195,7 @@ Now, run your custom strategy in no-execute mode with:
 
 .. code-block:: bash
 
-    gryphon-execute strategy strategies/arb.py
+    gryphon-exec strategy strategies/arb.py
 
 Again, you should see some boilerplate logging that shows the platform is ticking, but
 not as much as when we ran the built-in strategy. That's because we haven't added any

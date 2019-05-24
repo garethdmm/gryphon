@@ -11,7 +11,7 @@ For us to start trading we need to create that entry in the Exchange table, and 
 dummy transactions that represent the starting balance of the exchange.
 
 Usage:
-    gryphon-execute script initialize_exchange_ledger
+    gryphon-exec initialize_ledgers
         --exchanges [comma-separated list of exchange pairs, e.g. bitstamp_btc_usd]
         [--execute]
 """

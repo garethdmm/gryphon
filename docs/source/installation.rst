@@ -56,7 +56,7 @@ Set up the trading harness
 --------------------------
 
 The trading harness is the executable that runs trading strategies. It's installed in
-the PATH as :code:`gryphon-execute`. It has a few more dependencies than the pure library.
+the PATH as :code:`gryphon-exec`. It has a few more dependencies than the pure library.
 
 #. Install memcached
 
@@ -77,7 +77,7 @@ the PATH as :code:`gryphon-execute`. It has a few more dependencies than the pur
 
    .. code-block:: bash
 
-      gryphon-execute run_migrations --database trading --execute
+      gryphon-exec run_migrations --database trading --execute
 
 That's it! At this point you should be ready to move on to :ref:`use_for_trading` to
 start running strategies.
