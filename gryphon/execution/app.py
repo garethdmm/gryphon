@@ -441,7 +441,7 @@ class InitializeLedgerController(controller.CementBaseController):
     """This controller commands are 'stacked' onto the base controller."""
 
     class Meta:
-        label = 'initializeledger'
+        label = 'initialize-ledger'
         interface = controller.IController
         stacked_on = 'base'
         stacked_type = 'nested'
@@ -472,7 +472,7 @@ class RunMigrationsController(controller.CementBaseController):
         interface = controller.IController
         stacked_on = 'base'
         stacked_type = 'nested'
-        description = 'Initialize Ledger Controller'
+        description = 'Run Migrations Controller'
         arguments = [
             (['database'], {
                 'action': 'store',
@@ -504,7 +504,7 @@ class CreateDashboardUserController(controller.CementBaseController):
             (['--execute'], {'action': 'store_true', 'help': 'really save to the db'}),
         ]
 
-    @controller.expose(help='Upgrade a database schema to the latest version')
+    @controller.expose(help='Create a new user in the dashboard database')
     def default(self):
         from gryphon.execution.controllers import create_dashboard_user
 
