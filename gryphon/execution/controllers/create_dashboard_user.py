@@ -3,7 +3,7 @@ This scripts creates a username/password credential in the dashboard database. W
 this through the command line to ensure that plaintext passwords are not stored in the
 database.
 
-Usage: gryphon-exec script create_dashboard_user [--execute]
+Usage: gryphon-exec create-dashboard-user [--execute]
 """
 
 import getpass
