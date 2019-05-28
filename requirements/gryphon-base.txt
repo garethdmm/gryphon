@@ -14,7 +14,6 @@ Delorean==1.0.0
 enum34==1.1.6
 futures==3.2.0
 gryphon-cdecimal==2.3
-gryphon-framework==0.5
 gryphon-money==1.2.1
 gryphon-pusherclient==0.2.1
 humanize==0.5.1
