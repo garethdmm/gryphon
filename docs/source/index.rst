@@ -18,6 +18,14 @@ Starting Out
    installation
    usage
 
+.. toctree::
+   :caption: In Depth
+   :hidden:
+
+   writing_strategies
+   configuration
+   dashboards
+
 :doc:`installation`
    How to set up gryphon for different use-cases.
 
@@ -28,7 +36,6 @@ Starting Out
    :caption: Reference
    :hidden:
 
-   dashboards
    environment
 
 Appendices
