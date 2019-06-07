@@ -9,12 +9,13 @@ Basic Concepts
 
 .. _executable:
 
-Strat-runner executable
------------------------
+Gryphon Executive
+-----------------
 
 Gryphon installs four command line tools in your PATH. The most important by far is the
-strategy-runner: :code:`gryphon-exec`. It's primary function is to load and execute
-your strategies on the markets, which is done as follows:
+gryphon executive: :code:`gryphon-exec`. This application contains the Strategy Engine, which loads and executes your strategies, as well as several utility functions that are commonly used in the day-to-day operation of Gryphon.
+
+To start out, the strategy engine is launched with this command:
 
 .. code-block:: bash
 
@@ -23,7 +24,6 @@ your strategies on the markets, which is done as follows:
 If you run a strategy without the :code:`--execute` flag, the strategy file executes in
 full, but no order-placement calls will be made to exchanges. This is very useful
 for testing and debugging strategies.
-
 
 .. _dotenv_files:
 
@@ -202,4 +202,34 @@ log messages to the strategy that tell the viewer what is going on, but we'll ge
 that.
 
 Congratulations, you are trading with Gryphon!
+
+Optional Setup
+==============
+
+Exchange Rates
+--------------
+
+.. _`Open Exchange Rates`: https://openexchangerates.org/
+
+Gryphon can run on USD-denominated pairs with no extra setup, but to trade in markets where the price currency is not USD, access to exchange rate information is necessary. This functionality is implemented in :py:mod:`gryphon.lib.forex` and the current implementation sources it's data from `Open Exchange Rates`_ (OXR).
+
+Here are the steps to add support for non-USD pairs:
+
+#. Sign up for an account with `Open Exchange Rates`_ (their basic plans are free).
+#. Find your OXR 'app_id'.
+#. Add the app_id it to your :code:`.env` file under the key :code:`EXCHANGE_RATE_APP_ID`.
+
+:py:mod:`gryphon.lib.forex` will attempt to cache exchange rate information in Redis in order to reduce the number of http calls it needs to make in the strategy execution thread. This is optional but may substantially improve your tick times. Simply turn on Redis with the command:
+
+.. code-block:: bash
+
+    redis-server
+
+and add this line to your :code:`.env`.
+
+.. code-block:: bash
+
+    REDIS_URL=redis://localhost:6379
+
+This is the default :code:`REDIS_URL` on most systems, but may be different on your machine.
 

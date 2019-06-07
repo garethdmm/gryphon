@@ -1,3 +1,5 @@
+.. _installation:
+
 ============
 Installation
 ============
@@ -10,7 +12,7 @@ Gryphon is currently tested on the following systems:
 Users who simply want access to the gryphon libraries for use in another project can
 follow this document as far as `Install the library`_. Users who want to use gryphon for
 trading should continue through `Set up the trading harness`_. For advanced
-installations see 'Dashboards' and 'Gryphon Data Service (GDS)'.
+installations see :ref:`dashboards` and :ref:`data_service`.
 
 Ubuntu 16.04
 ============
@@ -35,7 +37,7 @@ Install the library
 
    .. code-block:: bash
 
-      pip install gryphon-alpha
+      pip install gryphon
 
 #. Gryphon installs a command line tool for running it's unit test suite. It's good practice to run it at this stage.
 
@@ -96,3 +98,9 @@ The installation steps for OSX are the same as for ubuntu, but instead of aptitu
       brew install memcached
 
 The rest of the steps are identical to those for Ubuntu 16.04.
+
+.. _`stackoverflow answer`: https://stackoverflow.com/questions/12218229/my-config-h-file-not-found-when-intall-mysql-python-on-osx-10-8
+
+Some MacOS users have had issues installing mysql using :code:`brew`. This `stackoverflow answer`_ provides a functioning fix.
+
+

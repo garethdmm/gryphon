@@ -6,36 +6,93 @@
 Gryphon Trading Framework 0.12 Documentation
 =============================================
 
-Welcome.
+Gryphon is an open source software platform for building and running algorithmic trading strategies in cryptocurrency markets. It has traded billions in volume to date.
+
+This documentation should tell you everything you need to know about Gryphon.
 
 Starting Out
 ============
 
+Gryphon is both a software library that can be integrated into other projects, and an application suite for running trading strategies and operating a trading business. How you use Gryphon depends on your goals.
+
+This documentation is primarily for users wanting to use gryphon to run their own trading business, but the API documentation in particular will be relevant to all users.
+
+We recommend starting out by following along in the :ref:`installation` document, and then proceeding on to :ref:`use_for_trading`.
+
+Demo Strategy
+=============
+
+Here is a simple, one-way arbitrage strategy built on gryphon.
+
+.. code-block:: python
+
+    from gryphon.execution.strategies.base import Strategy
+    from gryphon.lib import arbitrage as arb
+
+
+    class SuperSimpleArb(Strategy):
+        def tick(self, open_orders):
+            cross = arb.detect_directional_cross(
+                self.harness.gemini_btc_usd.get_orderbook(),
+                self.harness.coinbase_btc_usd.get_orderbook(),
+            )
+
+            executable_volume = arb.get_executable_volume(
+                cross,
+                self.harness.coinbase_btc_usd.get_balance(),
+                self.harness.gemini_btc_usd.get_balance(),
+            )
+
+            if cross and executable_volume:
+                self.harness.gemini_btc_usd.market_order(executable_volume, 'BID')
+                self.harness.coinbase_btc_usd.market_order(executable_volume, 'ASK')
+
+A near-cousin to this strategy ships built-in to the framework at :py:mod:`gryphon.execution.strategies.builtin.simple_arb` and can be run on an appropriate installation with the command:
+
+.. code-block:: bash
+
+    gryphon-exec strategy simple_arb --builtin --execute
+
+Getting Help
+============
+
+.. _github: https://github.com/TinkerWork/gryphon/issues
+.. _`tag 'gryphonframework'`: https://stackoverflow.com/questions/tagged/gryphonframework
+.. _slack: https://gryphonframework.slack.com
+
+There are a few ways to get help with Gryphon:
+
+- Join the gryphon slack_ to ask a question to the developers
+- Ask a question on stackoverflow with the `tag 'gryphonframework'`_
+- Report bugs on github_
+- Search these docs using the searchbar in the top left
+
+Documentation
+=============
+
 .. toctree::
    :caption: Starting Out
-   :hidden:
 
    installation
    usage
 
 .. toctree::
    :caption: In Depth
-   :hidden:
 
    writing_strategies
-   configuration
+   exchange_integrations
+   advanced_features
+   ledger
    dashboards
-
-:doc:`installation`
-   How to set up gryphon for different use-cases.
-
-:doc:`usage`
-   The basics on how to have a good time in the markets with gryphon.
+   data_service
+   business
+   configuration
 
 .. toctree::
    :caption: Reference
-   :hidden:
 
+   contributing
+   style
    environment
 
 Appendices

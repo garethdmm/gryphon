@@ -3,7 +3,7 @@ This script allows pip users to run migrations on the databases they use with gr
 Gryphon uses alembic to manage migrations.
 
 Usage:
-    gryphon-exec run-migrations [GDS | TRADING | DASHBOARD]
+    gryphon-exec run-migrations [GDS | TRADING | DASHBOARD] [--execute]
 """
 
 import pyximport; pyximport.install()
