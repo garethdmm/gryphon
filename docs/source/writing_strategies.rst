@@ -73,7 +73,7 @@ Interacting with Exchanges
 
 The engine provides the strategies with connections to all the exchanges which are integrated in gryphon which are pre-set up, have redundancy layers around them, and auto-sync with the trading database. They are accessed through the harness, such as :code:`self.harness.coinbase_btc_usd`. You should always always interact with exchanges through the engine connections, never set up your own directly through the gryphon.lib.exchange library.
 
-While all the public market data functions of exchangesexchanges are available immediately, in order to use their authenticated endpoints like getting balance information, placing orders, you need to have set up the credentials for those exchanges in your :code:`.env`, and started a ledger for that pair, as seen in :ref:`exchange_ledger_basics`.
+While all the public market data functions of exchanges are available immediately, in order to use their authenticated endpoints like getting balance information, placing orders, you need to have set up the credentials for those exchanges in your :code:`.env`, and started a ledger for that pair, as seen in :ref:`exchange_ledger_basics`.
 
 The basic interface for an exchange trading pair is uniform across all integrated exchanges:
 
@@ -84,6 +84,7 @@ The basic interface for an exchange trading pair is uniform across all integrate
 - :code:`get_balance(self)`
 - :code:`place_order(self, mode, volume price=None, order_type=order_types.LIMIT_ORDER)`
 
+Gryphon currently supports 20 trading pairs over 7 exchanges. You can see the list at :ref:`supported_exchange_list`.
 
 Knowing your strategy's state
 -----------------------------
@@ -93,15 +94,4 @@ Under the hood, as your strategies place orders and make trades, the engine is k
 Two of the most commonly used state properties are available immediately inside the :code:`tick()` function. The first is the strategy's position, which is available as the property :code:`self.position`. The second is the list of any presently open orders associated with the strategy. These are passed as the first argument to the tick function, as :code:`tick(current_orders)`.
 
 You can also query the trading database directly. There is always an active databse connection available through the engine as :code:`self.harness.db`.
-
-
-.. _strategy_engine:
-
-Strategy Engine Details
-=======================
-
-To write strategies it's important to have a solid grasp on the substrate they run on, which is the Strategy Engine. This is the record player to your strategy's a
-
-The purpose of the strategy engine is to provide trading functionality to the strategy developer (you) for free, that you may or may not choose to use when writing your strategies. The engine is the record player, and your strategy is the album.
-
 
