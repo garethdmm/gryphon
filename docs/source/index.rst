@@ -59,10 +59,11 @@ Getting Help
 .. _github: https://github.com/TinkerWork/gryphon/issues
 .. _`tag 'gryphonframework'`: https://stackoverflow.com/questions/tagged/gryphonframework
 .. _slack: https://gryphonframework.slack.com
+.. _`this link`: https://join.slack.com/t/gryphonframework/shared_invite/enQtNjYxNjEzNTUzNzY0LTA5MWExYWM4ZTk1YTg1MzVjMTkwMDU4ZTA5ZWVmYWJmZjk1MTQ3MjdkNmZiNDQ1ODRjM2U2MTBhMjc5YWIzYWM
 
 There are a few ways to get help with Gryphon:
 
-- Join the gryphon slack_ to ask a question to the developers
+- Join the gryphon slack_ to ask a question to the developers (use `this link`_ to get an invite if you don't already have one)
 - Ask a question on stackoverflow with the `tag 'gryphonframework'`_
 - Report bugs on github_
 - Search these docs using the searchbar in the top left
