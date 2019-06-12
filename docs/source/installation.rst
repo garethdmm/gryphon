@@ -7,7 +7,7 @@ Installation
 Gryphon is currently tested on the following systems:
 
 * Ubuntu 16.04
-* MacOSX Sierra
+* MacOSX Sierra and later
 
 Users who simply want access to the gryphon libraries for use in another project can
 follow this document as far as `Install the library`_. Users who want to use gryphon for
@@ -33,7 +33,7 @@ Install the library
 
 #. While technically optional, we highly recommend that you use virtualenv_ to create an isolated python environment in which to install Gryphon.
 
-#. Install the gryphon package.
+#. Install the gryphon package. You can install the latest version hosted in the python package index using pip.
 
    .. code-block:: bash
 
@@ -84,8 +84,8 @@ the PATH as :code:`gryphon-exec`. It has a few more dependencies than the pure l
 That's it! At this point you should be ready to move on to :ref:`use_for_trading` to
 start running strategies.
 
-MacOS Sierra
-============
+MacOS
+=====
 
 The installation steps for OSX are the same as for ubuntu, but instead of aptitude, use Homebrew_ to install prerequisites as follows.
 
