@@ -1,11 +1,10 @@
 
-![alttext](gryphon/dashboards/static/img/gryphon-logo-blue@3x.png)
+![alttext](gryphon/dashboards/static/img/gryphon-logo-blue-wide.png)
+-----------------
 
-# Gryphon Trading Framework
 **Gryphon** is an open source software platform for building and running algorithmic trading strategies in cryptocurrency markets. It was built by Tinker, one of the earliest cryptocurrency trading companies, and has traded billions in volume to date.
 
 
------------------
 
 | **`Documentation`** | **`Build`** |
 |---------|--------|
