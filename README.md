@@ -9,7 +9,8 @@
 | **`Documentation`** | **`Build`** |
 |---------|--------|
 | [![Documentation](https://img.shields.io/badge/api-reference-blue.svg)](https://gryphon.readthedocs.io/en/latest/) | [![Build Status](https://travis-ci.com/garethdmm/gryphon.svg?branch=master)](https://travis-ci.com/garethdmm/gryphon) |
-| [![Documentation Status](https://readthedocs.org/projects/gryphon/badge/?version=latest)](https://gryphon.readthedocs.io/en/latest/?badge=latest) |  |
+| [![Documentation Status](https://readthedocs.org/projects/gryphon/badge/?version=latest)](https://gryphon.readthedocs.io/en/latest/?badge=latest)
+ |  |
 
 ## What's included
 
