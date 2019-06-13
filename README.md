@@ -15,15 +15,16 @@
 
 Gryphon is both a software library that can be integrated into other projects, and an application suite for running trading strategies and operating a trading business. How you use Gryphon depends on your goals. Some highlights are:
 
-Library Highlights:
-* Exchange integrations ~ Because cryptocurrency exchanges all have their own API specifications, quirks, and issues, Gryphon includes a set of wrappers that conform these exchange APIs to a single reliable interface.
-* Common strategy operations ~ In a given strategy class, like market making or arbitrage, there are some operations that are very frequent. Gryphon includes building-block libraries that make designing new strategies simpler.
+Library highlights:
 
-Application suite:
+* 20+ Exchange pair integrations ~ Gryphon defines a single abstract interface for exchanges, with semantic function calls like `gemini_btc_usd.get_orderbook()`, and integrates 20+ trading pairs on 6 exchanges under that interface. Exchange integrations abstract away all the annoying individual quirks of different exchanges, like rate limits, rounding behaviour, nonces, and undocumented features. This allows the user to write strategies against a single, reliable interface, and focus completely on designing trading behaviour.
+* Strategy Building Blocks ~ Common operations, like checking for arbitrage opportunities, are already implemented and tested in for different strategy classes are provided in gryphon's strategy building block libraries. Many common strategy types can be implemented in as few as 3-5 function calls.
 
-* Execution environment ~ run from the command line as `gryphon-execute`, this is app runs strategies and includes some other utility functions that are commonly used in day-to-day operation of a trading business.
-* Gryphon Data Service ~ a standalone app for listening to market data and events at high frequency. GDS can be used in advanced installations of gryphon to massively speed up tick speeds. GDS can also archive the data it receives, over time building up large datasets which can be used for machine learning or other analysis techniques.
-* Dashboards ~ run from the command line as `gryphon-dashboards`, this is a web server that connects to your trading database to help you visualize the activity of your trading strategies and understand the health of your trading business.
+Application suite highlights:
+
+* [Strategy Engine](https://gryphon.readthedocs.io/en/latest/usage.html#running-strategies) ~ the primary executable of gryphon loads strategy files and executes them, providing to the strategy developer redundant exchange connections, trade history persistence, monitoring, instrumentation, and lots of other features that make gryphon the easiest way to build and run strategies.
+* [Gryphon Data Service](https://gryphon.readthedocs.io/en/latest/data_service.html) ~ a standalone service for ingesting market data and other events at high frequencies. Built using rabbitmq, GDS can be used in advanced installations of gryphon to massively speed up tick speeds or to build up datasets for use in machine learning.
+* [Dashboards](https://gryphon.readthedocs.io/en/latest/dashboards.html) ~ a webserver that connects to your trading database to help you visualize the activity of your trading strategies and understand the health of your trading business.
 
 ![alttext](gryphon/dashboards/static/img/screenshots_together.png)
 
