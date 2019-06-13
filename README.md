@@ -28,13 +28,13 @@ Application suite:
 
 ## Installation
 
-The gryphon library can be installed directly through pip.
+The gryphon library can be installed directly through pip once [a few prerequisites](https://gryphon.readthedocs.io/en/latest/installation.html) are installed.
 
 ```shell
 $ pip install gryphon
 ```
 
-To use gryphon for trading, there are extra install steps to set up the execution environment. See this page for details: [Installing Gryphon](https://gryphon-docs-test.readthedocs.io/en/latest/).
+To use gryphon for trading, there are extra install steps to set up the execution engine. See this page for details: [Installing Gryphon](https://gryphon.readthedocs.io/en/latest/installation.html#set-up-the-trading-harness).
 
 If you are going to extend or modify gryphon, we recommend downloading the codebase and installing through pip with the `-e` flag.
 
@@ -42,7 +42,7 @@ If you are going to extend or modify gryphon, we recommend downloading the codeb
 
 ### Credentials and environment variables
 
-When using Gryphon sensitive credentials like API keys never leave your machine. Instead, gryphon applications read credentials from a `.env` file stored in the directory they are launched from. `.env` files are simple lists of key-value pairs,
+When using Gryphon, sensitive credentials like API keys never leave your machine. Instead, gryphon applications read credentials from a `.env` file stored in the directory they are launched from. `.env` files are simple lists of key-value pairs.
 
 The .env entries for an exchange like Coinbase look something like this.
 
@@ -52,17 +52,17 @@ COINBASE_BTC_USD_API_SECRET=[YOUR SECRET]
 COINBASE_BTC_USD_API_PASSPHRASE=[YOUR PASSPHRASE]
 ```
 
-Depending on the features you wish to use and the exchanges you wish to trade on, you'll need to have certain entries in your .env file. You can read the [.env appendix](https://gryphon-framework.readthedocs.io/en/latest) to find out which you will need.
+Depending on the features you wish to use and the exchanges you wish to trade on, you'll need to have certain entries in your .env file. You can read the [Environment Variable Reference](https://gryphon.readthedocs.io/en/latest/environment.html) to find out which you will need.
 
 
 ### Run a built-in strategy
 
-Once you have followed the execution tools install steps [here](https://gryphon-framework.readthedocs.io/en/latest). You can use the gryphon execution environment to run strategies. Gryphon ships with a few simple built-in strategies. These aren't designed for serious trading but can be useful for testing and learning the framework.
+Once you have followed the strategy engine install steps [here](https://gryphon.readthedocs.io/en/latest/usage.html). You can use the gryphon execution environment to run strategies. Gryphon ships with a few simple built-in strategies. These aren't designed for serious trading but can be useful for testing and learning the framework.
 
 One such strategy is called 'Simple Marketmaking'. It can be run as follows:
 
 ```shell
-$ gryphon-execute strategy simple_mm --builtin [--execute]
+$ gryphon-exec strategy simple_mm --builtin [--execute]
 ```
 
 If you don't include the `--execute` flag, the strategy runs in test-mode, and won't place any orders on exchanges. This is a feature of the execution environment, not the strategy, so this flag works with every strategy you run or build on gryphon. Only use the `--execute` flag when you're ready to run or test a strategy with real money.
@@ -94,9 +94,9 @@ class GeminiCoinbaseArbitrage(Strategy):
             self.harness.coinbase_btc_usd.market_order(cross.volume, 'ASK')
 ```
 
-Copy this code into a python file named 'arbitrage.py' in the same directory as your .env file, and you can run it in test mode with `gryphon-execute strategy arbitrage`.
+Copy this code into a python file named 'arbitrage.py' in the same directory as your .env file, and you can run it in test mode with `gryphon-exe strategy arbitrage`.
 
-Notice how much functionality is in play here: `gryphon-execute` sets up the environment that strategies run in and orchestrates the tick-by-tick operation, the exchange integrations for Coinbase and Gemini abstract away all the implementation details of working with those APIs into simple semantic function calls, and the arbitrage library simplifies some complex calculations into just two function calls.
+Notice how much functionality is in play here: `gryphon-exec` sets up the environment that strategies run in and orchestrates the tick-by-tick operation, the exchange integrations for Coinbase and Gemini abstract away all the implementation details of working with those APIs into simple semantic function calls, and the arbitrage library simplifies some complex calculations into just two function calls.
 
 
 ## Contribution guidelines
