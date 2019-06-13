@@ -100,6 +100,16 @@ Copy this code into a python file named 'arbitrage.py' in the same directory as 
 
 Notice how much functionality is in play here: `gryphon-exec` sets up the environment that strategies run in and orchestrates the tick-by-tick operation, the exchange integrations for Coinbase and Gemini abstract away all the implementation details of working with those APIs into simple semantic function calls, and the arbitrage library simplifies some complex calculations into just two function calls.
 
+## Getting Help
+
+If you want help with an issue, there are a few ways to ask:
+
+* Join the [gryphon slack](https://join.slack.com/t/gryphonframework/shared_invite/enQtNjYxNjEzNTUzNzY0LTA5MWExYWM4ZTk1YTg1MzVjMTkwMDU4ZTA5ZWVmYWJmZjk1MTQ3MjdkNmZiNDQ1ODRjM2U2MTBhMjc5YWIzYWM) to ask a question to the developers
+* Report [a bug](https://github.com/garethdmm/gryphon/issues)
+* Search or read in [the docs](https://gryphon.readthedocs.io/en/latest/)
+* Ask a question on stackoverflow with the tag [‘gryphonframework’](https://stackoverflow.com/questions/tagged/gryphonframework)
+
+The [Gryphon Website](https://www.gryphonframework.org) can also be used as an alternate alternate jumping-off point for users new to Gryphon. 
 
 ## Contribution guidelines
 
@@ -109,14 +119,4 @@ tracking requests and bugs.**
 **See the [Contributing to Gryphon](https://gryphon.readthedocs.io/en/latest/contributing.html) for pull request checklists and ideas about how you can contribute.**
 
 
-## Getting Help and more links
 
-If you want help with an issue, there are a few ways to ask:
-
-* Join the [gryphon slack](https://join.slack.com/t/gryphonframework/shared_invite/enQtNjYxNjEzNTUzNzY0LTA5MWExYWM4ZTk1YTg1MzVjMTkwMDU4ZTA5ZWVmYWJmZjk1MTQ3MjdkNmZiNDQ1ODRjM2U2MTBhMjc5YWIzYWM) to ask a question to the developers
-* Report [a bug](https://github.com/garethdmm/gryphon/issues)
-* Search or read in [the docs](https://gryphon.readthedocs.io/en/latest/)
-* Ask a question on stackoverflow with the tag [‘gryphonframework’](https://stackoverflow.com/questions/tagged/gryphonframework)
-
-
-The [Gryphon Website](https://www.gryphonframework.org) can also be used as an alternate alternate jumping-off point for users new to Gryphon. 
