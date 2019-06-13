@@ -25,6 +25,8 @@ Application suite:
 * Gryphon Data Service ~ a standalone app for listening to market data and events at high frequency. GDS can be used in advanced installations of gryphon to massively speed up tick speeds. GDS can also archive the data it receives, over time building up large datasets which can be used for machine learning or other analysis techniques.
 * Dashboards ~ run from the command line as `gryphon-dashboards`, this is a web server that connects to your trading database to help you visualize the activity of your trading strategies and understand the health of your trading business.
 
+![alttext](gryphon/dashboards/static/img/screenshots_together.png)
+
 
 ## Installation
 
