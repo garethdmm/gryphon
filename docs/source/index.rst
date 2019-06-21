@@ -95,6 +95,7 @@ Documentation
    contributing
    style
    environment
+   reading_list
 
 Appendices
 ==========
