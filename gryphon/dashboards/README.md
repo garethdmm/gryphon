@@ -1,2 +1,0 @@
-# Pentecost
-Jaeger Commander
