@@ -15,7 +15,7 @@ Account auditing is one of the most powerful features of gryphon when used prope
 The purpose of auditing is to check that the state of your exchange accounts in the trading database matches the state reported by the exchange's API. This is good for a couple reasons:
 
 #. Catches strategy bugs early
-#. Guuarantees that your strategies are operating on accurate position, p&l, and other data
+#. Guarantees that your strategies are operating on accurate position, p&l, and other data
 #. Guarantees that your financial reporting to authorities will be accurate
 #. When used in combination with alerting, can get a human in front of a problem instantly, vs. potentially days later.
 
