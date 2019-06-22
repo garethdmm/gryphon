@@ -86,7 +86,7 @@ def parse_configurable_value(value):
     """
     if value is None:
         return None
-    if type(value) is bool:
+    if isinstance(value, bool):
         return value
     elif value == 'yes':
         return True

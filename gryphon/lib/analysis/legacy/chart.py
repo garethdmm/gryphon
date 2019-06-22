@@ -207,7 +207,7 @@ def graphData(stock,MA1,MA2):
         plt.show()
         fig.savefig('example.png',facecolor=fig.get_facecolor())
            
-    except Exception,e:
+    except Exception as e:
         print 'main loop',str(e)
 
 while True:

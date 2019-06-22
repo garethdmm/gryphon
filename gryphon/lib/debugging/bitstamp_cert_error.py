@@ -44,6 +44,7 @@ pip install requests[security]
 Make sure you have yoru bitstamp credentials in a .env file in the directory you are
 running from.
 """
+from __future__ import print_function
 
 import requests
 import hmac
@@ -67,8 +68,8 @@ API_BALANCE_URL = 'https://www.bitstamp.net/api/v2/balance/'
 
 
 def requests_dot_post():
-    print '---'
-    print "Trying requests.post"
+    print('---')
+    print("Trying requests.post")
 
     nonce = unicode(int(round(time.time() * 1000)))
     message = nonce + CLIENT_ID + API_KEY
@@ -82,27 +83,27 @@ def requests_dot_post():
 
     result = requests.post(API_BALANCE_URL, data=payload).text
 
-    print 'Response from bitstamp: %s' % result[:50]
+    print('Response from bitstamp: %s' % result[:50])
 
     try:
         assert('btc_available' in result)
-        print 'requests.post succeeded!'
+        print('requests.post succeeded!')
     except Exception as e:
-        print 'requests.post failed: %s' % str(e)
+        print('requests.post failed: %s' % str(e))
 
 
 def session_post(session=None, clear_cookies=None):
-    print '---'
+    print('---')
 
     if session is None:
-        print "Trying with a new session"
+        print("Trying with a new session")
 
         session = requests.Session()
     else:
-        print "Trying with an extant session"
+        print("Trying with an extant session")
 
         if clear_cookies is True:
-            print "Clearing the session's cookies"
+            print("Clearing the session's cookies")
             session.cookies.clear()
 
     nonce = unicode(int(round(time.time() * 1000)))
@@ -117,13 +118,13 @@ def session_post(session=None, clear_cookies=None):
 
     result = session.post(API_BALANCE_URL, payload).text
 
-    print 'Response from bitstamp: %s' % result[:50]
+    print('Response from bitstamp: %s' % result[:50])
 
     try:
         assert('btc_available' in result)
-        print 'Session succeeded!'
+        print('Session succeeded!')
     except Exception as e:
-        print 'Session failed: %s' % str(e)
+        print('Session failed: %s' % str(e))
 
     return session
 

@@ -1,3 +1,4 @@
+from __future__ import print_function
 from gryphon.lib.exchange.exchange_factory import ALL_EXCHANGE_KEYS as all_exchanges
 from gryphon.lib.util.list import distinct
 
@@ -5534,7 +5535,7 @@ def generate_initial_series_name_list():
     for st in series_types_orderbook_data:
         for exchange in all_exchanges:
             for depth in depths_on_orderbook_data:
-                print "    '%s-%s-%s': %s," % (st, exchange, depth, count)
+                print("    '%s-%s-%s': %s," % (st, exchange, depth, count))
                 count += 1
 
     series_types_on_trade_data = ['volume', 'vwap']
@@ -5543,5 +5544,5 @@ def generate_initial_series_name_list():
     for st in series_types_on_trade_data:
         for exchange in all_exchanges:
             for info in info_on_trade_data:
-                print "    '%s-%s-%s': %s," % (st, exchange, info, count)
+                print("    '%s-%s-%s': %s," % (st, exchange, info, count))
                 count += 1

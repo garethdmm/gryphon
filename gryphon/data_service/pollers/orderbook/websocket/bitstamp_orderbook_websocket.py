@@ -218,7 +218,7 @@ class BitstampOrderbookWebsocket(EmeraldWebSocketClientProtocol, WebsocketOrderb
         # Re-sort the bids.
         self.orderbook['bids'] = OrderedDict(sorted(
             self.orderbook['bids'].iteritems(),
-            key=lambda (k, v): float(k),
+            key=lambda k_v1: float(k_v1[0]),
             reverse=True,
         ))
 
@@ -230,7 +230,7 @@ class BitstampOrderbookWebsocket(EmeraldWebSocketClientProtocol, WebsocketOrderb
 
         # Re-sort the asks.
         self.orderbook['asks'] = OrderedDict(
-            sorted(self.orderbook['asks'].iteritems(), key=lambda (k, v): float(k)),
+            sorted(self.orderbook['asks'].iteritems(), key=lambda k_v: float(k_v[0])),
         )
 
     def parse_orders(self, orders):

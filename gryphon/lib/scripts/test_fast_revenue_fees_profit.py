@@ -2,6 +2,7 @@
 Test script for the new fast revenue function. Runs both revenue functions on a
 random period and checks their results are the same.
 """
+from __future__ import print_function
 
 import pyximport; pyximport.install()
 
@@ -39,7 +40,7 @@ def test_fast_revenue():
     for i in range(1, 30):
         start, end = get_random_period()
 
-        print '%s, %s' % (start, end)
+        print('%s, %s' % (start, end))
 
         slow_revenue = gryphon_profit.revenue_in_period(db, start, end)
         fast_revenue = gryphon_profit.fast_revenue_in_period(db, start, end)
@@ -51,9 +52,9 @@ def test_fast_revenue():
                       == fast_revenue.round_to_decimal_places(4))
 
         if not result:
-            print 'BAD: %s, != %s' % (slow_revenue, fast_revenue)
+            print('BAD: %s, != %s' % (slow_revenue, fast_revenue))
         else:
-            print 'GOOD: %s, == %s' % (slow_revenue, fast_revenue)
+            print('GOOD: %s, == %s' % (slow_revenue, fast_revenue))
 
     db.remove()
 
@@ -64,7 +65,7 @@ def test_fast_profit():
     for i in range(1, 30):
         start, end = get_random_period()
 
-        print '%s, %s' % (start, end)
+        print('%s, %s' % (start, end))
 
         slow_profit = gryphon_profit.profit_in_period(db, start, end)
         fast_profit = gryphon_profit.fast_profit_in_period(db, start, end)
@@ -73,9 +74,9 @@ def test_fast_profit():
                       == fast_profit.round_to_decimal_places(4))
 
         if not result:
-            print 'BAD: %s, != %s' % (slow_profit, fast_profit)
+            print('BAD: %s, != %s' % (slow_profit, fast_profit))
         else:
-            print 'GOOD: %s, == %s' % (slow_profit, fast_profit)
+            print('GOOD: %s, == %s' % (slow_profit, fast_profit))
 
     db.remove()
 
@@ -86,7 +87,7 @@ def test_fast_revenue_fees_profit():
     for i in range(1, 30):
         start, end = get_random_period()
 
-        print '%s, %s' % (start, end)
+        print('%s, %s' % (start, end))
 
         slow_revenue, slow_fees, slow_profit = gryphon_profit.revenue_fees_profit_in_period(db, start, end)
         fast_revenue, fast_fees, fast_profit = gryphon_profit.fast_revenue_fees_profit_in_period(db, start, end)
@@ -99,9 +100,9 @@ def test_fast_revenue_fees_profit():
                       == fast_fees.round_to_decimal_places(4))
 
         if not result:
-            print 'BAD'
+            print('BAD')
         else:
-            print 'GOOD'
+            print('GOOD')
 
     db.remove()
 
