@@ -283,7 +283,7 @@ class OKCoinBTCUSDExchange(ExchangeAPIWrapper):
     def order_fee_resp(self, req):
         try:
             response = self.resp(req)
-        except CancelOrderNotFoundError:
+        except exceptions.CancelOrderNotFoundError:
             # OkCoin has started returning this error on non-executed orders or orders
             # with no fees.
             return Money('0', 'USD')
