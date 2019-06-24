@@ -346,8 +346,8 @@ def volatility(values, timestamps, window_time=10000):
             else:
                 break
         
-        standard_deviation = np.std(relevant_values)
-        mean = np.mean(relevant_values)
+        standard_deviation = numpy.std(relevant_values)
+        mean = numpy.mean(relevant_values)
         #volatility = Decimal(standard_deviation)/Decimal(mean)
         vols.append(standard_deviation)
     vols.reverse()
