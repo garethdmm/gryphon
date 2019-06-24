@@ -10,7 +10,7 @@ python:
   - "3.7"
 
 matrix:
-  allow-failures:
+  allow_failures:
     - python: "3.7"
 
 before_script:
