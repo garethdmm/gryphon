@@ -2,6 +2,7 @@
 """
 import pyximport; pyximport.install()
 import os
+import time
 
 from gryphon.lib.exchange.kraken_btc_eur import KrakenBTCEURExchange
 from gryphon.fury.harness.exchange_coordinator import ExchangeCoordinator
