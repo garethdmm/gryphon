@@ -469,7 +469,7 @@ class ItbitBTCUSDExchange(ExchangeAPIWrapper):
         Dropped the skip_recent flag because we don't seem to be using it anywhere.
         """
         if skip_recent != 0:
-            raise ValueEror('skip_recent is deprecated')
+            raise ValueError('skip_recent is deprecated')
 
         orders = OrderedDict()
         trades_to_audit = self.all_trades(page=page)
