@@ -142,7 +142,7 @@ class LedgerHandler(AdminBaseHandler, StartAndEndTimeMixin):
         """
 
         if address and address in self.address_map:
-            return address_map[address]
+            return self.address_map[address]
         else:
             return 'External transfer'
 
