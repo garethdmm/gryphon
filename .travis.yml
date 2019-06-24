@@ -7,6 +7,15 @@ addons:
 
 python:
   - "2.7"
+  - "3.7"
+
+matrix:
+  allow-failures:
+    - python: "3.7"
+
+before_script:
+  - pip install flake8
+  - flake8 . --count --select=E9,F63,F72,F82 --show-source --statistics
 
 install:
   - pip install .
