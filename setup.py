@@ -62,7 +62,7 @@ setuptools.setup(
         'decorator==4.3.0',
         'Delorean>=1.0.0,<2',
         'enum34==1.1.6',
-        'futures==3.2.0; python_version<"3.0"',
+        'futures==3.2.0 ; python_version<"3.0"',
         'gryphon-cdecimal==2.3',
         'gryphon-money',  # Our fork of Python Money.
         'gryphon-pusherclient',  # Our duplicate of PythonPusherClient.
@@ -74,7 +74,8 @@ setuptools.setup(
         'MarkupSafe==1.0',
         'mock==1.0.1',
         'more-itertools>=4.2.0,<5',
-        'MySQL-python==1.2.5',
+        'MySQL-python==1.2.5 ; python_version<"3.0"',
+        'mysql-connector-python ; python_version>="3.0"'
         'nose==1.3.7',
         'pathlib2==2.3.2',
         'pexpect==4.6.0',
