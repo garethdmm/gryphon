@@ -2,12 +2,37 @@ html, body {
   height: 100%;
 }
 
-h2 {
-  font-size:20px !important;
+a.btn-light {
+  background-color: #EDEFF2;
 }
 
-h3 {
-  font-size:18px !important;
+#title-row h1 {
+  margin-bottom: 0px;
+}
+
+#title-row h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0px;
+  padding-top: 2rem;
+}
+
+div#datepicker-widget {
+  padding-left: 15px !important;
+  padding-top: 0px !important;
+}
+
+#report {
+  padding-top: 1.75rem;
+  height: 6%;
+}
+
+#report h4, h5 {
+  display: inline;
+}
+
+#report h5 {
+  padding-left: 0.5rem;
+  font-family: 'Roboto Mono';
 }
 
 #gryphon-graph {
@@ -16,7 +41,6 @@ h3 {
 
 #revenue-graph {
   width: 100%;
-  margin-bottom: 20px;
 }
 
 #prev_next .btn {
@@ -27,18 +51,22 @@ h3 {
   opacity: 0.2;
 }
 
-#report {
-  height: 13%;
-}
- 
-#graph-row {
-  height: 40%;
-} 
-
-#revenue-graph-row {
-  height: 40%;
-}
 
 #title-row {
-  height: 7%;
+  height: 14% !important;
+}
+
+#main-content {
+  height: 80%;
+  padding-top: 3%;
+  padding-bottom: 7%;
+}
+
+#graph-row, #revenue-graph-row {
+  height: 50%;
+  padding-bottom: 3%;
+} 
+
+#main-content div.col-12 {
+  padding-left: 1rem;
 }

@@ -1,11 +1,17 @@
 function usdFormatter(v, axis) {
-    return "$" + v.toFixed(0);
+    padding = 4 - v.toString().length;
+    console.log(padding);
+
+    if (padding > 0) {
+      return "$" + v.toFixed(6);
+    } else {
+      return "$" + v.toFixed(6);
+    }
 }
 
 var data = [
-  {color: "#6CB885", data: trade_data['core']['bids']['prices'], label: "Core Bids", lines: {show: false}, points: {show: true, symbol: partial(point, 'core', 'bids', 0.7)}},
-  {color: "blue", data: trade_data['core']['asks']['prices'], label: "Core Asks", lines: {show: false}, points: {show: true, symbol: partial(point, 'core', 'asks', 0.7)}},
-  {color: "black", data: fundamental_values_data, label: "fundamental values", hoverable: false},
+  {color: "#6CB885", data: trade_data['core']['bids']['prices'], label: "Bids", lines: {show: false}, points: {show: true, symbol: partial(point, 'core', 'bids', 0.7)}},
+  {color: "blue", data: trade_data['core']['asks']['prices'], label: "Asks", lines: {show: false}, points: {show: true, symbol: partial(point, 'core', 'asks', 0.7)}},
 ];
   
 draw_main_graph = function() {
@@ -13,8 +19,11 @@ draw_main_graph = function() {
     data,
     {
       grid: {
+        labelMargin: 20,
         hoverable: true,
         markings: [],
+        margin: {right: 55,},
+        /*backgroundColor: '#EDEFF2',*/
       },
       series: {
         curvedLines: { active: true },
@@ -28,14 +37,31 @@ draw_main_graph = function() {
         mode: 'time',
         min: start_timestamp,
         max: end_timestamp,
+        showTickLabels: false,
+        font: {
+          'family': 'Roboto Mono',
+        },
       }],
-      yaxis: {
-        labelWidth: 30
-      },
       yaxes: [{
         tickFormatter: usdFormatter,
+        ticks: 4,
+       /* tickSize: 15,*/
+        font: {
+          'family': 'Roboto Mono',
+        },
       }],
-      legend: { position: 'sw' }
+      legend: {
+        position: 'se',
+        noColumns: 2,
+      },
+      watermark: {
+        opacity: 0.1,
+        mode: 'text',
+        position: 'sw',
+        text: 'BTC-USD TRADES',
+        font: '60px Arial',
+        margin: [50, 0],
+      },
   });
 
   $("<div id='tooltip'></div>").css({
@@ -95,6 +121,11 @@ draw_revenue_position_graph = function() {
       },
     ],
     {
+      grid: {
+        labelMargin: 20,
+        /*backgroundColor: '#EDEFF2',*/
+        margin: {},
+      },
       series: {
         curvedLines: { active: true },
         lines: {
@@ -105,27 +136,47 @@ draw_revenue_position_graph = function() {
         mode: 'time',
         min: start_timestamp,
         max: end_timestamp,
+        font: {
+          'family': 'Roboto Mono',
+        },
       }],
       yaxes: [{
-        tickFormatter: usdFormatter
+        tickFormatter: usdFormatter,
+        /*ticks: [-1000, 1000, 3000, 5000, 7000, 9000],*/
+        tickSize: 1500,
+        /*ticks: 4,*/
+        font: {
+          'family': 'Roboto Mono',
+        },
       },
       {
-        alignTicksWithAxis: 1,
+        /*alignTicksWithAxis: 1,*/
         position: "right",
         min: position_graph_min,
         max: position_graph_max,
-        labelWidth: 30
+        show: true,
+        labelWidth: 30,
+        font: {
+          'family': 'Roboto Mono',
+        },
       },
       ],
-      legend: { position: 'sw' }
+      legend: {
+        position: 'se',
+        noColumns: 2,
+      },
+      watermark: {
+        opacity: 0.1,
+        mode: 'text',
+        position: 'sw',
+        text: 'POSITION/P&L',
+        font: '60px Arial',
+        margin: [50, 0],
+      },
   });
 }
 
 $(document).ready(function() {
-  function usdFormatter(v, axis) {
-      return "$" + v.toFixed(0);
-  }
-
   draw_main_graph();
   draw_revenue_position_graph();
 });
