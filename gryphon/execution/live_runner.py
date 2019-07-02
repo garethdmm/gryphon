@@ -149,7 +149,7 @@ def get_strategy_class_from_filepath(strategy_path):
     from the current working directory to a .pyx file.
     """
 
-    module_path = strategy_path.replace('/', '.').replace('.pyx', '')
+    module_path = strategy_path.replace('/', '.').replace('.pyx', '').replace('.py', '')
 
     # Since in this case we're importing a file outside of the library, we have to
     # add our current directory to the python path.
