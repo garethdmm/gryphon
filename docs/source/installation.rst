@@ -95,6 +95,7 @@ The installation steps for OSX are the same as for ubuntu, but instead of aptitu
       
       brew install python@2
       brew install mysql
+      brew install libmemcached
       brew install memcached
 
 The rest of the steps are identical to those for Ubuntu 16.04.
