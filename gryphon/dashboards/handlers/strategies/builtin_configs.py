@@ -26,10 +26,10 @@ BUILTIN_STRAT_CONFIGS = {
     },
     'simple_mm': {
         'display_name': 'Simple Market Making',
-        'strategy_actor': 'SIMPLE_MM',
+        'strategy_actor': 'SIMPLEMARKETMAKING',
         'price_currency': 'USD',
         'volume_currency': 'BTC',
-        'base_point_radius': 10,
+        'base_point_radius': 100,
         'graph_volume_threshold': Decimal('0.00001'),
         'position_graph_max': Decimal('2'),
         'position_graph_min': Decimal('-2'),
