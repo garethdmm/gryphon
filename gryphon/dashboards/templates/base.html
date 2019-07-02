@@ -73,6 +73,11 @@
           vertical-align: middle;
           margin-right: 10px;
         }
+
+        div.dropdown-menu h5 {
+          line-height: 1.5;
+          padding-left: 0.75rem;
+        }
     </style>
 
     {% block title %}
@@ -92,18 +97,16 @@
               <li class="nav-item dropdown">
                 <a class='nav-link dropdown-toggle' href='#' data-toggle='dropdown' role='button'>Trading<span class="caret"></span></a>
                 <div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                  <h5>Builtin Strategies<h5>
+                  <h5>Builtin Strategies</h5>
                   <a class='dropdown-item' href="/strategies/manual">Manual</a>
                   <a class='dropdown-item' href="/strategies/multiexchange_linear">Multiexchange Linear BTC</a>
                   <a class='dropdown-item' href="/strategies/simple_arb">Simple Arbitrage</a>
                   <a class='dropdown-item' href="/strategies/simple_mm">Simple Market Making</a>
                   <div class='dropdown-divider'></div>
-                  <h5>Custom Strategies<h5>
+                  <h5>Custom Strategies</h5>
                     {% if len(args['custom_strategies']) > 0 %}
                       {% for url_name, config in args['custom_strategies'].items() %}
-                        <li role='presentation'>
-                          <a role='menuitem' tabindex='-1' href="/strategies/{{url_name}}">{{ config['display_name'] }}</a>
-                        </li>
+                          <a class='dropdown-item' href="/strategies/{{url_name}}">{{ config['display_name'] }}</a>
                       {% end %}
                     {% else %}
                       <!--<p class='empty-row'>Learn how to add your own strategies <a href='https://gryphon-framework.readthedocs.io/en/latest'>here</a>.</p>-->
