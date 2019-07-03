@@ -41,8 +41,9 @@ def get_a_mysql_session(creds):
     engine = sqlalchemy.create_engine(
         creds,
         echo=False,
-        pool_size=3,
-        pool_recycle=3600,
+
+        #pool_size=3,
+        #pool_recycle=3600,
     )
 
     session = scoped_session(sessionmaker(bind=engine))
