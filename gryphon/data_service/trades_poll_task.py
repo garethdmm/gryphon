@@ -22,7 +22,7 @@ class TradesPollTask(Task):
             'ITBIT': ItbitTrades(),
             'QUADRIGA': QuadrigaTrades(),
             'OKCOIN': OkcoinTrades(),
-            'GEMINI': GeminiTrades(),
+            'GEMINI_BTC_USD': GeminiTrades(),
             'BITFINEX': BitfinexTrades(),
             'COINBASE_BTC_USD': CoinbaseTrades(),
             'BITSTAMP_BTC_USD': BitstampTrades(),
