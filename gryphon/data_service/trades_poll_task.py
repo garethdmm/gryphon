@@ -16,17 +16,17 @@ from gryphon.data_service.task import Task
 class TradesPollTask(Task):
     def __init__(self, exchanges=[]):
         exchange_pollers = {
-            'KRAKEN': KrakenTrades(),
-            'KRAKEN_USD': KrakenUSDTrades(),
-            'KRAKEN_CAD': KrakenCADTrades(),
-            'ITBIT': ItbitTrades(),
-            'QUADRIGA': QuadrigaTrades(),
-            'OKCOIN': OkcoinTrades(),
-            'GEMINI': GeminiTrades(),
-            'BITFINEX': BitfinexTrades(),
+            'KRAKEN_BTC_EUR': KrakenTrades(),
+            'KRAKEN_BTC_USD': KrakenUSDTrades(),
+            'KRAKEN_BTC_CAD': KrakenCADTrades(),
+            'ITBIT_BTC_USD': ItbitTrades(),
+            'QUADRIGA_BTC_CAD': QuadrigaTrades(),
+            'OKCOIN_BTC_USD': OkcoinTrades(),
+            'GEMINI_BTC_USD': GeminiTrades(),
+            'BITFINEX_BTC_USD': BitfinexTrades(),
             'COINBASE_BTC_USD': CoinbaseTrades(),
             'BITSTAMP_BTC_USD': BitstampTrades(),
-            'COINBASE_CAD': CoinbaseCadTrades(),
+            'COINBASE_BTC_CAD': CoinbaseCadTrades(),
         }
 
         if exchanges:

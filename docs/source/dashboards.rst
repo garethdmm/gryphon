@@ -95,7 +95,7 @@ With all this set-up complete, you can run your dashboard server with this comma
 
     gryphon-dashboards
 
-Point your web browser at :code:`localhost:8000` and you should see this login screen:
+Point your web browser at :code:`localhost:8080` and you should see this login screen:
 
 .. image:: login_screen.png
    :width: 600
