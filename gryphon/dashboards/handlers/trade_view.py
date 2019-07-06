@@ -24,25 +24,32 @@ class TradeViewHandler(AdminBaseHandler, StartAndEndTimeMixin, ActiveExchangesMi
         start_timestamp = Delorean(start_time, 'UTC').epoch * 1000
         end_timestamp = Delorean(end_time, 'UTC').epoch * 1000
 
-        our_trades = self.get_our_trades(start_time, end_time)
+        if self.is_gds_connection_active():
+            gds_active = True
+            our_trades = self.get_our_trades(start_time, end_time)
 
-        trade_data_by_exchange = self.get_exchange_trades_for_period(
-            start_time,
-            end_time,
-            our_trades,
-        )
-
+            trade_data_by_exchange = self.get_exchange_trades_for_period(
+                start_time,
+                end_time,
+                our_trades,
+            )
+        else:
+            trade_data_by_exchange = {}
+            gds_active = False
+            
         self.render_template(
-            'trade_view.html',
-            args={
-                'active_exchanges': active_exchanges,
-                'trade_data_by_exchange': trade_data_by_exchange,
-                'start_timestamp': start_timestamp,
-                'end_timestamp': end_timestamp,
-                'highlight_ours': highlight_ours,
-                'show_sides': show_sides,
-            },
-        )
+                'trade_view.html',
+                args={
+                    'gds_active': gds_active,
+                    'active_exchanges': active_exchanges,
+                    'trade_data_by_exchange': trade_data_by_exchange,
+                    'start_timestamp': start_timestamp,
+                    'end_timestamp': end_timestamp,
+                    'highlight_ours': highlight_ours,
+                    'show_sides': show_sides,
+                },
+            )
+
 
     def get_our_trades(self, start_time, end_time):
         our_trades = self.trading_db.query(

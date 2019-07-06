@@ -10,6 +10,7 @@ var highlight_ours = {% raw json_encode(args['highlight_ours']) %}
 var show_sides = {% raw json_encode(args['show_sides']) %}
 var start_timestamp = {% raw json_encode(args.get('start_timestamp')) %};
 var end_timestamp = {% raw json_encode(args.get('end_timestamp')) %};
+var gds_active = {% raw json_encode(args.get('gds_active'))%}
 
 var symbol_alpha = 0.7;
 var symbol_line_width = 2;
@@ -215,7 +216,9 @@ redraw_graph = function(should_update_url) {
 }
 
 $(document).ready(function() {
-  redraw_graph(false);
+  if (gds_active == true) {
+    redraw_graph(false);
+  }
 
   $('#series-buttons button').click(function() {
     if ($(this).hasClass('btn-primary')) {
@@ -226,7 +229,9 @@ $(document).ready(function() {
       $(this).removeClass('btn-default');
     }
 
+    if (gds_active == true) {
     redraw_graph(true);
+  }
   });
 
   $('#highlight-ours-button').click(function() {
@@ -239,7 +244,9 @@ $(document).ready(function() {
     }
 
     highlight_ours = !highlight_ours;
+    if (gds_active == true) {
     redraw_graph(true);
+  }
   });
 
   $('#show-sides-button').click(function() {
@@ -252,7 +259,9 @@ $(document).ready(function() {
     }
 
     show_sides = !show_sides;
-    redraw_graph(true);
+    if (gds_active == true) {
+      redraw_graph(true);
+    }
   });
 
   // I don't actually know this is done in JS not just in regular html/css, but it
@@ -266,7 +275,8 @@ $(document).ready(function() {
     opacity: 0.80
   }).appendTo("body");
 
-  $("#trade-graph").bind("plothover", function (event, pos, item) {
+  if (gds_active) {
+    $("#trade-graph").bind("plothover", function (event, pos, item) {
     if (item) {
       // item.datapoint only has the graphable data (timestamp and price)
       // but it gives us access to the full series data
@@ -287,6 +297,7 @@ $(document).ready(function() {
       $("#tooltip").hide();
     }
   })
+  }
 });
 
 </script>
@@ -302,6 +313,11 @@ body, html {
 
 div.row.section-container {
   margin-top: 20px;
+}
+
+div#trade-graph.inactive {
+  border: 1px solid #000;
+  background: #f6f6f6;
 }
 
 </style>
@@ -320,7 +336,19 @@ div.row.section-container {
 </div>
 <div class='row h-75'>
   <div class='col d-flex flex-column'>
-    <div class='flex-grow-1' id='trade-graph'></div>
+    {% if args['gds_active'] is False %}
+      <div id='trade-graph' class='inactive'>
+        <div id='gds-error' class='row'>
+          <div class='col-md-5 col-md-offset-4'>
+            <h4>Gryphon couldn't find a connection to GDS.</h3>
+            <p>
+              This dashboard requires a connection to an active GDS databse.<br/>
+              <a href='https://gryphon-framework.readthedocs.io/en/latest/'>Read the docs</a> to learn how to set up and connect the gryphon data service.</p>
+          </div>
+        </div>
+    {% else %}
+      <div class='flex-grow-1' id='trade-graph'></div>
+    {% end %}
   </div>
 </div>
 <div class='row'>
