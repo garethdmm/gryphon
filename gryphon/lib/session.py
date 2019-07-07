@@ -38,13 +38,20 @@ def get_a_mysql_session(creds):
     import sqlalchemy
     from sqlalchemy.orm import scoped_session, sessionmaker
 
-    engine = sqlalchemy.create_engine(
-        creds,
-        echo=False,
+    if creds[:5] == "mysql":  # specific mysql optimisations
 
-        #pool_size=3,
-        #pool_recycle=3600,
-    )
+        engine = sqlalchemy.create_engine(
+            creds,
+            echo=False,
+            pool_size=3,
+            pool_recycle=3600,
+        )
+    else:  # sqlite should probably use simple defaults
+
+        engine = sqlalchemy.create_engine(
+            creds,
+            echo=False,
+        )
 
     session = scoped_session(sessionmaker(bind=engine))
 
