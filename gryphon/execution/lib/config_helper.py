@@ -93,6 +93,8 @@ def get_conf_file_configuration(conf_filename, strategy_name):
     if conf_filename is None:
         if strategy_name[-4:] == '.pyx':
             conf_filename = '%s.conf' % strategy_name[:-4]
+        elif strategy_name[-3:] == '.py':
+            conf_filename = '%s.conf' % strategy_name[:-3]
         else:
             conf_filename = '%s.conf' % strategy_name
 
