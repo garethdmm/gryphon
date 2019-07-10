@@ -98,7 +98,7 @@ class GeminiCoinbaseArbitrage(Strategy):
             self.harness.coinbase_btc_usd.market_order(cross.volume, 'ASK')
 ```
 
-Copy this code into a python file named 'arbitrage.py' in the same directory as your .env file, and you can run it in test mode with `gryphon-exe strategy arbitrage`.
+Copy this code into a python file named 'arbitrage.py' in the same directory as your .env file, and you can run it in test mode with `gryphon-exec strategy arbitrage`.
 
 Notice how much functionality is in play here: `gryphon-exec` sets up the environment that strategies run in and orchestrates the tick-by-tick operation, the exchange integrations for Coinbase and Gemini abstract away all the implementation details of working with those APIs into simple semantic function calls, and the arbitrage library simplifies some complex calculations into just two function calls.
 
