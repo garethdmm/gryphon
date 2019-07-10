@@ -4,3 +4,5 @@ global-include *.ini
 include gryphon/execution/migrations/versions/*.py
 include gryphon/data_service/migrations/versions/*.py
 include gryphon/dashboards/migrations/versions/*.py
+recursive-include gryphon/dashboards/templates/ *.html
+recursive-include gryphon/dashboards/static/ *.js *.css *.png *.ico
