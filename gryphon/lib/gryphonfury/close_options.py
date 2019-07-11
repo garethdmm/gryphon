@@ -4,7 +4,6 @@ exchanges and order types.
 """
 
 from gryphon.lib.exchange import exchange_factory
-from gryphon.lib.exchange.base import Exchange
 from gryphon.lib.gryphonfury import fees as fees_lib
 from gryphon.lib.gryphonfury import positions
 from gryphon.lib.gryphonfury import revenue as revenue_lib

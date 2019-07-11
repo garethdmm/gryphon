@@ -1,4 +1,3 @@
-from gryphon.lib.exchange.base import Exchange
 from gryphon.lib.exchange.consts import Consts
 from gryphon.lib.money import Money
 from gryphon.lib.metrics import quote as quote_lib

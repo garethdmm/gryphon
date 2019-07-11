@@ -8,7 +8,7 @@ import math
 import uuid
 import copy
 from gryphon.lib.money import Money
-from gryphon.lib.exchange.base import Exchange
+from gryphon.lib.exchange.exchange_api_wrapper import ExchangeAPIWrapper
 from gryphon.lib.exchange.exchange_order import Order
 from gryphon.lib.exchange.consts import Consts
 from gryphon.lib.models.exchange import Balance

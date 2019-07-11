@@ -11,7 +11,6 @@ from cdecimal import *
 import termcolor as tc
 
 from gryphon.execution.strategies.base import Strategy
-from gryphon.lib.exchange.base import Exchange
 from gryphon.lib.exchange.consts import Consts
 from gryphon.lib.exchange.exceptions import *
 from gryphon.lib.models.datum import Datum
