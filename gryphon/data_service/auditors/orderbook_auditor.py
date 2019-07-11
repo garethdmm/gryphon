@@ -15,7 +15,6 @@ from gryphon.data_service.auditors.auditor import Auditor
 import gryphon.data_service.util as util
 from gryphon.lib.dict_differ import DictDiffer
 from gryphon.lib.exchange import exchange_factory
-from gryphon.lib.exchange.base import Exchange
 from gryphon.lib.metrics import midpoint
 from gryphon.lib.models.emeraldhavoc.base import EmeraldHavocBase
 from gryphon.lib.models.emeraldhavoc.orderbook import Orderbook
