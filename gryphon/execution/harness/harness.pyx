@@ -269,6 +269,17 @@ class Harness(ConfigurableObject):
                 'magenta',
             )
 
+        self.log('Exchange positions:', color='magenta')
+
+        for exchange in self.auditable_exchanges:
+            position = exchange.exchange_account.position
+
+            self.log(
+                '  %s: %s',
+                (exchange.name, position),
+                'magenta',
+            )
+
         # We currently only support lines-of-credit for Bitcoin.
         if self.strategy.volume_currency == 'BTC' and False:
             btc_credit_limit = self.strategy.exchange.btc_credit_limit
