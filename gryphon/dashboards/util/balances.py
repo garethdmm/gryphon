@@ -34,7 +34,7 @@ def get_balance_time_series_from_audits(audits):
                 continue
 
             # convert to Money objects
-            for currency, balance_str in balance_data.iteritems():
+            for currency, balance_str in balance_data.items():
                 balance_data[currency] = Money.loads(balance_str)
 
             balance = Balance(balance_data)
@@ -103,7 +103,7 @@ def get_drift_from_audits(audits):
         if 'drift' in audit.data:
             data = json.loads(audit.data)
 
-            for currency, str_amount in data['drift'].iteritems():
+            for currency, str_amount in data['drift'].items():
                 drift_by_currency += Money.loads(str_amount)
 
     return drift_by_currency

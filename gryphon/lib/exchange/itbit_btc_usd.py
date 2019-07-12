@@ -438,7 +438,7 @@ class ItbitBTCUSDExchange(ExchangeAPIWrapper):
         return {'success': True}
 
     def withdraw_crypto_req(self, address, volume):
-        if not isinstance(address, basestring):
+        if not isinstance(address, str):
             raise TypeError('Withdrawal address must be a string')
 
         if not isinstance(volume, Money) or volume.currency != self.volume_currency:

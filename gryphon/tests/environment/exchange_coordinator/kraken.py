@@ -1,6 +1,6 @@
 """
 """
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=3)
 import os
 
 from gryphon.lib.exchange.kraken_btc_eur import KrakenBTCEURExchange

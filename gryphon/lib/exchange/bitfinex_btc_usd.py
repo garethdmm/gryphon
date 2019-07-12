@@ -90,13 +90,13 @@ class BitfinexBTCUSDExchange(ExchangeAPIWrapper):
         return self.all_trades_req()
 
     def trades_for_orders_resp(self, req, order_ids):
-        order_ids = [unicode(o) for o in order_ids]
+        order_ids = [str(o) for o in order_ids]
         trades = self.all_trades_resp(req)
 
         matching_trades = {}
 
         for trade in trades:
-            oid = unicode(trade['order_id'])
+            oid = str(trade['order_id'])
             if oid in order_ids:
                 if not oid in matching_trades:
                     matching_trades[oid] = []
@@ -262,7 +262,7 @@ class BitfinexBTCUSDExchange(ExchangeAPIWrapper):
         return self.trades_for_orders_req()
 
     def multi_order_details_resp(self, req, order_ids):
-        order_ids = [unicode(o) for o in order_ids]
+        order_ids = [str(o) for o in order_ids]
 
         multi_trades = self.trades_for_orders_resp(req, order_ids)
         data = {}
@@ -294,7 +294,7 @@ class BitfinexBTCUSDExchange(ExchangeAPIWrapper):
 
                     our_trades.append({
                         'time': int(float(t['timestamp'])),
-                        'trade_id': unicode(t['tid']),
+                        'trade_id': str(t['tid']),
                         'fee': fee,
                         'btc': btc_amount,
                         'fiat': usd_amount,
@@ -328,7 +328,7 @@ class BitfinexBTCUSDExchange(ExchangeAPIWrapper):
         return {'success': True}
 
     def withdraw_crypto_req(self, address, volume):
-        if not isinstance(address, basestring):
+        if not isinstance(address, str):
             raise TypeError('Withdrawal address must be a string')
 
         if not isinstance(volume, Money) or volume.currency != 'BTC':

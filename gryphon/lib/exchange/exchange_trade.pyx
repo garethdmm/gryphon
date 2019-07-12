@@ -18,7 +18,7 @@ class Trade(object):
             (self.volume, self.price, self.bid.order_id, self.ask.order_id))
 
     def __repr__(self):
-        return "<" + unicode(self) + ">"
+        return "<" + str(self) + ">"
     
     @property
     def trade_type(self):

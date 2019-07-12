@@ -11,7 +11,6 @@ backtesting. For this, you can write another harness (so long as it conforms to 
 interface), and reimplement the interface functions in a different way.
 """
 
-from sets import Set
 import termcolor as tc
 import time
 
@@ -227,7 +226,7 @@ class Harness(ConfigurableObject):
         This function simply attaches the date and colours to a log message, and then
         dispatches to the appropriate logger function.
         """
-        timestamp = unicode(Delorean().datetime.strftime('%d/%m/%y %H:%M:%S %Z'))
+        timestamp = str(Delorean().datetime.strftime('%d/%m/%y %H:%M:%S %Z'))
 
         result_string = u'[%s] (%s) %s' % (
             self.strategy.name if self.strategy else 'HARNESS_SETUP',

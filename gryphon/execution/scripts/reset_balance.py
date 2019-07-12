@@ -16,7 +16,7 @@ TODO: We need better language for the 'balance' field on the ExchangeData/Exchan
 account database object. It's really just a cache.
 """
 
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=3)
 
 import os
 import sys

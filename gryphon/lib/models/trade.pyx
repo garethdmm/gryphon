@@ -54,7 +54,7 @@ class Trade(Base):
     order_id = Column(Integer, ForeignKey('order.order_id'))
     
     def __init__(self, trade_type, price, fee,  volume, exchange_trade_id, order, meta_data={}):
-        self.unique_id = unicode(uuid.uuid4().hex)
+        self.unique_id = str(uuid.uuid4().hex)
         self.time_created = datetime.utcnow()
         self.trade_type = trade_type
         self.price = price
@@ -75,7 +75,7 @@ class Trade(Base):
         return json.dumps({
             'trade_id':self.trade_id,
             'trade_type':self.trade_type,
-            'time_created':unicode(self.time_created),
+            'time_created':str(self.time_created),
             'unique_id':self.unique_id,
             'exchange_trade_id':self.exchange_trade_id,
             'order_id':self.order_id,

@@ -27,7 +27,7 @@ class Result(Base):
     trades = relationship('ResultTrade', cascade="all,delete-orphan", backref='result')
     
     def __init__(self, usd, btc, trading_volume, algorithm, batch, ticks):
-        self.unique_id = unicode(uuid.uuid4().hex)
+        self.unique_id = str(uuid.uuid4().hex)
         self.time_created = datetime.utcnow()
         self.algorithm = algorithm
         self.batch = batch

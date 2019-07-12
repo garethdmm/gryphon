@@ -2,7 +2,7 @@
 This file tests the Balance class, which also tests for us the Position and Target
 classes, since they are just clones of Balance.
 """
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=3)
 
 import unittest
 import sure

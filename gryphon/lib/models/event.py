@@ -27,18 +27,18 @@ class Event(Base):
         self.time_created = datetime.utcnow()
         self.event_type = event_type
         self.exchange_name = exchange_name
-        self.unique_id = u'evt_%s' % unicode(uuid.uuid4().hex)
+        self.unique_id = u'evt_%s' % str(uuid.uuid4().hex)
         self.data = json.dumps(data)
         
     def __unicode__(self):
-        return unicode(repr(self))
+        return str(repr(self))
         
     def __repr__(self):
         return json.dumps({
             'event_type':self.event_type,
             'exchange':self.exchange_name,
             'data': json.loads(self.data),
-            'time_created': unicode(self.time_created),
+            'time_created': str(self.time_created),
         }, ensure_ascii=False)
 
 

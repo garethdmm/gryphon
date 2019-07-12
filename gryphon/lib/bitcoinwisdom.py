@@ -83,7 +83,7 @@ class BitcoinWisdom(object):
             step=self.determine_step(start_date, end_date),
         )
 
-        for k,v in periods.iteritems():
+        for k,v in periods.items():
             t=Delorean(k, 'UTC').datetime
             vol=v
             if t >= start_date and t < end_date:

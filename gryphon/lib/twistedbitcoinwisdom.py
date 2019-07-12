@@ -19,7 +19,7 @@ class TwistedBitcoinWisdom(BitcoinWisdom):
         from twisted.internet import defer
         total_volume = Money(0, 'BTC')
         periods = yield self.period(step=self.determine_step(start_date, end_date))
-        for k,v in periods.iteritems():
+        for k,v in periods.items():
             t=Delorean(k, 'UTC').datetime
             vol=v
             if t >= start_date and t < end_date:

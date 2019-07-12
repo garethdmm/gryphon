@@ -17,7 +17,7 @@ class OrderbookSnapshot(Base):
     time_retrieved = Column(DateTime, nullable=False)
  
     def __init__(self, data, time_retrieved):
-        self.unique_id = u'ord_%s' % unicode(uuid.uuid4().hex)
+        self.unique_id = u'ord_%s' % str(uuid.uuid4().hex)
         self.time_retrieved = time_retrieved
         self.data = data
         
@@ -27,5 +27,5 @@ class OrderbookSnapshot(Base):
     def __repr__(self):
         return json.dumps({
             'data': self.data,
-            'time_retrieved': unicode(self.time_retrieved),
+            'time_retrieved': str(self.time_retrieved),
         }, ensure_ascii=False)

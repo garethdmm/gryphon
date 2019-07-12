@@ -2,7 +2,7 @@
 Just a few exercises for the execution configuration helper library.
 """
 
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=3)
 import os
 import time
 import unittest
@@ -81,7 +81,7 @@ class TestConfiguration(unittest.TestCase):
         parsed = config_helper.parse_extra_strategy_args(extra_args)
 
         assert len(parsed.keys()) == 1
-        assert parsed.keys()[0] == 'spread'
+        assert list(parsed.keys())[0] == 'spread'
         assert parsed['spread'] == Decimal('0.01')
 
     def test_parse_extra_args_boolean(self):
@@ -90,7 +90,7 @@ class TestConfiguration(unittest.TestCase):
         parsed = config_helper.parse_extra_strategy_args(extra_args)
 
         assert len(parsed.keys()) == 1
-        assert parsed.keys()[0] == 'market_order'
+        assert list(parsed.keys())[0] == 'market_order'
         assert parsed['market_order'] == True
 
     def test_parse_extra_args_complex(self):

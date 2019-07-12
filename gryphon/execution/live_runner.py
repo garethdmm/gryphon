@@ -1,4 +1,4 @@
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=3)
 from cdecimal import Decimal
 import inspect
 import os

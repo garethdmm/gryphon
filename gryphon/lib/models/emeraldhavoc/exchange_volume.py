@@ -23,7 +23,7 @@ class ExchangeVolume(EmeraldHavocBase):
     _exchange_volume = Column('exchange_volume', Numeric(precision=20, scale=10))
 
     def __init__(self, exchange_volume, exchange, timestamp):
-        self.unique_id = unicode(uuid.uuid4().hex)
+        self.unique_id = str(uuid.uuid4().hex)
         self.time_created = datetime.utcnow()
         self.timestamp = timestamp
         self.exchange_volume = exchange_volume
@@ -39,7 +39,7 @@ class ExchangeVolume(EmeraldHavocBase):
     def to_json(self):
         return json.dumps({
             'exchange_volume_id': self.exchange_volume_id,
-            'time_created': unicode(self.time_created),
+            'time_created': str(self.time_created),
             'unique_id': self.unique_id,
             'exchange': self.exchange,
             'exchange_volume': self.exchange_volume

@@ -34,7 +34,7 @@ def calculate(algo, fundamental_value_balance_map):
 
     # Determine which exchanges should participate in the bid and which in the ask
     # and sum them up appropriately.
-    for exchange_name, exchange in fundamental_value_balance_map.iteritems():
+    for exchange_name, exchange in fundamental_value_balance_map.items():
         # You may sell if you have enough bitcoin to place an order and don't have
         # too much fiat.
         exchange_weight = conf.fv_v3_weights[algo.volume_currency][exchange_name]

@@ -62,7 +62,7 @@ class Transaction(Base):
     fee_buyback_transaction = relationship("Transaction", remote_side=[transaction_id], backref='fee_buyback_transactions')
     
     def __init__(self, transaction_type, transaction_status, amount, exchange, transaction_details, fee=None):
-        self.unique_id = unicode(uuid.uuid4().hex)
+        self.unique_id = str(uuid.uuid4().hex)
         self.time_created = datetime.utcnow()
         self.transaction_type = transaction_type
         self.transaction_status = transaction_status
@@ -84,7 +84,7 @@ class Transaction(Base):
             'transaction_id':self.transaction_id,
             'transaction_type':self.transaction_type,
             'transaction_status':self.transaction_status,
-            'time_created':unicode(self.time_created),
+            'time_created':str(self.time_created),
             'unique_id':self.unique_id,
             'exchange':self.exchange.name,
             'amount':self.amount,

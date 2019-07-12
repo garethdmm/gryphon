@@ -34,7 +34,7 @@ class Metric(AtlasZeroBase):
         self.value = value
 
     def __unicode__(self):
-        return unicode(repr(self))
+        return str(repr(self))
 
     def __repr__(self):
         d = {

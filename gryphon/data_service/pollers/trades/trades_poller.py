@@ -50,9 +50,9 @@ class TradesPoller(RequestPoller):
         for trade in trades:
             if trade['trade_id'] > self.most_recent_trade_id:
                 trade['price_currency'] = trade['price'].currency
-                trade['price'] = unicode(trade['price'].amount)
+                trade['price'] = str(trade['price'].amount)
                 trade['volume_currency'] = trade['volume'].currency
-                trade['volume'] = unicode(trade['volume'].amount)
+                trade['volume'] = str(trade['volume'].amount)
                 trade['timestamp'] = int(trade['timestamp'])
                 trade_string = json.dumps(trade, ensure_ascii=False)
                 self.producer.publish_message(trade_string)

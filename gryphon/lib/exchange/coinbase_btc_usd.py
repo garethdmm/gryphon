@@ -298,7 +298,7 @@ class CoinbaseBTCUSDExchange(ExchangeAPIWrapper):
         self.load_creds()
 
         req_method = req_method.upper()
-        timestamp = unicode(int(round(time.time())))
+        timestamp = str(int(round(time.time())))
 
         # This has already been dumped to json by req().
         body = request_args['data']
@@ -538,7 +538,7 @@ class CoinbaseBTCUSDExchange(ExchangeAPIWrapper):
                 raise exceptions.CancelOrderNotFoundError()
 
     def withdraw_crypto(self, address, volume):
-        if not isinstance(address, basestring):
+        if not isinstance(address, str):
             raise TypeError('Withdrawal address must be a string')
 
         if not isinstance(volume, Money) or volume.currency != 'BTC':

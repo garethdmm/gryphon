@@ -10,7 +10,7 @@ EmeraldHavocBase = declarative_base()
 metadata = EmeraldHavocBase.metadata
 
 def unicode_string(self):
-    return unicode(self).encode('utf-8')
+    return str(self).encode('utf-8')
 
 EmeraldHavocBase.__str__ == unicode_string   
 

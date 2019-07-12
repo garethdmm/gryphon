@@ -1,5 +1,5 @@
 from __future__ import with_statement
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=3)
 from alembic import context
 from sqlalchemy import engine_from_config, pool, create_engine
 from logging.config import fileConfig

@@ -1,7 +1,7 @@
 import csv
 from datetime import timedelta
 import gzip
-import StringIO
+from io import StringIO
 
 from delorean import epoch
 import requests

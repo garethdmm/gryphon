@@ -16,7 +16,7 @@ Usage:
         [--execute]
 """
 
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=3)
 
 import os
 

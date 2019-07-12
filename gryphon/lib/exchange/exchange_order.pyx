@@ -29,7 +29,7 @@ class Order(object):
             (self.type, self.exchange.name, self.volume, self.price, self.status, self.order_id))
 
     def __repr__(self):
-        return "<" + unicode(self) + ">"
+        return "<" + str(self) + ">"
 
     def __eq__(self, other):
         return (self.order_id == other.order_id and 

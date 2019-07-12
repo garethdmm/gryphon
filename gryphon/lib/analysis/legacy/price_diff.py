@@ -79,7 +79,7 @@ def price_diff_compare(fund_vals, fund_val_timestamps, alt_fund_vals, alt_fund_v
     diffs = {}
     current_alt = 0
     current_fund = 0
-    for ts, val in timeline.iteritems():
+    for ts, val in timeline.items():
         if 'alt' in val:
             current_alt = val['alt']
         if 'fund' in val:

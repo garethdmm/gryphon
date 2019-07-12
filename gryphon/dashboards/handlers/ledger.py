@@ -261,7 +261,7 @@ class LedgerHandler(AdminBaseHandler, StartAndEndTimeMixin):
             entry['date'] = date
             entry['details'] = ''.join([
                 '%s:%s ' % (k, v)
-                for k, v in transaction.transaction_details.iteritems()
+                for k, v in transaction.transaction_details.items()
                 if k in ['external_transaction_id', 'notes'] and v not in ['xxx']
             ])
 

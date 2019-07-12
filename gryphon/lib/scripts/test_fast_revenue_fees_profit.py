@@ -3,7 +3,7 @@ Test script for the new fast revenue function. Runs both revenue functions on a
 random period and checks their results are the same.
 """
 
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=3)
 
 from cdecimal import *
 from datetime import datetime, timedelta

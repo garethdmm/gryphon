@@ -13,7 +13,7 @@ import tornadotoad
 from gryphon.lib import environment
 environment.load_environment_variables()
 
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=3)
 import gryphon.lib; gryphon.lib.prepare()
 
 from gryphon.dashboards.routes import url_patterns

@@ -50,7 +50,7 @@ def get_db_balances(exchanges):
 
 def format_balances(exchange_balances, db_balances):
     output_string = u"\n{0:15} : {1:15} | {2:15} || {3:15} | {4:15}\n".format("Balances", "FIAT", "BTC", "dbFIAT", "dbBTC")
-    for name, balance in sorted(exchange_balances.iteritems()):
+    for name, balance in sorted(exchange_balances.items()):
         db_balance = db_balances[name]
         chunk = u"{0:15} : {1:15} | {2:15.8f} || {3:15} | {4:15.8f}\n".format(
             name,
