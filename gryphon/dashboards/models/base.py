@@ -5,7 +5,7 @@ Base = declarative_base()
 metadata = Base.metadata
 
 def unicode_string(self):
-    return unicode(self).encode('utf-8')
+    return str(self).encode('utf-8')
 
 Base.__str__ == unicode_string   
 

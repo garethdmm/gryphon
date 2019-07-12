@@ -24,7 +24,7 @@ balance_url = 'https://www.bitstamp.net/api/v2/balance/'
 
 
 def construct_payload():
-    nonce = unicode(int(round(time.time() * 1000)))
+    nonce = str(int(round(time.time() * 1000)))
     message = nonce + CLIENT_ID + API_KEY
     sig = hmac.new(SECRET, msg=message, digestmod=hashlib.sha256).hexdigest().upper()
 

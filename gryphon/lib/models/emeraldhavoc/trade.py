@@ -39,7 +39,7 @@ class Trade(EmeraldHavocBase):
     )
 
     def __init__(self, price, volume, exchange, timestamp, exchange_trade_id, source='EXCHANGE'):
-        self.unique_id = unicode(uuid.uuid4().hex)
+        self.unique_id = str(uuid.uuid4().hex)
         self.time_created = datetime.utcnow()
         self.timestamp = timestamp
         self.price = price
@@ -58,7 +58,7 @@ class Trade(EmeraldHavocBase):
     def to_json(self):
         return json.dumps({
             'trade_id':self.trade_id,
-            'timestamp':unicode(self.timestamp),
+            'timestamp':str(self.timestamp),
             'unique_id':self.unique_id,
             'exchange':self.exchange,
             'price':self.price,
@@ -72,7 +72,7 @@ class Trade(EmeraldHavocBase):
     @volume.setter
     def volume(self, value):
         self._volume = value.amount
-        self._volume_currency = unicode(value.currency)
+        self._volume_currency = str(value.currency)
 
     @property
     def price(self):
@@ -81,4 +81,4 @@ class Trade(EmeraldHavocBase):
     @price.setter
     def price(self, value):
         self._price = value.amount
-        self._price_currency = unicode(value.currency)
+        self._price_currency = str(value.currency)

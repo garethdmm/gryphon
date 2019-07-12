@@ -140,7 +140,7 @@ class GryphonStatusHandler(AdminBaseHandler):
             system_balance += e.exchange_account_db_object(self.trading_db).balance
 
         total_fiat = sum([
-            balance.to("USD") for currency, balance in system_balance.iteritems()
+            balance.to("USD") for currency, balance in system_balance.items()
             if currency not in Money.CRYPTO_CURRENCIES
         ])
 

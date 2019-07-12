@@ -6,7 +6,7 @@ Usage:
     gryphon-exec run-migrations [GDS | TRADING | DASHBOARD] [--execute]
 """
 
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=3)
 
 import logging
 import os

@@ -1,7 +1,7 @@
 """
 Just a few exercises for our configuration library.
 """
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=3)
 import os
 import time
 

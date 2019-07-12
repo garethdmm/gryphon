@@ -91,7 +91,7 @@ def manual_accounting(exchange_name, order_id, actor, execute=False):
 
         old_balance = exchange_data.balance[exchange.volume_currency]
 
-        for currency_code, position in position_change.iteritems():
+        for currency_code, position in position_change.items():
             exchange_data.position[currency_code] += position
             exchange_data.balance[currency_code] += position
 

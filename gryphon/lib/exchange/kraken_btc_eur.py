@@ -147,7 +147,7 @@ class KrakenBTCEURExchange(ExchangeAPIWrapper):
                 'fiat_fee': Money(0, self.currency),
             }
 
-        for ledger_id, entry in entries.iteritems():
+        for ledger_id, entry in entries.items():
             trade_id = entry['refid']
 
             if trade_id not in trade_ids:
@@ -263,7 +263,7 @@ class KrakenBTCEURExchange(ExchangeAPIWrapper):
         count = int(response['count'])
         closed_orders = []
 
-        for order_id, raw_order in response['closed'].iteritems():
+        for order_id, raw_order in response['closed'].items():
             raw_order['order_id'] = order_id
             closed_orders.append(raw_order)
 
@@ -288,7 +288,7 @@ class KrakenBTCEURExchange(ExchangeAPIWrapper):
         endpoint = url.replace(self.base_url, '')
         endpoint = '/0' + endpoint
 
-        nonce = unicode(int(round(time.time() * 1000)))
+        nonce = str(int(round(time.time() * 1000)))
 
         try:
             payload = request_args['data']
@@ -374,8 +374,8 @@ class KrakenBTCEURExchange(ExchangeAPIWrapper):
                 'pair': self.pair,
                 'type': mode,
                 'ordertype': 'limit',
-                'price': unicode(price.amount),
-                'volume': unicode(volume.amount),
+                'price': str(price.amount),
+                'volume': str(volume.amount),
             }
 
         except AttributeError:
@@ -387,7 +387,7 @@ class KrakenBTCEURExchange(ExchangeAPIWrapper):
         response = self.resp(req)
 
         try:
-            return {'success': True, 'order_id': unicode(response['txid'][0])}
+            return {'success': True, 'order_id': str(response['txid'][0])}
         except KeyError:
             raise exceptions.ExchangeAPIErrorException(
                 self,
@@ -405,7 +405,7 @@ class KrakenBTCEURExchange(ExchangeAPIWrapper):
         try:
             raw_open_orders = response['open']
 
-            for order_id, raw_order in raw_open_orders.iteritems():
+            for order_id, raw_order in raw_open_orders.items():
                 if raw_order['status'] == 'open':
                     mode = self._order_mode_to_const(raw_order['descr']['type'])
                     volume = Money(raw_order['vol'], 'BTC')
@@ -443,7 +443,7 @@ class KrakenBTCEURExchange(ExchangeAPIWrapper):
         return self.get_multi_order_details_resp(req, order_ids)
  
     def get_multi_order_details_req(self, order_ids):
-        order_ids = [unicode(o) for o in order_ids]
+        order_ids = [str(o) for o in order_ids]
 
         payload = {
             'trades': True,
@@ -482,7 +482,7 @@ class KrakenBTCEURExchange(ExchangeAPIWrapper):
                         closetm,
                     )
 
-                    for t_id, t in trades.iteritems():
+                    for t_id, t in trades.items():
                         fiat = abs(t['fiat'])
                         btc = abs(t['btc'])
 
@@ -504,7 +504,7 @@ class KrakenBTCEURExchange(ExchangeAPIWrapper):
 
                         our_trades.append({
                             'time': int(t['time']),
-                            'trade_id': unicode(t_id),
+                            'trade_id': str(t_id),
                             'fee': fee,
                             'btc': btc,
                             'fiat': fiat,
@@ -522,7 +522,7 @@ class KrakenBTCEURExchange(ExchangeAPIWrapper):
 
     def cancel_order_req(self, order_id):
         payload = {
-            'txid': unicode(order_id),
+            'txid': str(order_id),
         }
 
         return self.req('post', '/private/CancelOrder', data=payload)
@@ -539,7 +539,7 @@ class KrakenBTCEURExchange(ExchangeAPIWrapper):
             )
 
     def withdraw_crypto_req(self, address, volume):
-        if not isinstance(address, basestring):
+        if not isinstance(address, str):
             raise TypeError('Withdrawal address must be a string')
 
         if self.volume_currency != 'BTC':
@@ -554,12 +554,12 @@ class KrakenBTCEURExchange(ExchangeAPIWrapper):
         # find the corresponding exchange name, which we then pass to Kraken.
         deposit_addresses = {
             name: addr
-            for name, addr in os.environ.iteritems() if '_DEPOSIT_ADDRESS' in name
+            for name, addr in os.environ.items() if '_DEPOSIT_ADDRESS' in name
         }
 
         address_to_name_map = {
             addr: name.replace('_DEPOSIT_ADDRESS', '')
-            for name, addr in deposit_addresses.iteritems()
+            for name, addr in deposit_addresses.items()
         }
 
         try:

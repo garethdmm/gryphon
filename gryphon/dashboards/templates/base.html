@@ -170,7 +170,7 @@
                         <li class="dropdown-header"><h4>Ledgers</h4></li>
                         <li class='divider'></li>
                         {% if len(args['exchanges']) > 0 %}
-                          {% for key, name in args['exchanges'].iteritems() %}
+                          {% for key, name in args['exchanges'].items() %}
                             <li role='presentation'>
                               {% set url = "/ledger/%s" % key %}
                               <a role='menuitem' tabindex='-1' href="{{ url }}">{{ name }}</a>

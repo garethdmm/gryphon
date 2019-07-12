@@ -2,7 +2,7 @@
 Some simple tests for the Multiexchange Linear Market Making strategy.
 """
 
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=3)
 
 import unittest
 

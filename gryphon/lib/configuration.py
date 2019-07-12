@@ -4,8 +4,8 @@ A library that makes it easy to read from .conf files.
 
 import argparse
 from collections import defaultdict
-import ConfigParser
-import StringIO
+import configparser
+from io import StringIO
 
 from cdecimal import Decimal, InvalidOperation
 
@@ -19,7 +19,7 @@ def read_config_from_file(config_filename):
 
     Section titles of the form [x:y] are parsed into sub-dictionaries under the key x.
     """
-    parser = ConfigParser.RawConfigParser()
+    parser = configparser.RawConfigParser()
     parser.read(config_filename)
 
     configuration = parse_sections(parser)
@@ -31,8 +31,8 @@ def _get_parser_for_string_config(string_config):
     """
     This should only be used for unit testing.
     """
-    buf = StringIO.StringIO(string_config)
-    parser = ConfigParser.ConfigParser()
+    buf = StringIO(string_config)
+    parser = configparser.ConfigParser()
     parser.readfp(buf)
 
     return parser
@@ -112,6 +112,6 @@ def dict_update_override(dicta, dictb):
         iii) does override a valid value in a with a valid value from b
     """
     dicta.update(
-        {k: v for k, v in dictb.iteritems() if v or (k not in dicta)}
+        {k: v for k, v in dictb.items() if v or (k not in dicta)}
     )
 

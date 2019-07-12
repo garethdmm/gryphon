@@ -1,4 +1,4 @@
-import ConfigParser
+import configparser
 from delorean import Delorean
 import pickle
 import random

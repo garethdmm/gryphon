@@ -2,7 +2,7 @@
 Test an exchange's authenticated endpoints that don't make any modifying calls.
 """
 
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=3)
 import gryphon.lib; gryphon.lib.prepare()
 
 import logging

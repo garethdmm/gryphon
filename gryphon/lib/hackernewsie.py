@@ -27,7 +27,7 @@ def get_hn_breaking_news(keywords={'bitcoin': 3, 'bitstamp': 0}):
 
         one_day_ago = Delorean().last_day(1).epoch
 
-        for keyword, upvote_threshold in keywords.iteritems():
+        for keyword, upvote_threshold in keywords.items():
             # We quote the keywords so they don't match things that are close
             # Prompted by Bitcoin matching Ditchin (https://news.ycombinator.com/item?id=10850368)
             keyword = '"%s"' % keyword

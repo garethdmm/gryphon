@@ -14,7 +14,7 @@ The rule is:
   3) At no point is there a any guarantee a setting is in the configuration object.
 """
 
-import ConfigParser
+import configparser
 import argparse
 
 from cdecimal import Decimal, InvalidOperation

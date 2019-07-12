@@ -220,7 +220,7 @@ def check_spreads_are_normal(db):
 
     sanity = True
 
-    for exchange_name, fv in native_fvs.iteritems():
+    for exchange_name, fv in native_fvs.items():
         if abs(fv - current_core_fv) > INTER_EXCHANGE_SPREAD_THRESHOLD:
             sanity = False
             break

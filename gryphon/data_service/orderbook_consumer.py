@@ -1,4 +1,4 @@
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=3)
 import json
 import os
 import subprocess

@@ -11,7 +11,7 @@ metadata = AtlasZeroBase.metadata
 
 
 def unicode_string(self):
-    return unicode(self).encode('utf-8')
+    return str(self).encode('utf-8')
 
 AtlasZeroBase.__str__ == unicode_string
 

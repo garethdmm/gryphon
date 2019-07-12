@@ -61,7 +61,7 @@ class Cross(object):
     def profit(self):
         return self.revenue - self.fees
 
-    def __nonzero__(self):
+    def __bool__(self):
         """
         A cross is falsy if there is no overlap volume.
         """

@@ -2,7 +2,7 @@
 Tests for gryphon.execution.auditing.
 """
 
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=3)
 import gryphon.lib; gryphon.lib.prepare()
 
 import unittest

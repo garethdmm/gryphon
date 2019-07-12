@@ -55,7 +55,7 @@ class Liability(Base):
     _details = Column('details', UnicodeText(length=2**31))
 
     def __init__(self, amount, liability_type, entity_name, time_started=None, time_repayed=None, details=None):
-        self.unique_id = unicode(uuid.uuid4().hex)
+        self.unique_id = str(uuid.uuid4().hex)
         self.time_created = datetime.utcnow()
 
         self.amount = amount
@@ -81,12 +81,12 @@ class Liability(Base):
         return json.dumps({
             'liability_id': self.liability_id,
             'unique_id': self.unique_id,
-            'time_created': unicode(self.time_created),
+            'time_created': str(self.time_created),
             'amount': self.amount,
             'liability_type': self.liability_type,
             'entity_name': self.entity_name,
-            'time_started': unicode(self.time_started),
-            'time_repayed': unicode(self.time_repayed),
+            'time_started': str(self.time_started),
+            'time_repayed': str(self.time_repayed),
             'details': self.details,
         }, ensure_ascii=False)
 

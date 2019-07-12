@@ -23,15 +23,15 @@ class Ticker(Base):
     def __init__(self, exchange, data):
         self.time_retrieved = datetime.utcnow()
         self.exchange = exchange
-        self.unique_id = u'tkr_%s' % unicode(uuid.uuid4().hex)
+        self.unique_id = u'tkr_%s' % str(uuid.uuid4().hex)
         self.data = json.dumps(data)
         
     def __unicode__(self):
-        return unicode(repr(self))
+        return str(repr(self))
         
     def __repr__(self):
         return json.dumps({
             'exchange':self.exchange,
             'data': self.data,
-            'time_retrieved': unicode(self.time_retrieved),
+            'time_retrieved': str(self.time_retrieved),
         }, ensure_ascii=False)

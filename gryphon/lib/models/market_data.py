@@ -66,7 +66,7 @@ class MarketData(Base):
         self.ticker_symbol = ticker_symbol
    
     def __str__(self):
-        return unicode(self)
+        return str(self)
  
     def __unicode__(self):
         return '%s,%s,%s,%s,%s,%s,%s' % (

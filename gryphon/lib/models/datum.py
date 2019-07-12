@@ -31,17 +31,17 @@ class Datum(Base):
         self.datum_type = datum_type
         self.numeric_value = numeric_value
         self.string_value = string_value
-        self.unique_id = u'dat_%s' % unicode(uuid.uuid4().hex)
+        self.unique_id = u'dat_%s' % str(uuid.uuid4().hex)
         self.meta_data = json.dumps(meta_data)
         self.order = order
 
     def __unicode__(self):
-        return unicode(repr(self))
+        return str(repr(self))
 
     def __repr__(self):
         d = {
             'datum_type': self.datum_type,
-            'time_created': unicode(self.time_created),
+            'time_created': str(self.time_created),
             'meta_data': json.loads(self.meta_data),
         }
         if self.numeric_value:

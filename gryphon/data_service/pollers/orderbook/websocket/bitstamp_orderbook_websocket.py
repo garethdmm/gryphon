@@ -211,26 +211,26 @@ class BitstampOrderbookWebsocket(EmeraldWebSocketClientProtocol, WebsocketOrderb
         # Remove the 0 volumes from the orderbook.
         self.orderbook['bids'].update(bids_changes)
 
-        for k, v in self.orderbook['bids'].iteritems():
+        for k, v in self.orderbook['bids'].items():
             if v == "0":
                 self.orderbook['bids'].pop(k)
 
         # Re-sort the bids.
         self.orderbook['bids'] = OrderedDict(sorted(
-            self.orderbook['bids'].iteritems(),
+            self.orderbook['bids'].items(),
             key=lambda (k, v): float(k),
             reverse=True,
         ))
 
         self.orderbook['asks'].update(asks_changes)
 
-        for k, v in self.orderbook['asks'].iteritems():
+        for k, v in self.orderbook['asks'].items():
             if v == "0":
                 self.orderbook['asks'].pop(k)
 
         # Re-sort the asks.
         self.orderbook['asks'] = OrderedDict(
-            sorted(self.orderbook['asks'].iteritems(), key=lambda (k, v): float(k)),
+            sorted(self.orderbook['asks'].items(), key=lambda (k, v): float(k)),
         )
 
     def parse_orders(self, orders):
@@ -247,7 +247,7 @@ class BitstampOrderbookWebsocket(EmeraldWebSocketClientProtocol, WebsocketOrderb
         price_key_orderbook = self.orderbook
 
         return {
-            'bids': [[k, v, ''] for k, v in price_key_orderbook['bids'].iteritems()],
-            'asks': [[k, v, ''] for k, v in price_key_orderbook['asks'].iteritems()],
+            'bids': [[k, v, ''] for k, v in price_key_orderbook['bids'].items()],
+            'asks': [[k, v, ''] for k, v in price_key_orderbook['asks'].items()],
         }
 

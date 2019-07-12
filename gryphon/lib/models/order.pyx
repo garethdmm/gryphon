@@ -56,7 +56,7 @@ class Order(Base, BasicOrder):
     
     def __init__(self, actor, mode, volume, price, exchange, exchange_order_id):
         self.status = self.OPEN
-        self.unique_id = unicode(uuid.uuid4().hex)
+        self.unique_id = str(uuid.uuid4().hex)
         self.time_created = datetime.utcnow()
 
         assert actor and price and volume and exchange and mode
@@ -80,8 +80,8 @@ class Order(Base, BasicOrder):
             'order_id':self.order_id,
             'unique_id':self.unique_id,
             'exchange_order_id':self.exchange_order_id,
-            'time_created':unicode(self.time_created),
-            'time_executed':unicode(self.time_executed),
+            'time_created':str(self.time_created),
+            'time_executed':str(self.time_executed),
             'exchange':self.exchange.name,
             'status':self.status,
             'order_type': self.order_type,

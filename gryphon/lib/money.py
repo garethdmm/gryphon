@@ -16,7 +16,7 @@ class Money(super_money.Money):
     CURRENCIES = FIAT_CURRENCIES + CRYPTO_CURRENCIES
 
     def __init__(self, amount="0", currency=None):
-        if isinstance(amount, basestring):
+        if isinstance(amount, str):
             amount = amount.replace(",", "")
 
         try:
