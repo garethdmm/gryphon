@@ -7,6 +7,7 @@ import uuid
 
 from decimal import *
 from delorean import epoch
+from six import text_type
 from sqlalchemy import ForeignKey, Column, Integer, Unicode, DateTime, UnicodeText, Numeric, Index
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
@@ -24,7 +25,7 @@ metadata = Base.metadata
 
 class Order(Base, BasicOrder):
     __tablename__ = 'order'
-    
+
     order_id = Column(Integer, primary_key=True)
     status = Column(Unicode(32), nullable=False)
     order_type = Column(Unicode(64))
@@ -32,7 +33,7 @@ class Order(Base, BasicOrder):
     exchange_order_id = Column(Unicode(64))
     actor = Column(Unicode(64))
     exchange_rate = Column(Numeric(precision=20, scale=10))
-    
+
     time_created = Column(DateTime, nullable=False)
     time_executed = Column(DateTime)
 
@@ -47,16 +48,16 @@ class Order(Base, BasicOrder):
     _competitiveness_currency = Column('competitiveness_currency', Unicode(3))
     _spread = Column('spread', Numeric(precision=20, scale=10))
     _spread_currency = Column('spread_currency', Unicode(3))
-    
+
     trades = relationship('Trade', cascade="all,delete-orphan", backref='order')
     datums = relationship("Datum",  backref='order')
-    
+
     __table_args__ = (Index('idx_exchange_order_id_exchange_name', exchange_order_id, _exchange_name),
                       Index('idx_status', status),)
-    
+
     def __init__(self, actor, mode, volume, price, exchange, exchange_order_id):
         self.status = self.OPEN
-        self.unique_id = unicode(uuid.uuid4().hex)
+        self.unique_id = text_type(uuid.uuid4().hex)
         self.time_created = datetime.utcnow()
 
         assert actor and price and volume and exchange and mode
@@ -71,7 +72,7 @@ class Order(Base, BasicOrder):
     def __unicode__(self):
         return u'[ORDER:%s:%s] Status:%s, Price:%s, Volume:%s BTC' % (
             self.order_type, self.exchange.name, self.status, self.price, self.volume)
-        
+
     def __repr__(self):
         return self.to_json()
 
@@ -80,8 +81,8 @@ class Order(Base, BasicOrder):
             'order_id':self.order_id,
             'unique_id':self.unique_id,
             'exchange_order_id':self.exchange_order_id,
-            'time_created':unicode(self.time_created),
-            'time_executed':unicode(self.time_executed),
+            'time_created':text_type(self.time_created),
+            'time_executed':text_type(self.time_executed),
             'exchange':self.exchange.name,
             'status':self.status,
             'order_type': self.order_type,
@@ -154,13 +155,13 @@ class Order(Base, BasicOrder):
             return self._exchange
         else:
             return None
-        
+
     @exchange.setter
     def exchange(self, value):
         self._exchange = value
         self._exchange_name = self._exchange.name
-    
-    
+
+
     @property
     def volume(self):
         if not self._volume:
@@ -171,7 +172,7 @@ class Order(Base, BasicOrder):
     def volume(self, value):
         self._volume = value.amount
         self._volume_currency = value.currency
-    
+
     @property
     def price(self):
         if not self._price:
@@ -213,7 +214,7 @@ class Order(Base, BasicOrder):
     def spread(self, value):
         self._spread = value.amount
         self._spread_currency = value.currency
-    
+
     @property
     def volume_filled(self):
         return sum([t.volume for t in self.trades], Money("0", self._volume_currency))

@@ -1,5 +1,5 @@
 from __future__ import with_statement
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 from logging.config import fileConfig
 
 from alembic import context

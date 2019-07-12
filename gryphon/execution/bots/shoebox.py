@@ -301,7 +301,7 @@ def manual_btc_withdrawals(db):
 
     logger.info('Running manual BTC withdrawals')
 
-    for name, target in MANUAL_BTC_EXCHANGES.iteritems():
+    for name, target in MANUAL_BTC_EXCHANGES.items():
         exchange_db = exchange_factory.make_exchange_data_from_key(name, db)
         if exchange_db.balance['BTC'] > target:
             withdrawal_amount = exchange_db.balance['BTC'] - target

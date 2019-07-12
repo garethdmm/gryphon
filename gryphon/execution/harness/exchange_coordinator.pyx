@@ -13,9 +13,7 @@ it makes sure that our database does not get out of sync with our our account wi
 exchange.
 """
 
-import pyximport; pyximport.install()
-
-from sets import Set
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 
 from cdecimal import Decimal, ROUND_UP, ROUND_DOWN
 from delorean import Delorean
@@ -62,7 +60,7 @@ class ExchangeCoordinator(object):
         # or audit() for this exchange. Potentially, we could make this even less
         # strict, setting this to False whenever there are no orders left on the books.
         self.is_active = False
-  
+
         """
         This actually means that we won't audit in no-execute mode.
         We do want audits to take place even if nothing has happened... hmm...
@@ -81,9 +79,9 @@ class ExchangeCoordinator(object):
     @tick_profile
     def _get_current_orders(self, exchange_open_orders):
         db_open_orders = self._get_db_open_orders()
-        db_open_order_ids = Set([o.exchange_order_id for o in db_open_orders])
+        db_open_order_ids = set([o.exchange_order_id for o in db_open_orders])
 
-        exchange_open_order_ids = Set([o['id'] for o in exchange_open_orders])
+        exchange_open_order_ids = set([o['id'] for o in exchange_open_orders])
         eaten_order_ids = db_open_order_ids - exchange_open_order_ids
         current_order_ids = db_open_order_ids & exchange_open_order_ids
 
@@ -144,7 +142,7 @@ class ExchangeCoordinator(object):
             )[0]
 
             # Partially filled.
-            if (current_order_from_exchange['volume_remaining'] 
+            if (current_order_from_exchange['volume_remaining']
                     < current_order_from_db.volume_remaining):
 
                 details_result = self.get_multi_order_details(
@@ -225,8 +223,8 @@ class ExchangeCoordinator(object):
     def update_position(self, position_change, position_change_no_fees):
         """
         Formerly harness:update_position.
-        """ 
-        for currency_code, position in position_change.iteritems():
+        """
+        for currency_code, position in position_change.items():
             self.exchange_account.position[currency_code] += position
             self.exchange_account.balance[currency_code] += position
 
@@ -315,7 +313,7 @@ class ExchangeCoordinator(object):
                 '1',
                 self.exchange_wrapper.currency,
             ).to('USD').amount
-  
+
             if extra_data:
                 order.datums = self._create_datums_from_extra_data(extra_data)
 
@@ -507,7 +505,7 @@ class ExchangeCoordinator(object):
             self.reopen_orders(e.exchange, failed_order_ids)
 
             # There aren't any open orders because we're in an audit.
-            eaten_order_ids, current_orders = self._get_current_orders([])  
+            eaten_order_ids, current_orders = self._get_current_orders([])
             self._run_accounting(eaten_order_ids, current_orders)
 
             # Now we retry the original audit. If it fails again this will cause a

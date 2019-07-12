@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
+from six import text_type
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 metadata = Base.metadata
 
 def unicode_string(self):
-    return unicode(self).encode('utf-8')
+    return text_type(self).encode('utf-8')
 
-Base.__str__ == unicode_string   
+Base.__str__ == unicode_string
 
 
 # How to migrate a database

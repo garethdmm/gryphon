@@ -4,6 +4,7 @@ import json
 import uuid
 
 from cdecimal import Decimal
+from six import text_type
 from sqlalchemy import ForeignKey, Column, Integer, Unicode, DateTime, UnicodeText, Numeric
 
 from gryphon.lib.models.base import Base
@@ -31,17 +32,17 @@ class Datum(Base):
         self.datum_type = datum_type
         self.numeric_value = numeric_value
         self.string_value = string_value
-        self.unique_id = u'dat_%s' % unicode(uuid.uuid4().hex)
+        self.unique_id = u'dat_%s' % text_type(uuid.uuid4().hex)
         self.meta_data = json.dumps(meta_data)
         self.order = order
 
     def __unicode__(self):
-        return unicode(repr(self))
+        return text_type(repr(self))
 
     def __repr__(self):
         d = {
             'datum_type': self.datum_type,
-            'time_created': unicode(self.time_created),
+            'time_created': text_type(self.time_created),
             'meta_data': json.loads(self.meta_data),
         }
         if self.numeric_value:

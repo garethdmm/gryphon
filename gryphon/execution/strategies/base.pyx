@@ -1,4 +1,3 @@
-import ConfigParser
 from delorean import Delorean
 import pickle
 import random
@@ -41,7 +40,7 @@ class Strategy(ConfigurableObject):
 
         # Exchanges that the strategy declares it's interested in up-front. It's
         # convenient to have these at startup sometimes.
-        self.target_exchanges = []  
+        self.target_exchanges = []
 
         if strategy_configuration:
             self.configure(strategy_configuration)
@@ -99,8 +98,8 @@ class Strategy(ConfigurableObject):
         Use it for things that aren't mission-critical, like to make log messages nice.
         """
         return self.__class__.__name__
-   
-    @property 
+
+    @property
     def position(self):
         if self._position is not None:
             return self._position

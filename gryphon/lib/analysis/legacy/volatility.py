@@ -339,15 +339,15 @@ def volatility(values, timestamps, window_time=10000):
         for j in range(len(timestamps)):
             index = j+i
             if index > len(timestamps)-1:
-                break 
+                break
             elif noted_timestamp - timestamps[index] < window_time:
                 relevant_values.append(values[index])
                 relevant_timestamps.append(noted_timestamp - timestamps[index])
             else:
                 break
-        
-        standard_deviation = np.std(relevant_values)
-        mean = np.mean(relevant_values)
+
+        standard_deviation = numpy.std(relevant_values)
+        mean = numpy.mean(relevant_values)
         #volatility = Decimal(standard_deviation)/Decimal(mean)
         vols.append(standard_deviation)
     vols.reverse()

@@ -2,6 +2,8 @@ from collections import defaultdict
 
 from sqlalchemy import func
 
+#from gryphon.lib.gryphonfury.revenue import (get_start_and_end_position,
+#                                             get_start_and_end_position_trades)
 from gryphon.lib.logger import get_logger
 from gryphon.lib.models.order import Order
 from gryphon.lib.models.trade import Trade
@@ -96,6 +98,9 @@ def get_matched_trading_fees_in_period(db, start_time, end_time):
     beginning of this period are included, and fees to open the position at the end
     of the period are removed.
     """
+
+    global get_start_and_end_position  # workaround for circular imports
+    global get_start_and_end_position_trades  # workaround for circular imports
 
     fees = get_all_fees_in_period_in_usd(db, start_time, end_time)
 

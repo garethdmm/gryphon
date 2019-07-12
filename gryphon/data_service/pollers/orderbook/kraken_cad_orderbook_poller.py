@@ -1,4 +1,5 @@
-from kraken_orderbook_poller import KrakenOrderbook
+from __future__ import absolute_import
+from .kraken_orderbook_poller import KrakenOrderbook
 
 
 class KrakenCADOrderbook(KrakenOrderbook):

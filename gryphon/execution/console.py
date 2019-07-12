@@ -14,7 +14,7 @@ directory, which might be the same directory that you keep your trading .env fil
 strategy config files.
 """
 
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 
 from datetime import datetime, timedelta
 import logging

@@ -2,7 +2,7 @@
 Just a few exercises for the execution configuration helper library.
 """
 
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 import os
 import time
 import unittest
@@ -80,8 +80,8 @@ class TestConfiguration(unittest.TestCase):
 
         parsed = config_helper.parse_extra_strategy_args(extra_args)
 
-        assert len(parsed.keys()) == 1
-        assert parsed.keys()[0] == 'spread'
+        assert len(list(parsed.keys())) == 1
+        assert list(parsed.keys())[0] == 'spread'
         assert parsed['spread'] == Decimal('0.01')
 
     def test_parse_extra_args_boolean(self):
@@ -89,8 +89,8 @@ class TestConfiguration(unittest.TestCase):
 
         parsed = config_helper.parse_extra_strategy_args(extra_args)
 
-        assert len(parsed.keys()) == 1
-        assert parsed.keys()[0] == 'market_order'
+        assert len(list(parsed.keys())) == 1
+        assert list(parsed.keys())[0] == 'market_order'
         assert parsed['market_order'] == True
 
     def test_parse_extra_args_complex(self):
@@ -103,7 +103,7 @@ class TestConfiguration(unittest.TestCase):
 
         parsed = config_helper.parse_extra_strategy_args(extra_args)
 
-        assert len(parsed.keys()) == 4
+        assert len(list(parsed.keys())) == 4
         assert parsed['spread'] == Decimal('0.1')
         assert parsed['market_order'] == True
         assert parsed['exchange'] == 'bitstamp'
@@ -150,6 +150,6 @@ class TestConfiguration(unittest.TestCase):
         new_config = config_helper.format_file_config_to_standard(base_config)
 
         len(new_config['exchanges']).should.equal(1)
-        len(new_config['exchanges']['coinbase_btc_usd'].keys()).should.equal(1)
+        len(list(new_config['exchanges']['coinbase_btc_usd'].keys())).should.equal(1)
         new_config['exchanges']['coinbase_btc_usd']['fiat_balance_tolerance']\
             .should.equal(Money('0.01', 'USD'))

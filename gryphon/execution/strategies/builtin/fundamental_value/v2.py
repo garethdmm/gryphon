@@ -20,7 +20,7 @@ def calculate(algo, fundamental_value_balance_map):
 
     participating_exchanges = []
 
-    for exchange_name, exchange in fundamental_value_balance_map.iteritems():
+    for exchange_name, exchange in fundamental_value_balance_map.items():
         # If you have bitcoin and are below your maximum fiat, you can sell.
         can_sell = (
             exchange[algo.volume_currency.lower()] > buffer_value and

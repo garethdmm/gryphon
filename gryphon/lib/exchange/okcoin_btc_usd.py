@@ -5,6 +5,7 @@ import hashlib
 import cdecimal
 from cdecimal import Decimal
 from delorean import Delorean, parse
+from six import string_types
 
 from gryphon.lib.exchange import exceptions
 from gryphon.lib.exchange.consts import Consts
@@ -138,7 +139,7 @@ class OKCoinBTCUSDExchange(ExchangeAPIWrapper):
 
     def all_transactions(self, page=0, unfilled_orders=None):
         req = self.all_transactions_req(
-            page=page, 
+            page=page,
             unfilled_orders=unfilled_orders
         )
 
@@ -183,7 +184,7 @@ class OKCoinBTCUSDExchange(ExchangeAPIWrapper):
             payload = request_args['data']
         except KeyError:
             payload = request_args['data'] = {}
-       
+
         payload.update({
             'api_key': self.api_key,
         })
@@ -232,7 +233,7 @@ class OKCoinBTCUSDExchange(ExchangeAPIWrapper):
 
     def _get_order_book_req(self, verify=True):
         return self.req('get', '/depth.do', no_auth=True, verify=verify)
-            
+
     def create_trade_req(self, mode, volume, price, is_market_order=False):
         volume = self.round(volume)
         price = self.round(price)
@@ -257,7 +258,7 @@ class OKCoinBTCUSDExchange(ExchangeAPIWrapper):
 
         try:
             return {
-                'success': True, 
+                'success': True,
                 'order_id': str(response['order_id'])
             }
 
@@ -283,7 +284,7 @@ class OKCoinBTCUSDExchange(ExchangeAPIWrapper):
     def order_fee_resp(self, req):
         try:
             response = self.resp(req)
-        except CancelOrderNotFoundError:
+        except exceptions.CancelOrderNotFoundError:
             # OkCoin has started returning this error on non-executed orders or orders
             # with no fees.
             return Money('0', 'USD')
@@ -418,7 +419,7 @@ class OKCoinBTCUSDExchange(ExchangeAPIWrapper):
         for order_id, req in reqs['fees'].items():
             response = self.order_fee_resp(req)
             fees[order_id] = response
-            
+
         data = {}
 
         for raw_order in raw_orders:
@@ -431,7 +432,7 @@ class OKCoinBTCUSDExchange(ExchangeAPIWrapper):
 
     def parse_raw_order(self, raw_order, fee):
         mode = self._order_mode_to_const(raw_order['type'])
- 
+
         timestamp = int(float(raw_order['create_date'])) / 1000
 
         btc_total = Money(raw_order['deal_amount'], 'BTC')
@@ -440,7 +441,7 @@ class OKCoinBTCUSDExchange(ExchangeAPIWrapper):
         total_usd = self.round(avg_price * btc_total.amount)
 
         # okcoin does not have seperate notions of trade and raw_order
-        # so if we see a partially filled raw_order here, treat it as a 
+        # so if we see a partially filled raw_order here, treat it as a
         # full trade
 
         trades = []
@@ -452,7 +453,7 @@ class OKCoinBTCUSDExchange(ExchangeAPIWrapper):
                 'fee': fee,
                 'btc': btc_total,
                 'fiat': total_usd,
-            } 
+            }
 
             trades.append(fake_trade)
 
@@ -468,7 +469,7 @@ class OKCoinBTCUSDExchange(ExchangeAPIWrapper):
         return order
 
     def cancel_order_req(self, order_id):
-        payload = { 
+        payload = {
             'symbol': 'btc_usd',
             'order_id': order_id,
         }
@@ -480,7 +481,7 @@ class OKCoinBTCUSDExchange(ExchangeAPIWrapper):
         return {'success': True}
 
     def withdraw_crypto_req(self, address, volume):
-        if not isinstance(address, basestring):
+        if not isinstance(address, string_types):
             raise TypeError('Withdrawal address must be a string')
 
         if not isinstance(volume, Money) or volume.currency != self.volume_currency:
@@ -526,7 +527,7 @@ class OKCoinBTCUSDExchange(ExchangeAPIWrapper):
             status = order['status']
             volume_filled = Money(order['deal_amount'], 'BTC')
 
-            if (status == self.ORDER_STATUS_PARTIALLY_FILLED 
+            if (status == self.ORDER_STATUS_PARTIALLY_FILLED
                     or status == self.ORDER_STATUS_FULLY_FILLED):
                 orders[order_id] = volume_filled
 

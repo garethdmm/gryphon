@@ -6,6 +6,7 @@ from decimal import *
 
 from gryphon.lib.money import Money
 from datetime import datetime
+from six import text_type
 from sqlalchemy import Column, Integer, Unicode, DateTime, Numeric
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -23,7 +24,7 @@ class ExchangeVolume(EmeraldHavocBase):
     _exchange_volume = Column('exchange_volume', Numeric(precision=20, scale=10))
 
     def __init__(self, exchange_volume, exchange, timestamp):
-        self.unique_id = unicode(uuid.uuid4().hex)
+        self.unique_id = text_type(uuid.uuid4().hex)
         self.time_created = datetime.utcnow()
         self.timestamp = timestamp
         self.exchange_volume = exchange_volume
@@ -39,7 +40,7 @@ class ExchangeVolume(EmeraldHavocBase):
     def to_json(self):
         return json.dumps({
             'exchange_volume_id': self.exchange_volume_id,
-            'time_created': unicode(self.time_created),
+            'time_created': text_type(self.time_created),
             'unique_id': self.unique_id,
             'exchange': self.exchange,
             'exchange_volume': self.exchange_volume

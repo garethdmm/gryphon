@@ -1,7 +1,7 @@
 """
 Just a few exercises for our configuration library.
 """
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 import os
 import time
 
@@ -30,7 +30,7 @@ class BaseConfiguration(object):
                 },
             }
         }
-      
+
         exchange = self.exchange_class(configuration=configuration)
 
         assert exchange.fiat_balance_tolerance == Money('1', self.price_currency)

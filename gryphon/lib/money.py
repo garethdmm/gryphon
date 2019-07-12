@@ -8,6 +8,7 @@ import json
 import decimal
 # need absolute_import from above so that this doesn't load our current file
 import money as super_money
+from six import string_types
 
 
 class Money(super_money.Money):
@@ -16,7 +17,7 @@ class Money(super_money.Money):
     CURRENCIES = FIAT_CURRENCIES + CRYPTO_CURRENCIES
 
     def __init__(self, amount="0", currency=None):
-        if isinstance(amount, basestring):
+        if isinstance(amount, string_types):
             amount = amount.replace(",", "")
 
         try:

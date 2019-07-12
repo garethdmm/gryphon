@@ -2,6 +2,7 @@
 This script demonstrates the bitstamp authenticated requests bug that showed up in the
 week of 26 March.
 """
+from __future__ import print_function
 
 import requests
 import hmac
@@ -12,6 +13,7 @@ import time
 import dotenv
 import os
 import os.path
+from six import text_type
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
 dotenv.load_dotenv(dotenv_path)
@@ -24,7 +26,7 @@ balance_url = 'https://www.bitstamp.net/api/v2/balance/'
 
 
 def construct_payload():
-    nonce = unicode(int(round(time.time() * 1000)))
+    nonce = text_type(int(round(time.time() * 1000)))
     message = nonce + CLIENT_ID + API_KEY
     sig = hmac.new(SECRET, msg=message, digestmod=hashlib.sha256).hexdigest().upper()
 
@@ -38,13 +40,13 @@ def construct_payload():
 
 
 def test_response(response, test_name):
-    print 'Response: %s' % str(response)[:50]
+    print('Response: %s' % str(response)[:50])
 
     try:
         assert('btc_available' in response)
-        print '%s succeeded!' % test_name
+        print('%s succeeded!' % test_name)
     except Exception as e:
-        print '%s: %s' % (test_name, str(e))
+        print('%s: %s' % (test_name, str(e)))
 
 
 def requests_dot_post():
@@ -52,7 +54,7 @@ def requests_dot_post():
     This just makes a single request.post call to see if it works.
     """
 
-    print "Trying requests.post"
+    print("Trying requests.post")
 
     payload = construct_payload()
 
@@ -68,7 +70,7 @@ def session_post(session=None, clear_cookies=None, adaptor=None, cookie_jar=None
     types.
     """
     if session is None:
-        print "Trying with a new session"
+        print("Trying with a new session")
         session = requests.Session()
 
         if adaptor is not None:
@@ -77,10 +79,10 @@ def session_post(session=None, clear_cookies=None, adaptor=None, cookie_jar=None
         if cookie_jar is not None:
             session.cookies = cookie_jar
     else:
-        print "Trying with an extant session"
+        print("Trying with an extant session")
 
         if clear_cookies is True:
-            print "Clearing the session's cookies"
+            print("Clearing the session's cookies")
             session.cookies.clear()
 
     payload = construct_payload()
@@ -107,15 +109,15 @@ def try_different_adaptors():
     tls1 = SSLAdapter(ssl.PROTOCOL_TLSv1)
     tls11 = SSLAdapter(ssl.PROTOCOL_TLSv1_1)
 
-    print 'TLSv1'
+    print('TLSv1')
     session = session_post(adaptor=tls1)
     session_post(session=session)
 
-    print 'TLSv1'
+    print('TLSv1')
     session = session_post(adaptor=tls11)
     session_post(session=session)
 
-    print 'SSLv3'
+    print('SSLv3')
     session = session_post(adaptor=ssl3)
     session_post(session=session)
 

@@ -6,7 +6,7 @@ configuration settings from both sources.
 
 Just a few functions that make our configuration handling cleaner.
 
-The rule is: 
+The rule is:
   1) From any source, if something isn't specified explicitly, it is
       left out of the dictionary, or put as None, and any other value from any
       source will override it.
@@ -14,7 +14,6 @@ The rule is:
   3) At no point is there a any guarantee a setting is in the configuration object.
 """
 
-import ConfigParser
 import argparse
 
 from cdecimal import Decimal, InvalidOperation
@@ -70,7 +69,7 @@ def parse_extra_strategy_args(args):
     """
 
     settings = [x for x in args if x[:2] == '--']
-    
+
     parser = argparse.ArgumentParser()
 
     for setting_name in settings:
@@ -86,7 +85,7 @@ def parse_extra_strategy_args(args):
 def get_conf_file_configuration(conf_filename, strategy_name):
     """
     If there was a config file specified, load it. If not, look for [strategy_name].conf
-    in the current directory. If neither is found just return an initialized 
+    in the current directory. If neither is found just return an initialized
     configuration object that is otherwise empty.
     """
 

@@ -12,6 +12,7 @@ from cdecimal import *
 from delorean import Delorean, epoch
 from requests_futures.sessions import FuturesSession
 from requests_toolbelt.cookies.forgetful import ForgetfulCookieJar
+from six import text_type
 
 from gryphon.lib.exchange import exceptions
 from gryphon.lib.exchange import order_types
@@ -111,9 +112,9 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
         }
 
     def order_is_open(self, order_id):
-        order_id = unicode(order_id)
+        order_id = text_type(order_id)
         open_orders = self.open_orders()
-        matching_orders = [o for o in open_orders if unicode(o.get('id')) == order_id]
+        matching_orders = [o for o in open_orders if text_type(o.get('id')) == order_id]
         is_open = len(matching_orders) > 0
 
         return is_open
@@ -154,13 +155,13 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
         return self.all_trades_req()
 
     def trades_for_orders_resp(self, req, order_ids):
-        order_ids = [unicode(o) for o in order_ids]
+        order_ids = [text_type(o) for o in order_ids]
         trades = self.all_trades_resp(req)
 
         matching_trades = {}
 
         for trade in trades:
-            oid = unicode(trade['order_id'])
+            oid = text_type(trade['order_id'])
 
             if oid in order_ids:
                 if oid not in matching_trades:
@@ -194,7 +195,7 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
             payload = request_args['data'] = {}
 
         # TODO: fix nonce collisions
-        nonce = unicode(int(round(time.time() * 1000)))
+        nonce = text_type(int(round(time.time() * 1000)))
         message = nonce + self.client_id + self.api_key
 
         sig = hmac.new(
@@ -289,7 +290,7 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
         response = self.resp(req)
 
         try:
-            return {'success': True, 'order_id': unicode(response['id'])}
+            return {'success': True, 'order_id': text_type(response['id'])}
         except KeyError:
             raise exceptions.ExchangeAPIErrorException(
                 self,
@@ -339,7 +340,7 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
         return self.trades_for_orders_req()
 
     def get_multi_order_details_resp(self, req, order_ids):
-        order_ids = [unicode(o) for o in order_ids]
+        order_ids = [text_type(o) for o in order_ids]
 
         multi_trades = self.trades_for_orders_resp(req, order_ids)
         data = {}
@@ -377,7 +378,7 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
 
                     our_trades.append({
                         'time': int(parse(t['datetime']).epoch),
-                        'trade_id': unicode(t['id']),
+                        'trade_id': text_type(t['id']),
                         'fee': fee,
                         vol_currency_key: volume_currency_amount,
                         'fiat': price_currency_amount,

@@ -2,6 +2,7 @@
 from datetime import datetime
 import uuid
 
+from six import text_type
 from sqlalchemy import Column, Unicode, UnicodeText, DateTime, Integer, Numeric
 from sqlalchemy.orm import relationship, backref
 
@@ -23,11 +24,11 @@ class Result(Base):
     _usd = Column('usd', Numeric(precision=20, scale=10))
     _btc = Column('btc', Numeric(precision=20, scale=10))
     time_created = Column(DateTime, nullable=False)
-    
+
     trades = relationship('ResultTrade', cascade="all,delete-orphan", backref='result')
-    
+
     def __init__(self, usd, btc, trading_volume, algorithm, batch, ticks):
-        self.unique_id = unicode(uuid.uuid4().hex)
+        self.unique_id = text_type(uuid.uuid4().hex)
         self.time_created = datetime.utcnow()
         self.algorithm = algorithm
         self.batch = batch
@@ -35,7 +36,7 @@ class Result(Base):
         self.btc = btc
         self.ticks = ticks
         self.trading_volume = trading_volume
-    
+
     @property
     def trading_volume(self):
         return Money(self._trading_volume, 'BTC')
@@ -43,7 +44,7 @@ class Result(Base):
     @trading_volume.setter
     def trading_volume(self, value):
         self._trading_volume = value.amount
-    
+
     @property
     def btc(self):
         return Money(self._btc, 'BTC')
@@ -59,4 +60,4 @@ class Result(Base):
     @usd.setter
     def usd(self, value):
         self._usd = value.amount
-    
+

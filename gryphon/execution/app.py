@@ -1,4 +1,4 @@
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 
 import importlib
 import logging
@@ -132,7 +132,7 @@ class GryphonFuryBaseController(controller.CementBaseController):
 
         command_line_configuration = config_helper.get_command_line_configuration(
             self.app.pargs,
-            self.app.args.unknown_args, 
+            self.app.args.unknown_args,
         )
 
         final_configuration = config_helper.combine_file_and_command_line_config(

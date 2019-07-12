@@ -242,7 +242,7 @@ class OrderbookAuditor(Auditor):
             if not our_orderbooks:
                 log.msg('No orderbooks to audit against')
 
-            for key, value in fundamental_values.iteritems():
+            for key, value in fundamental_values.items():
                 log.msg(
                     '------ Fundamental Value Closeness:%.6f, DBfv:%s, HTTPfv:%s' % (
                     key,
@@ -250,7 +250,7 @@ class OrderbookAuditor(Auditor):
                     value['http_fundamental_value']
                 ))
 
-            for key, value in change_dict.iteritems():
+            for key, value in change_dict.items():
                 log.msg('------ Change Count: %s' % key)
 
         log.msg(

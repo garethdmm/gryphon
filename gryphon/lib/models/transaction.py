@@ -8,6 +8,7 @@ import uuid
 
 from decimal import *
 from delorean import Delorean
+from six import text_type
 from sqlalchemy import ForeignKey, Column, Integer, Unicode, DateTime, UnicodeText, Numeric
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
@@ -29,29 +30,29 @@ metadata = Base.metadata
 
 class Transaction(Base):
     __tablename__ = 'transaction'
-    
+
     #Transaction Types
     WITHDRAWL = 'WITHDRAWL'
     DEPOSIT = 'DEPOSIT'
-    
+
     #Transaction Status'
     IN_TRANSIT = 'IN_TRANSIT'
     COMPLETED = 'COMPLETED'
     CANCELED = 'CANCELED'
-    
+
     transaction_id = Column(Integer, primary_key=True)
     transaction_type = Column(Unicode(64))
     transaction_status = Column(Unicode(64))
     unique_id = Column(Unicode(64), nullable=False)
     time_created = Column(DateTime, nullable=False)
     time_completed = Column(DateTime, nullable=True)
-    
+
     _amount = Column('amount', Numeric(precision=24, scale=14))
     _amount_currency = Column('amount_currency', Unicode(3))
     _fee = Column('fee', Numeric(precision=24, scale=14))
     _fee_currency = Column('fee_currency', Unicode(3))
     _transaction_details = Column('transaction_details', UnicodeText(length=2**31))
-    
+
     exchange_id = Column(Integer, ForeignKey('exchange.exchange_id'))
 
     # Some Transactions have BTC fees, which reduce our total BTC assets. Every once in a while
@@ -60,9 +61,9 @@ class Transaction(Base):
     # This one is a bit complex because it is self-referential
     fee_buyback_transaction_id = Column(Integer, ForeignKey('transaction.transaction_id'))
     fee_buyback_transaction = relationship("Transaction", remote_side=[transaction_id], backref='fee_buyback_transactions')
-    
+
     def __init__(self, transaction_type, transaction_status, amount, exchange, transaction_details, fee=None):
-        self.unique_id = unicode(uuid.uuid4().hex)
+        self.unique_id = text_type(uuid.uuid4().hex)
         self.time_created = datetime.utcnow()
         self.transaction_type = transaction_type
         self.transaction_status = transaction_status
@@ -71,27 +72,27 @@ class Transaction(Base):
         self.transaction_details = transaction_details
         if fee:
             self.fee = fee
-        
+
     def __unicode__(self):
         return u'[TRANSACTION:%s, EXCHANGE:%s, STATUS:%s] Amount:%s (%s) at %s' % (
             self.transaction_type, self.exchange.name, self.transaction_status, self.amount, self.fee, self.time_created)
-        
+
     def __repr__(self):
         return self.to_json()
-    
+
     def to_json(self):
         return json.dumps({
             'transaction_id':self.transaction_id,
             'transaction_type':self.transaction_type,
             'transaction_status':self.transaction_status,
-            'time_created':unicode(self.time_created),
+            'time_created':text_type(self.time_created),
             'unique_id':self.unique_id,
             'exchange':self.exchange.name,
             'amount':self.amount,
             'fee': self.fee,
             'transaction_details':self.transaction_details
         }, ensure_ascii=False)
-    
+
     @property
     def transaction_details(self):
         return json.loads(self._transaction_details)
@@ -99,7 +100,7 @@ class Transaction(Base):
     @transaction_details.setter
     def transaction_details(self, value):
         self._transaction_details = json.dumps(value, ensure_ascii=False)
-    
+
     @property
     def amount(self):
         return Money(self._amount, self._amount_currency)

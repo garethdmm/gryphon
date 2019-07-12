@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np
 import time
 
@@ -32,10 +33,10 @@ def chaikinVolCalc(emaUsed,periodsAgo):
         highMlow.append(hml)
         x += 1
 
-    print len(date)
-    print len(highMlow)
+    print(len(date))
+    print(len(highMlow))
     highMlowEMA = ExpMovingAverage(highMlow,emaUsed)
-    print len(highMlowEMA)
+    print(len(highMlowEMA))
     y = emaUsed + periodsAgo
 
     while y < len(date):
@@ -43,7 +44,7 @@ def chaikinVolCalc(emaUsed,periodsAgo):
         chaikin_volatility.append(cvc)
         y+=1
 
-    print len(date[emaUsed+periodsAgo:])
+    print(len(date[emaUsed+periodsAgo:]))
     
     return date[emaUsed+periodsAgo:], chaikin_volatility
         
