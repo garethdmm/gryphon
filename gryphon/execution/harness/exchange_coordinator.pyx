@@ -257,6 +257,10 @@ class ExchangeCoordinator(object):
         # TODO: this constant should be moved into the exchange wrapper library.
         # TODO: Give some messaging here why the order isn't being placed.
         if volume <= self.exchange_wrapper.min_order_size:
+            self.harness.log(
+                'Unable to place %s because order volume = %s, which is less than the exchange min order size' 
+                % (mode, volume), color='red'
+            )
             return
 
         actor = Order.NULL_ACTOR
