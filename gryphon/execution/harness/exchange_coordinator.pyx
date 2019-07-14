@@ -255,10 +255,9 @@ class ExchangeCoordinator(object):
 
     def place_order(self, mode, volume, price=None, order_type=order_types.LIMIT_ORDER, extra_data=[]):
         # TODO: this constant should be moved into the exchange wrapper library.
-        # TODO: Give some messaging here why the order isn't being placed.
         if volume <= self.exchange_wrapper.min_order_size:
             self.harness.log(
-                'Unable to place %s because order volume = %s, which is less than the exchange min order size' 
+                'Unable to place %s because order volume = %s, which is less than the exchange wrapper min order size' 
                 % (mode, volume), color='red'
             )
             return
