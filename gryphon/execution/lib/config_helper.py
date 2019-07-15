@@ -88,6 +88,8 @@ def get_conf_filename_from_strategy_name(strategy_name):
 
     if strategy_name[-4:] == '.pyx':
         conf_filename = '%s.conf' % strategy_name[:-4]
+    elif strategy_name[-3:] == '.py':
+        conf_filename = '%s.conf' % strategy_name[:-3]
     else:
         # Builtin strategies are not specified with a suffix.
         conf_filename = '%s.conf' % strategy_name
