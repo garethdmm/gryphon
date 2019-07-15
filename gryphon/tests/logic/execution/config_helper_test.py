@@ -24,13 +24,6 @@ class TestConfigHelper(unittest.TestCase):
 
         filename.should.equal('multiexchange_linear.conf')
 
-    def test_conf_filenames_custom_pyx_2(self):
-        filename = config_helper.get_conf_filename_from_strategy_name(
-            'active_signal_strat.pyx',
-        )
-
-        filename.should.equal('active_signal_strat.conf')
-
     def test_conf_filenames_custom_pyx(self):
         filename = config_helper.get_conf_filename_from_strategy_name(
             'coinbase_gemini_arb.pyx'
@@ -38,4 +31,24 @@ class TestConfigHelper(unittest.TestCase):
 
         filename.should.equal('coinbase_gemini_arb.conf')
 
+    def test_conf_filenames_custom_pyx_2(self):
+        filename = config_helper.get_conf_filename_from_strategy_name(
+            'active_signal_strat.pyx',
+        )
+
+        filename.should.equal('active_signal_strat.conf')
+
+    def test_conf_filenames_custom_py(self):
+        filename = config_helper.get_conf_filename_from_strategy_name(
+            'coinbase_gemini_arb.py'
+        )
+
+        filename.should.equal('coinbase_gemini_arb.conf')
+
+    def test_conf_filenames_custom_py_2(self):
+        filename = config_helper.get_conf_filename_from_strategy_name(
+            'active_signal_strat.py',
+        )
+
+        filename.should.equal('active_signal_strat.conf')
 
