@@ -47,6 +47,7 @@ class BinanceJeExchange(ExchangeAPIWrapper):
         "ping": {"req_method": "get", "url": "/api/v1/ping"},
         "balance": {"req_method": "get", "url": "/api/v3/account"},
         "prices": {"req_method": "get", "url": "/api/v3/ticker/price"},
+        "open_orders": {"req_method": "get", "url": "/api/v3/openOrders"},
     }
 
     def __init__(self, session=None, configuration=None):
