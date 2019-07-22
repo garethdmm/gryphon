@@ -4,6 +4,12 @@ from gryphon.lib.exchange import exceptions
 
 
 ALL_EXCHANGE_KEYS = [
+    'binanceje_btc_eur',
+    'binanceje_btc_gbp',
+    'binanceje_eth_eur',
+    'binanceje_eth_gbp',
+    'binanceje_ltc_eur',
+    'bianceje_ltc_gbp',
     'bitstamp_btc_eur',
     'bitstamp_btc_usd',
     'bitstamp_eth_eur',
@@ -150,7 +156,25 @@ def make_exchange_datas_from_keys(pair_names, db):
 def get_api_wrapper_class_by_name(exchange_name):
     exchange_name = canonical_key(exchange_name)
 
-    if exchange_name == 'BITSTAMP_BTC_USD':
+    if exchange_name == 'BINANCEJE_BTC_EUR':
+        from gryphon.lib.exchange.binance_je import BinanceJeBTCEURExchange
+        return BinanceJeBTCEURExchange
+    elif exchange_name == 'BINANCEJE_BTC_GBP':
+        from gryphon.lib.exchange.binance_je import BinanceJeBTCGBPExchange
+        return BinanceJeBTCGBPExchange
+    elif exchange_name == 'BINANCEJE_ETH_EUR':
+        from gryphon.lib.exchange.binance_je import BinanceJeETHEURExchange
+        return BinanceJeETHEURExchange
+    elif exchange_name == 'BINANCEJE_ETH_GBP':
+        from gryphon.lib.exchange.binance_je import BinanceJeETHGBPExchange
+        return BinanceJeETHGBPExchange
+    elif exchange_name == 'BINANCEJE_LTC_EUR':
+        from gryphon.lib.exchange.binance_je import BinanceJeLTCEURExchange
+        return BinanceJeLTCEURExchange
+    elif exchange_name == 'BINANCEJE_LTC_GBP':
+        from gryphon.lib.exchange.binance_je import BinanceJeLTCGBPExchange
+        return BinanceJeLTCGBPExchange
+    elif exchange_name == 'BITSTAMP_BTC_USD':
         from gryphon.lib.exchange.bitstamp_btc_usd import BitstampBTCUSDExchange
         return BitstampBTCUSDExchange
     elif exchange_name == 'BITSTAMP_ETH_EUR':
