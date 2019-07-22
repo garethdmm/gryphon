@@ -9,7 +9,7 @@ ALL_EXCHANGE_KEYS = [
     'binanceje_eth_eur',
     'binanceje_eth_gbp',
     'binanceje_ltc_eur',
-    'bianceje_ltc_gbp',
+    'binanceje_ltc_gbp',
     'bitstamp_btc_eur',
     'bitstamp_btc_usd',
     'bitstamp_eth_eur',
