@@ -137,6 +137,7 @@ class BinanceJeExchange(ExchangeAPIWrapper):
 
     def get_prices_resp(self, req):
         response = self.resp(req)
+        logger.debug("prices response: %s" % response)
         return {
             item["symbol"][:3]: Money(item["price"], item["symbol"][-3:])
             for item in response
@@ -148,6 +149,7 @@ class BinanceJeExchange(ExchangeAPIWrapper):
 
     def get_open_orders_resp(self, req):
         response = self.resp(req)
+        logger.debug("open orders response: %s" % response)
         side_to_mode = {"BUY": Consts.BID, "SELL": Consts.ASK}
         return [
             {
