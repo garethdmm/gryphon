@@ -42,32 +42,32 @@ def binance_signature(params, secret):
 class BinanceJeExchange(ExchangeAPIWrapper):
     currencies = None
     credentials = None
-    base_url = "https://api.binance.je"
+    base_url = 'https://api.binance.je'
     endpoints = {
-        "ping": {"req_method": "get", "url": "/api/v1/ping"},
-        "balance": {"req_method": "get", "url": "/api/v3/account"},
-        "prices": {"req_method": "get", "url": "/api/v3/ticker/price"},
-        "open_orders": {"req_method": "get", "url": "/api/v3/openOrders"},
+        'ping': {'req_method': 'get', 'url': '/api/v1/ping'},
+        'balance': {'req_method': 'get', 'url': '/api/v3/account'},
+        'prices': {'req_method': 'get', 'url': '/api/v3/ticker/price'},
+        'open_orders': {'req_method': 'get', 'url': '/api/v3/openOrders'},
     }
 
     def __init__(self, session=None, configuration=None):
         if self.currencies is None:
             raise NotImplementedError(
-                "Cannot instantiate BinanceJeExchange. Use a subclass instead."
+                'Cannot instantiate BinanceJeExchange. Use a subclass instead.'
             )
 
         super(BinanceJeExchange, self).__init__(session)
-        self.volume_currency = self.currencies["volume"]
-        self.currency = self.currencies["base"]
-        name_suffix = self.currencies["volume"] + "-" + self.currencies["base"]
-        self.name = "BINANCEJE_" + name_suffix
-        self.friendly_name = "Binance Jersey " + name_suffix
+        self.volume_currency = self.currencies['volume']
+        self.currency = self.currencies['base']
+        name_suffix = self.currencies['volume'] + '-' + self.currencies['base']
+        self.name = 'BINANCEJE_' + name_suffix
+        self.friendly_name = 'Binance Jersey ' + name_suffix
 
     def load_credentials(self):
-        credentials = ["api_key", "secret"]
+        credentials = ['api_key', 'secret']
         if self.credentials is None:
             self.credentials = {
-                credential: self._load_env("BINANCEJE_" + credential.upper())
+                credential: self._load_env('BINANCEJE_' + credential.upper())
                 for credential in credentials
             }
 
@@ -82,48 +82,48 @@ class BinanceJeExchange(ExchangeAPIWrapper):
         self.load_credentials()
 
         try:
-            headers = request_args["headers"]
+            headers = request_args['headers']
         except KeyError:
-            headers = request_args["headers"] = {}
+            headers = request_args['headers'] = {}
 
-        headers["X-MBX-APIKEY"] = self.credentials["api_key"]
+        headers['X-MBX-APIKEY'] = self.credentials['api_key']
 
         try:
-            params = request_args["params"]
+            params = request_args['params']
         except KeyError:
-            params = request_args["params"] = {}
+            params = request_args['params'] = {}
 
         timestamp = int(round(time.time() * 1000))
-        params["timestamp"] = timestamp
+        params['timestamp'] = timestamp
 
-        signature = binance_signature(params, self.credentials["secret"])
-        params["signature"] = signature
+        signature = binance_signature(params, self.credentials['secret'])
+        params['signature'] = signature
 
-        logger.debug("headers: %s" % headers)
-        logger.debug("request args: %s" % request_args)
+        logger.debug('headers: %s' % headers)
+        logger.debug('request args: %s' % request_args)
 
     def ping(self):
-        req = self.req(no_auth=True, **self.endpoints["ping"])
+        req = self.req(no_auth=True, **self.endpoints['ping'])
         return self.resp(req)
 
     def get_balance_req(self):
-        return self.req(**self.endpoints["balance"])
+        return self.req(**self.endpoints['balance'])
 
     def get_balance_resp(self, req):
         response = self.resp(req)
-        logger.debug("balance repsonse: %s" % response)
+        logger.debug('balance repsonse: %s' % response)
 
         try:
             balances = {
-                currency: Money(balance["free"], currency)
-                for balance in response["balances"]
+                currency: Money(balance['free'], currency)
+                for balance in response['balances']
                 for currency in Money.CURRENCIES
-                if balance["asset"] == currency
+                if balance['asset'] == currency
             }
-            logger.debug("balances: %s" % balances)
+            logger.debug('balances: %s' % balances)
         except KeyError:
             raise exceptions.ExchangeAPIErrorException(
-                self, "Cannot determine balances from response"
+                self, 'Cannot determine balances from response'
             )
 
         return Balance(balances)
@@ -133,31 +133,31 @@ class BinanceJeExchange(ExchangeAPIWrapper):
         return self.get_prices_resp(req)
 
     def get_prices_req(self):
-        return self.req(no_auth=True, **self.endpoints["prices"])
+        return self.req(no_auth=True, **self.endpoints['prices'])
 
     def get_prices_resp(self, req):
         response = self.resp(req)
-        logger.debug("prices response: %s" % response)
+        logger.debug('prices response: %s' % response)
         return {
-            item["symbol"][:3]: Money(item["price"], item["symbol"][-3:])
+            item['symbol'][:3]: Money(item['price'], item['symbol'][-3:])
             for item in response
-            if item["symbol"][:3] in Money.CRYPTO_CURRENCIES
+            if item['symbol'][:3] in Money.CRYPTO_CURRENCIES
         }
 
     def get_open_orders_req(self):
-        return self.req(**self.endpoints["open_orders"])
+        return self.req(**self.endpoints['open_orders'])
 
     def get_open_orders_resp(self, req):
         response = self.resp(req)
-        logger.debug("open orders response: %s" % response)
-        side_to_mode = {"BUY": Consts.BID, "SELL": Consts.ASK}
+        logger.debug('open orders response: %s' % response)
+        side_to_mode = {'BUY': Consts.BID, 'SELL': Consts.ASK}
         return [
             {
-                "mode": side_to_mode[order["side"]],
-                "id": order["orderId"],
-                "price": order["price"],
-                "volume_remaining": Money(
-                    order["origQty"] - response["executedQty"], self.volume_currency
+                'mode': side_to_mode[order['side']],
+                'id': order['orderId'],
+                'price': order['price'],
+                'volume_remaining': Money(
+                    order['origQty'] - response['executedQty'], self.volume_currency
                 ),
             }
             for order in response
@@ -165,24 +165,24 @@ class BinanceJeExchange(ExchangeAPIWrapper):
 
 
 class BinanceJeBTCEURExchange(BinanceJeExchange):
-    currencies = {"volume": "BTC", "base": "EUR"}
+    currencies = {'volume': 'BTC', 'base': 'EUR'}
 
 
 class BinanceJeBTCGBPExchange(BinanceJeExchange):
-    currencies = {"volume": "BTC", "base": "GBP"}
+    currencies = {'volume': 'BTC', 'base': 'GBP'}
 
 
 class BinanceJeETHEURExchange(BinanceJeExchange):
-    currencies = {"volume": "ETH", "base": "EUR"}
+    currencies = {'volume': 'ETH', 'base': 'EUR'}
 
 
 class BinanceJeETHGBPExchange(BinanceJeExchange):
-    currencies = {"volume": "ETH", "base": "GBP"}
+    currencies = {'volume': 'ETH', 'base': 'GBP'}
 
 
 class BinanceJeLTCEURExchange(BinanceJeExchange):
-    currencies = {"volume": "LTC", "base": "EUR"}
+    currencies = {'volume': 'LTC', 'base': 'EUR'}
 
 
 class BinanceJeLTCGBPExchange(BinanceJeExchange):
-    currencies = {"volume": "LTC", "base": "GBP"}
+    currencies = {'volume': 'LTC', 'base': 'GBP'}
