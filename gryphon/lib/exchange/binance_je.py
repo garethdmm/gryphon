@@ -1,8 +1,8 @@
+# -*- coding: utf-8 -*-
 """
 https://github.com/binance-jersey/binance-official-api-docs
 """
 
-# -*- coding: utf-8 -*-
 import hashlib
 import hmac
 import time
