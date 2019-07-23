@@ -13,8 +13,6 @@ from gryphon.lib.logger import get_logger
 from gryphon.lib.models.exchange import Balance
 from gryphon.lib.money import Money
 
-logger = get_logger(__name__)
-
 
 class BinanceJeExchange(ExchangeAPIWrapper):
     """A base class to implement support for the Binance Jersey Exchange.
