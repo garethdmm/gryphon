@@ -99,9 +99,6 @@ class BinanceJeExchange(ExchangeAPIWrapper):
         signature = self.binance_signature(params, self.credentials['secret'])
         params['signature'] = signature
 
-        logger.debug('headers: %s' % headers)
-        logger.debug('request args: %s' % request_args)
-
     def ping(self):
         req = self.req(no_auth=True, **self.endpoints['ping'])
         return self.resp(req)
@@ -111,7 +108,6 @@ class BinanceJeExchange(ExchangeAPIWrapper):
 
     def get_balance_resp(self, req):
         response = self.resp(req)
-        logger.debug('balance repsonse: %s' % response)
 
         try:
             balances = {
@@ -120,7 +116,6 @@ class BinanceJeExchange(ExchangeAPIWrapper):
                 for currency in Money.CURRENCIES
                 if balance['asset'] == currency
             }
-            logger.debug('balances: %s' % balances)
         except KeyError:
             raise exceptions.ExchangeAPIErrorException(
                 self, 'Cannot determine balances from response'
@@ -137,7 +132,6 @@ class BinanceJeExchange(ExchangeAPIWrapper):
 
     def get_prices_resp(self, req):
         response = self.resp(req)
-        logger.debug('prices response: %s' % response)
         return {
             item['symbol'][:3]: Money(item['price'], item['symbol'][-3:])
             for item in response
@@ -149,7 +143,6 @@ class BinanceJeExchange(ExchangeAPIWrapper):
 
     def get_open_orders_resp(self, req):
         response = self.resp(req)
-        logger.debug('open orders response: %s' % response)
         side_to_mode = {'BUY': Consts.BID, 'SELL': Consts.ASK}
         return [
             {
