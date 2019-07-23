@@ -23,7 +23,7 @@ class BinanceJeExchange(ExchangeAPIWrapper):
     endpoints = {
         'ping': {'req_method': 'get', 'url': '/api/v1/ping'},
         'balance': {'req_method': 'get', 'url': '/api/v3/account'},
-        'prices': {'req_method': 'get', 'url': '/api/v3/ticker/price'},
+        'ticker': {'req_method': 'get', 'url': '/api/v1/ticker/24hr'},
         'open_orders': {'req_method': 'get', 'url': '/api/v3/openOrders'},
     }
 
@@ -59,6 +59,7 @@ class BinanceJeExchange(ExchangeAPIWrapper):
         super(BinanceJeExchange, self).__init__(session)
         self.volume_currency = self.currencies['volume']
         self.currency = self.currencies['base']
+        self.symbol = self.currencies['volume'] + self.currencies['base']
         name_suffix = self.currencies['volume'] + '-' + self.currencies['base']
         self.name = 'BINANCEJE_' + name_suffix
         self.friendly_name = 'Binance Jersey ' + name_suffix
@@ -121,19 +122,21 @@ class BinanceJeExchange(ExchangeAPIWrapper):
 
         return Balance(balances)
 
-    def get_prices(self):
-        req = self.get_prices_req()
-        return self.get_prices_resp(req)
+    def get_ticker_req(self, verify=True):
+        return self.req(
+            no_auth=True,
+            verify=verify,
+            params={'symbol': self.symbol},
+            **self.endpoints['ticker'],
+        )
 
-    def get_prices_req(self):
-        return self.req(no_auth=True, **self.endpoints['prices'])
-
-    def get_prices_resp(self, req):
+    def get_ticker_resp(self, req):
         response = self.resp(req)
         return {
-            item['symbol'][:3]: Money(item['price'], item['symbol'][-3:])
-            for item in response
-            if item['symbol'][:3] in Money.CRYPTO_CURRENCIES
+            'high': Money(response['highPrice'], self.currency),
+            'low': Money(response['lowPrice'], self.currency),
+            'last': Money(response['lastPrice'], self.currency),
+            'volume': Money(response['volume'], self.volume_currency),
         }
 
     def get_open_orders_req(self):
