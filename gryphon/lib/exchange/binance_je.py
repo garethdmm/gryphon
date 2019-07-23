@@ -28,7 +28,7 @@ class BinanceJeExchange(ExchangeAPIWrapper):
     }
 
     @staticmethod
-    def binance_signature(params, secret):
+    def signature(params, secret):
         """Signature of a url query string as required by Binance
 
         Parameters
@@ -95,9 +95,7 @@ class BinanceJeExchange(ExchangeAPIWrapper):
 
         timestamp = int(round(time.time() * 1000))
         params['timestamp'] = timestamp
-
-        signature = self.binance_signature(params, self.credentials['secret'])
-        params['signature'] = signature
+        params['signature'] = self.signature(params, self.credentials['secret'])
 
     def ping(self):
         req = self.req(no_auth=True, **self.endpoints['ping'])
