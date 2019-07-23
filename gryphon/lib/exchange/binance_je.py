@@ -36,10 +36,6 @@ class BinanceJeExchange(ExchangeAPIWrapper):
         attributes 'volume_currency' and 'currency' as required by the
         framework
 
-    credentials : dict
-        Set to None initially but populated by the first call to _auth_request
-        to act as a cache for the environment variables required for authorisation.
-
     base_url : str
         The base url for the Binance Jersey API
 
@@ -48,7 +44,6 @@ class BinanceJeExchange(ExchangeAPIWrapper):
         parameters suitable for passing to a request object constructor.
     """
     currencies = None
-    credentials = None
     base_url = 'https://api.binance.je'
     endpoints = {
         'ping': {'req_method': 'get', 'url': '/api/v1/ping'},
@@ -59,7 +54,7 @@ class BinanceJeExchange(ExchangeAPIWrapper):
 
     @staticmethod
     def signature(params, secret):
-        """Signature of a url query string as required by Binance
+        """Signature of a url query string as required by Binance Jersey.
 
         Parameters
         ----------
@@ -87,6 +82,7 @@ class BinanceJeExchange(ExchangeAPIWrapper):
             )
 
         super(BinanceJeExchange, self).__init__(session)
+        self.credentials = None
         self.volume_currency = self.currencies['volume']
         self.currency = self.currencies['base']
         self.symbol = self.currencies['volume'] + self.currencies['base']
