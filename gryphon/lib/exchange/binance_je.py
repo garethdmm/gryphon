@@ -16,29 +16,6 @@ from gryphon.lib.money import Money
 logger = get_logger(__name__)
 
 
-def binance_signature(params, secret):
-    """Signature of a url query string as required by Binance
-
-    Parameters
-    ----------
-    params : dict
-        query string parameters from a url as given by a request object
-    secret : str
-        binance user secret for signing the query string
-
-    Returns
-    -------
-    str
-    """
-    query_string = ""
-
-    for key in sorted(params.keys()):
-        query_string += key + "=" + str(params[key]) + "&"
-    query_string = query_string[:-1]
-
-    return hmac.new(secret, query_string, hashlib.sha256).hexdigest()
-
-
 class BinanceJeExchange(ExchangeAPIWrapper):
     currencies = None
     credentials = None
@@ -49,6 +26,29 @@ class BinanceJeExchange(ExchangeAPIWrapper):
         'prices': {'req_method': 'get', 'url': '/api/v3/ticker/price'},
         'open_orders': {'req_method': 'get', 'url': '/api/v3/openOrders'},
     }
+
+    @staticmethod
+    def binance_signature(params, secret):
+        """Signature of a url query string as required by Binance
+
+        Parameters
+        ----------
+        params : dict
+            query string parameters from a url as given by a request object
+        secret : str
+            binance user secret for signing the query string
+
+        Returns
+        -------
+        str
+        """
+        query_string = ""
+
+        for key in sorted(params.keys()):
+            query_string += key + "=" + str(params[key]) + "&"
+        query_string = query_string[:-1]
+
+        return hmac.new(secret, query_string, hashlib.sha256).hexdigest()
 
     def __init__(self, session=None, configuration=None):
         if self.currencies is None:
@@ -96,7 +96,7 @@ class BinanceJeExchange(ExchangeAPIWrapper):
         timestamp = int(round(time.time() * 1000))
         params['timestamp'] = timestamp
 
-        signature = binance_signature(params, self.credentials['secret'])
+        signature = self.binance_signature(params, self.credentials['secret'])
         params['signature'] = signature
 
         logger.debug('headers: %s' % headers)
