@@ -26,8 +26,8 @@ class BinanceJeExchange(ExchangeAPIWrapper):
     Instead, there are subclasses of this class for each currency pair that
     the exchange supports.
 
-    Attributes
-    ----------
+    Class Attributes
+    ----------------
     currencies : dict
         Set to None in this class but must be defined in any subclass with
         keys 'volume' and 'base' mapping to valid currencies in gryphon.lib.money
