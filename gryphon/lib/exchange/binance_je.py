@@ -53,7 +53,7 @@ class BinanceJeExchange(ExchangeAPIWrapper):
     def __init__(self, session=None, configuration=None):
         if self.currencies is None:
             raise NotImplementedError(
-                'Cannot instantiate BinanceJeExchange. Use a subclass instead.'
+                'Cannot instantiate BinanceJeExchange. Use a subclass instead.',
             )
 
         super(BinanceJeExchange, self).__init__(session)
