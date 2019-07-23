@@ -17,6 +17,36 @@ logger = get_logger(__name__)
 
 
 class BinanceJeExchange(ExchangeAPIWrapper):
+    """A base class to implement support for the Binance Jersey Exchange.
+
+    This class is a pseudo-abstract class. It is not intended to be
+    instantiated itself and does not appear as a supported exchange in
+    gryphon.lib.exchange.exchange_factory.
+
+    Instead, there are subclasses of this class for each currency pair that
+    the exchange supports.
+
+    Attributes
+    ----------
+    currencies : dict
+        Set to None in this class but must be defined in any subclass with
+        keys 'volume' and 'base' mapping to valid currencies in gryphon.lib.money
+
+        This dict is used in the constructor method to set the instance
+        attributes 'volume_currency' and 'currency' as required by the
+        framework
+
+    credentials : dict
+        Set to None initially but populated by the first call to _auth_request
+        to act as a cache for the environment variables required for authorisation.
+
+    base_url : str
+        The base url for the Binance Jersey API
+
+    endpoints : dict
+        Mapping an endpoint name to the relevant 'req_method' and 'url'
+        parameters suitable for passing to a request object constructor.
+    """
     currencies = None
     credentials = None
     base_url = 'https://api.binance.je'
