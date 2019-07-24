@@ -8,3 +8,12 @@ class TestBinanceJePublicMethods(ExchangePublicMethodsTests):
     def setUp(self):
         self.exchange = BinanceJeBTCGBPExchange()
 
+
+class TestBinanceJeSpecificMethods(object):
+    def setup(self):
+        self.exchange = BinanceJeBTCGBPExchange()
+
+    def test_ping(self):
+        response = self.exchange.ping()
+        assert response == {}
+
