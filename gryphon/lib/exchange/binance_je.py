@@ -48,6 +48,7 @@ class BinanceJeExchange(ExchangeAPIWrapper):
         'balance': {'req_method': 'get', 'url': '/api/v3/account'},
         'ticker': {'req_method': 'get', 'url': '/api/v1/ticker/24hr'},
         'open_orders': {'req_method': 'get', 'url': '/api/v3/openOrders'},
+        'orderbook': {'req_method': 'get', 'url': '/api/v1/depth'},
     }
 
     @staticmethod
@@ -151,7 +152,7 @@ class BinanceJeExchange(ExchangeAPIWrapper):
             no_auth=True,
             verify=verify,
             params={'symbol': self.symbol},
-            **self.endpoints['ticker'],
+            **self.endpoints['ticker']
         )
 
     def get_ticker_resp(self, req):
@@ -181,6 +182,16 @@ class BinanceJeExchange(ExchangeAPIWrapper):
             for order in response
         ]
 
+    def _get_orderbook_from_api_req(self, verify=True):
+        return self.req(
+            no_auth=True,
+            verify=verify,
+            params={'symbol': self.symbol},
+            **self.endpoints['orderbook']
+        )
+
+    def _get_orderbook_from_api_resp(self, req):
+        return self.resp(req)
 
 class BinanceJeBTCEURExchange(BinanceJeExchange):
     currencies = {'volume': 'BTC', 'base': 'EUR'}
