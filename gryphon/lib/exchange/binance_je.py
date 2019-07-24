@@ -123,10 +123,49 @@ class BinanceJeExchange(ExchangeAPIWrapper):
         params['timestamp'] = timestamp
         params['signature'] = self.signature(params, self.credentials['secret'])
 
+##########################################################################################
+# Public Endpoint Methods                                                                #
+##########################################################################################
     def ping(self):
+        """Establish basic connectivity to the exchange.
+
+        This method is specific to the Binance Jersey exchange. It is not an
+        implementation of any method from the parent class.
+        """
         req = self.req(no_auth=True, **self.endpoints['ping'])
         return self.resp(req)
 
+    def get_ticker_req(self, verify=True):
+        return self.req(
+            no_auth=True,
+            verify=verify,
+            params={'symbol': self.symbol},
+            **self.endpoints['ticker']
+        )
+
+    def get_ticker_resp(self, req):
+        response = self.resp(req)
+        return {
+            'high': Money(response['highPrice'], self.currency),
+            'low': Money(response['lowPrice'], self.currency),
+            'last': Money(response['lastPrice'], self.currency),
+            'volume': Money(response['volume'], self.volume_currency),
+        }
+
+    def _get_orderbook_from_api_req(self, verify=True):
+        return self.req(
+            no_auth=True,
+            verify=verify,
+            params={'symbol': self.symbol},
+            **self.endpoints['orderbook']
+        )
+
+    def _get_orderbook_from_api_resp(self, req):
+        return self.resp(req)
+
+##########################################################################################
+# Authorised Endpoint Methods                                                            #
+##########################################################################################
     def get_balance_req(self):
         return self.req(**self.endpoints['balance'])
 
@@ -147,23 +186,6 @@ class BinanceJeExchange(ExchangeAPIWrapper):
 
         return Balance(balances)
 
-    def get_ticker_req(self, verify=True):
-        return self.req(
-            no_auth=True,
-            verify=verify,
-            params={'symbol': self.symbol},
-            **self.endpoints['ticker']
-        )
-
-    def get_ticker_resp(self, req):
-        response = self.resp(req)
-        return {
-            'high': Money(response['highPrice'], self.currency),
-            'low': Money(response['lowPrice'], self.currency),
-            'last': Money(response['lastPrice'], self.currency),
-            'volume': Money(response['volume'], self.volume_currency),
-        }
-
     def get_open_orders_req(self):
         return self.req(**self.endpoints['open_orders'])
 
@@ -181,17 +203,6 @@ class BinanceJeExchange(ExchangeAPIWrapper):
             }
             for order in response
         ]
-
-    def _get_orderbook_from_api_req(self, verify=True):
-        return self.req(
-            no_auth=True,
-            verify=verify,
-            params={'symbol': self.symbol},
-            **self.endpoints['orderbook']
-        )
-
-    def _get_orderbook_from_api_resp(self, req):
-        return self.resp(req)
 
 
 class BinanceJeBTCEURExchange(BinanceJeExchange):
