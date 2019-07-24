@@ -184,7 +184,10 @@ class BinanceJeExchange(ExchangeAPIWrapper):
         return Balance(balances)
 
     def get_open_orders_req(self):
-        return self.req(**self.endpoints['open_orders'])
+        return self.req(
+            params={'symbol': self.symbol},
+            **self.endpoints['open_orders']
+        )
 
     def get_open_orders_resp(self, req):
         response = self.resp(req)
