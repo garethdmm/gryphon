@@ -160,9 +160,6 @@ class BinanceJeExchange(ExchangeAPIWrapper):
             **self.endpoints['orderbook']
         )
 
-    def _get_orderbook_from_api_resp(self, req):
-        return self.resp(req)
-
 ##########################################################################################
 # Authorised Endpoint Methods                                                            #
 ##########################################################################################
