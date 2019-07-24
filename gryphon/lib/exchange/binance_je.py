@@ -193,6 +193,7 @@ class BinanceJeExchange(ExchangeAPIWrapper):
     def _get_orderbook_from_api_resp(self, req):
         return self.resp(req)
 
+
 class BinanceJeBTCEURExchange(BinanceJeExchange):
     currencies = {'volume': 'BTC', 'base': 'EUR'}
 
