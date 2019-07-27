@@ -14,11 +14,6 @@ def get_trading_db_mysql_creds():
     return os.environ['TRADING_DB_CRED']
 
 
-def get_dashboard_db_mysql_creds():
-    import os
-    return os.environ['DASHBOARD_DB_CRED']
-
-
 def get_gds_db_mysql_creds():
     import os
     return os.environ['GDS_DB_CRED']
@@ -61,8 +56,8 @@ def get_a_gds_db_mysql_session():
 
 
 def get_a_dashboard_db_mysql_session():
-    creds = get_dashboard_db_mysql_creds()
-    return get_a_mysql_session(creds)
+    from ..dashboard_db_if import db_creds, bound_session
+    return bound_session(db_creds)
 
 
 def commit_mysql_session(session):
