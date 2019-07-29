@@ -16,22 +16,21 @@ Session = orm.sessionmaker()
 
 def db_creds():
     import os
-    return os.environ['DASHBOARD_DB_CRED']
+    try:
+        creds = os.environ['DASHBOARD_DB_CRED']
+    except KeyError as ke:
+        print("DASHBOARD_DB_CRED environment variable not found.")
+        print("You probably need to setup your .env file. See https://gryphon.readthedocs.io/en/latest/usage.html#dotenv-files ")
+        raise
+    return creds
 
 
-def create_engine(creds, **kwargs):
-    extra_kwargs = {
-        'echo': False,
-        # commenting for sqlite compatibility
-        #        'pool_size': 3,
-        #        'pool_recycle': 3600,
-    }
-    extra_kwargs.update(kwargs)
+def setup_engine(creds, **kwargs):
     engine = sqlalchemy.create_engine(
-        creds, ** extra_kwargs
+        creds, ** kwargs
     )
 
-    # early engine bind, in case a client uses sqlalchemy directly
+    # early engine bind, in case a client uses the ORM directly to create a session
     Session.configure(bind=engine)
 
     return engine

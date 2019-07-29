@@ -6,7 +6,7 @@ from ...dashboards import models
 from ... import dashboard_db_if
 
 # TODO : make that overridable by command line arg for tests...
-engine = dashboard_db_if.create_engine(
+engine = dashboard_db_if.setup_engine(
     'sqlite://',
     connect_args={'check_same_thread':False},
     poolclass=sqlalchemy.pool.StaticPool,
