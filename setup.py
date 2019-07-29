@@ -79,6 +79,7 @@ setuptools.setup(
         'MySQL-python==1.2.5 ; python_version<"3.0"',
         'mysql-connector-python ; python_version>="3.0"',
         'nose==1.3.7',
+        'parameterized==0.7.0',
         'pathlib2==2.3.2',
         'pexpect==4.6.0',
         'pickleshare==0.7.4',

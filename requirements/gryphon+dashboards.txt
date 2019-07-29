@@ -1,4 +1,5 @@
-py-bcrypt==0.3
+py-bcrypt==0.3 ; python_version<"3.0"
+bcrypt ; python_version>="3.0"
 simplejson==3.16.0
 tornado==5.1.1
 tornadotoad==0.3
