@@ -83,6 +83,20 @@ def parse_extra_strategy_args(args):
     return output
 
 
+def get_conf_filename_from_strategy_name(strategy_name):
+    conf_filename = None
+
+    if strategy_name[-4:] == '.pyx':
+        conf_filename = '%s.conf' % strategy_name[:-4]
+    elif strategy_name[-3:] == '.py':
+        conf_filename = '%s.conf' % strategy_name[:-3]
+    else:
+        # Builtin strategies are not specified with a suffix.
+        conf_filename = '%s.conf' % strategy_name
+
+    return conf_filename
+
+
 def get_conf_file_configuration(conf_filename, strategy_name):
     """
     If there was a config file specified, load it. If not, look for [strategy_name].conf
@@ -91,10 +105,7 @@ def get_conf_file_configuration(conf_filename, strategy_name):
     """
 
     if conf_filename is None:
-        if strategy_name[-4:] == '.pyx':
-            conf_filename = '%s.conf' % strategy_name[:-4]
-        else:
-            conf_filename = '%s.conf' % strategy_name
+        conf_filename = get_conf_filename_from_strategy_name(strategy_name)
 
     file_configuration = configuration.read_config_from_file(conf_filename)
 
