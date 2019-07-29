@@ -64,6 +64,7 @@ setuptools.setup(
         'Delorean>=1.0.0,<2',
         'enum34==1.1.6',
         'futures==3.2.0 ; python_version<"3.0"',
+        'factory-boy==2.12.0',
         'gryphon-cdecimal==2.3',
         'gryphon-money',  # Our fork of Python Money.
         'gryphon-pusherclient',  # Our duplicate of PythonPusherClient.
