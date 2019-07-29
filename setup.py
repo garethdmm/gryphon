@@ -87,6 +87,7 @@ setuptools.setup(
         'Pygments==2.2.0',
         'pylibmc>=1.5.2,<2',
         'python-dotenv==0.8.2',
+        'py-bcrypt==0.3',
         'pytz==2018.5',
         'raven==6.9.0',
         'rednose>=1.3.0,<2',
