@@ -6,14 +6,28 @@ import logging
 import sqlalchemy.types as types
 from parameterized import parameterized
 
+from .....dashboards.models.columns.password_column import bcrypt_matcher
 from .....dashboards.models import Password
 
-# TODO : verify matcher
-# @parameterized.expand([
-#
-# ])
-# def test_bcrypt_matcher():
-#    pass
+
+# parameterized test values are currently basic for illustration purposes
+# TODO : types + hypothesis to test wide range of values.
+
+
+@parameterized.expand([
+    (r'$2a$12$sssssssssssssssssssssshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh', True),
+    (b'$2a$12$sssssssssssssssssssssshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh', True),
+    (u'$2a$12$sssssssssssssssssssssshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh', True),
+    (r'sh', False),
+    (r's', False),
+    (r'h', False),
+])
+def test_bcrypt_matcher(value, should_match):
+    m= bcrypt_matcher(value)
+    if not should_match:
+        assert m is None
+    else:  # should match
+        assert m
 
 
 class TestPassword(unittest.TestCase):
@@ -33,8 +47,15 @@ class TestPassword(unittest.TestCase):
         p = Password(salt=salt)
         assert p._salt == expected_stored_salt
 
-    def test_init_value(self):
-        raise NotImplementedError
+    @parameterized.expand([
+        ('saltsaltsaltsaltsalts', 'hashhashhashhashhashhashhashhas')
+    ])
+    def test_init_value(self, salt, hash):
+
+        val = '$2a$12$' + salt + hash
+        p = Password(val)
+        assert p._salt == salt, p._salt == salt
+        assert p._hashed == hash, p._hashed == hash
 
     def test_hashed(self):
         raise NotImplementedError
@@ -51,11 +72,38 @@ class TestPassword(unittest.TestCase):
         # salt should (probably?) never be None
         assert p.salt is not None
 
-    def test_plain(self):
-        raise NotImplementedError
+    @parameterized.expand([
+        ("passwd",),
+    ])
+    def test_plain(self, plain_passwd):
+        p = Password(plain=plain_passwd)
+        assert p.plain == plain_passwd
 
-    def test_str(self):
-        raise NotImplementedError
+    @parameterized.expand([
+        ("passwd",),
+    ])
+    def test_str(self, plain_passwd):
+        p = Password(plain=plain_passwd)
+        assert str(p) == p.hashed
 
-    def test_eq(self):
-        raise NotImplementedError
+    @parameterized.expand([
+        ("passwd",),
+        (b"passwd",),
+    ])
+    def test_eq_true(self, plain_passwd):
+        p1 = Password(plain=plain_passwd)
+        # generate hash value
+        assert p1.hashed
+        # copy will copy the hashed value
+        import copy
+        p2 = copy.copy(p1)
+        assert p1 == p2
+
+    @parameterized.expand([
+        ("passwd"),
+        (b"passwd"),
+    ])
+    def test_eq_false(self, plain_passwd):
+        pd1 = Password(plain=plain_passwd)
+        pd2 = Password(plain=plain_passwd)
+        assert pd1 != pd2
