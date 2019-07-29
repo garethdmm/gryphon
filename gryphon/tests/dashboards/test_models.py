@@ -7,7 +7,7 @@ import nose
 
 from . import factories
 from ...dashboards import models
-from ...dashboard_db_if import scoped_session
+from ...import dashboard_db_if
 
 #
 # def setup():
@@ -19,19 +19,21 @@ class MyTest(unittest.TestCase):
 
     def setUp(self):
         # Prepare a new, clean session, on sqllite DB # TODO : make that parametrizable (maybe via fixtures)
-        self.session = scoped_session(None)  # relying on the engine setup by another module...
+        self.session = dashboard_db_if.scoped_session(None)  # relying on the engine setup somewhere else...
         # passing current session to factories
         factories.UserFactory.set_sqlalchemy_session(self.session)
 
     def test_something(self):
+        buf = self.session.query(models.User).all()
         u = factories.UserFactory()
-        #self.session.commit()
+        auf = self.session.query(models.User).all()
+        assert buf != auf  # TO make SURE something gets written in the session
         self.assertEqual([u], self.session.query(models.User).all())
 
     def tearDown(self):
         # Rollback the session => no changes to the database
         self.session.rollback()
-        # Remove it, so that the next test gets a new Session()
+        # Remove it, so that the next test gets a new scoped_session()
         self.session.remove()
 
 

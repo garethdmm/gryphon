@@ -3,10 +3,9 @@ from __future__ import absolute_import
 import factory
 import sqlalchemy
 from ...dashboards import models
-from ...import dashboard_db_if
+from ... import dashboard_db_if
 
-dashboard_db_if.Session.configure(autoflush=False)
-
+# TODO : make that overridable by command line arg for tests...
 engine = dashboard_db_if.create_engine(
     'sqlite://',
     connect_args={'check_same_thread':False},
@@ -32,6 +31,6 @@ class UserFactory(factory.alchemy.SQLAlchemyModelFactory):
         cls._meta.sqlalchemy_session = session
 
     username = factory.Sequence(lambda n: "User %d" % n)
-    password = factory.Sequence(lambda n: n)
+    password = factory.Sequence(lambda n: models.Password(plain="passwd%d" % n))
 
 # TODO : better password checks
