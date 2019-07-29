@@ -51,7 +51,19 @@ def main():
 
     result = nose.run(argv=args)
 
-    if result is True:
+    # Integrating new dashboard tests
+    dashboard_test_dir = resource_filename('gryphon', 'tests/dashboards')
+
+    args = [
+        '-s',
+        '--rednose',
+        '--verbosity=2',
+        '--where=%s' % dashboard_test_dir,
+    ]
+
+    dashboard_result = nose.run(argv=args)
+
+    if result and dashboard_result:
         sys.exit(0)
     else:
         sys.exit(1)
