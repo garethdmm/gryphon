@@ -19,6 +19,7 @@ from gryphon.lib import gryphon_json_serialize
 from gryphon.lib.exchange.consts import Consts
 from gryphon.lib.exchange.exchange_factory import make_exchange_from_key
 from gryphon.lib.models.base import Base
+from gryphon.lib.models.transaction import Transaction
 from gryphon.lib.money import Money
 
 metadata = Base.metadata

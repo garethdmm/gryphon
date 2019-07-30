@@ -13,7 +13,7 @@ from gryphon.lib.models.transaction import Transaction
 import logging
 logger = logging.getLogger(__name__)
 
-class TestTransaction():
+class TestTransaction(unittest.TestCase):
     def mockExchange(self, name=None):
         exchange_name = "TEST"
         if name:

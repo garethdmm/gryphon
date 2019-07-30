@@ -18,7 +18,6 @@ from gryphon.lib.exchange.exchange_factory import make_exchange_from_key
 from gryphon.lib.models.base import Base
 from gryphon.lib.models.basic_order import BasicOrder
 from gryphon.lib.models.datum import Datum
-from gryphon.lib.models.trade import Trade
 
 metadata = Base.metadata
 
@@ -92,6 +91,7 @@ class Order(Base, BasicOrder):
         }, ensure_ascii=False)
 
     def set_trades(self, trades):
+        from gryphon.lib.models.trade import Trade
         self.trades = []
         for trade in trades:
             new_trade = Trade(
