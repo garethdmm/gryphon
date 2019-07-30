@@ -9,7 +9,7 @@ import mock
 logger = logging.getLogger(__name__)
 
 
-class ExchangePublicMethodsTests(object):
+class ExchangePublicMethodsTests(unittest.TestCase):
     def test_orderbook(self):
         book = self.exchange.get_orderbook()
 
