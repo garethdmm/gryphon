@@ -13,7 +13,7 @@ from gryphon.lib.models.trade import Trade
 from gryphon.lib.money import Money
 
 
-class TestProfit():
+class TestProfit(unittest.TestCase):
     def setUp(self):
         self.order = mock.MagicMock()
         self.order.exchange_rate = Decimal('0.80')

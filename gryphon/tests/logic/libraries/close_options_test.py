@@ -19,7 +19,7 @@ from gryphon.lib.models.transaction import Transaction
 from gryphon.lib.money import Money
 
 
-class TestCloseOptions():
+class TestCloseOptions(unittest.TestCase):
     def mockExchange(self):
         exchange = Exchange('TEST')
         exchange.currency = 'USD'

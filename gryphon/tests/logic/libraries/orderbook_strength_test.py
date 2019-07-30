@@ -2,6 +2,7 @@ import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 
 import os
 import unittest
+import sure
 
 from cdecimal import Decimal
 
