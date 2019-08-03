@@ -36,6 +36,11 @@ from gryphon.lib.session import commit_mysql_session
 from gryphon.lib.util.profile import tick_profile
 
 
+INSUFFICIENT_VOLUME_MESSAGE = """\
+Unable to place %s because order volume = %s, which is less than the exchange wrapper min order size \
+"""
+
+
 class ExchangeCoordinator(object):
     def __init__(self, exchange_wrapper, db, harness=None):
         self.db = db
@@ -257,8 +262,8 @@ class ExchangeCoordinator(object):
         # TODO: this constant should be moved into the exchange wrapper library.
         if volume <= self.exchange_wrapper.min_order_size:
             self.harness.log(
-                'Unable to place %s because order volume = %s, which is less than the exchange wrapper min order size' 
-                % (mode, volume), color='red'
+                INSUFFICIENT_VOLUME_MESSAGE % (mode, volume),
+                color='red'
             )
             return
 
