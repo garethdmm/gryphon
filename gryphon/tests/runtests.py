@@ -28,7 +28,8 @@ def main():
 
     result = pytest.main(args=args)
 
-    if result is True:
-        sys.exit(0)
-    else:
-        sys.exit(1)
+    sys.exit(result)
+
+
+if __name__ == "__main__":
+    main()
