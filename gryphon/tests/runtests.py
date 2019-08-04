@@ -10,9 +10,8 @@ import os
 from pkg_resources import resource_filename
 import sys
 
-import nose
+import pytest
 
-import money
 
 def main():
     test_dir = resource_filename('gryphon', 'tests/logic')
@@ -24,11 +23,10 @@ def main():
 
     args = [
         '-s',
-        '--rednose',
-        '--where=%s' % test_dir,
+        test_dir
     ]
 
-    result = nose.run(argv=args)
+    result = pytest.main(args=args)
 
     if result is True:
         sys.exit(0)
