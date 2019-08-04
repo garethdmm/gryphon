@@ -1,4 +1,4 @@
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 import gryphon.lib; gryphon.lib.prepare()
 
 from decimal import Decimal
@@ -13,7 +13,7 @@ from gryphon.lib.models.trade import Trade
 from gryphon.lib.money import Money
 
 
-class TestProfit():
+class TestProfit(unittest.TestCase):
     def setUp(self):
         self.order = mock.MagicMock()
         self.order.exchange_rate = Decimal('0.80')
@@ -155,14 +155,14 @@ class TestProfit():
         self.ask.volume = Money('1', 'BTC')
         self.ask.price = Money('101', 'CAD')
         self.ask.fee = Money('1', 'CAD')
-        
+
         self.order.fundamental_value = Money(250, 'CAD')
-        
+
         matched_trades, position_trades = revenue_lib.split_trades(self.trades)
         profit_units = revenue_lib.profit_units(matched_trades)
         profit_units.should.have.length_of(1)
         profit_units[0]['profit'].should.equal(Money('-2.50', 'CAD'))
-        
+
     def test_profit_with_btc_and_fiat_fees_and_cad(self):
         self.bid.volume = Money('1', 'BTC')
         self.bid.price = Money('100', 'CAD')
@@ -171,9 +171,9 @@ class TestProfit():
         self.ask.volume = Money('1', 'BTC')
         self.ask.price = Money('101', 'CAD')
         self.ask.fee = Money('1', 'CAD')
-        
+
         self.order.fundamental_value = Money(250, 'CAD')
-    
+
         matched_trades, position_trades = revenue_lib.split_trades(self.trades)
         p = revenue_lib.realized_pl(matched_trades)
 

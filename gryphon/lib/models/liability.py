@@ -17,6 +17,7 @@ import uuid
 
 from cdecimal import Decimal
 from delorean import Delorean
+from six import text_type
 from sqlalchemy import Column, Integer, Unicode, DateTime, UnicodeText, Numeric
 
 from gryphon.lib.logger import get_logger
@@ -55,7 +56,7 @@ class Liability(Base):
     _details = Column('details', UnicodeText(length=2**31))
 
     def __init__(self, amount, liability_type, entity_name, time_started=None, time_repayed=None, details=None):
-        self.unique_id = unicode(uuid.uuid4().hex)
+        self.unique_id = text_type(uuid.uuid4().hex)
         self.time_created = datetime.utcnow()
 
         self.amount = amount
@@ -81,12 +82,12 @@ class Liability(Base):
         return json.dumps({
             'liability_id': self.liability_id,
             'unique_id': self.unique_id,
-            'time_created': unicode(self.time_created),
+            'time_created': text_type(self.time_created),
             'amount': self.amount,
             'liability_type': self.liability_type,
             'entity_name': self.entity_name,
-            'time_started': unicode(self.time_started),
-            'time_repayed': unicode(self.time_repayed),
+            'time_started': text_type(self.time_started),
+            'time_repayed': text_type(self.time_repayed),
             'details': self.details,
         }, ensure_ascii=False)
 

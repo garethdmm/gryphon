@@ -1,7 +1,7 @@
 """
 Just a few exercises for our configuration library.
 """
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 import unittest
 import mock
 
@@ -39,7 +39,7 @@ class TestSimpleStrategy(unittest.TestCase):
             },
             'exchanges': {},
         }
-      
+
         strat = SimpleMarketMaking(None, self.mock_harness, configuration['strategy'])
 
         assert strat.spread == Decimal('1')

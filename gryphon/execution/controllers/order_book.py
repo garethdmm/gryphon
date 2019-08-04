@@ -1,3 +1,4 @@
+from __future__ import print_function
 import termcolor as tc
 
 from gryphon.execution.lib.exchange_color import exchange_color, legend
@@ -96,7 +97,7 @@ def order_book(exchange_name, include_our_orders=False, include_fees=False):
         for order in asks + bids:
             order.apply_fee()
     
-    print
+    print()
     # if we are showing a consolidated orderbook
     if not exchange_name:
         print(legend() + "\n")

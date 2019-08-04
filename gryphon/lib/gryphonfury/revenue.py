@@ -28,7 +28,7 @@ def fast_revenue_in_period(db, start_time, end_time):
     better queries. Previous function is roughly O(n^2) in the number of trades in the
     period and this one is likely O(logn) for a low constant.
 
-    Refer to the helper function 
+    Refer to the helper function
     get_revenue_in_period_given_positions_and_position_trades to see the heavy lifting
     """
 
@@ -341,7 +341,7 @@ def open_pl(open_position_trades, fundamental_value, price_currency=None, volume
     Take in an open_position_trades object and the current fundamental value, and use
     that to calculate our current unrealized profit on that position. This is done
     simply because the fiat position on those open_position_trades is the price we
-    paid to open that position, and then the unrealized profit is our current 
+    paid to open that position, and then the unrealized profit is our current
     expectation of the value of that position (position * fundamental_value).
     """
 
@@ -592,12 +592,12 @@ def open_position_trades(open_position_offset, db, start_time, volume_currency='
             # Filter out trades we already got.
             query = query.filter(
                 ~Trade.unique_id.in_([t.unique_id for t in open_position_trades])
-            )  
+            )
 
         trades_batch = query.limit(10).all()
 
         for trade in trades_batch:
-            if (sum([t.volume for t in open_position_trades]) 
+            if (sum([t.volume for t in open_position_trades])
                     < abs(open_position_offset)):
                 open_position_trades.append(trade)
 

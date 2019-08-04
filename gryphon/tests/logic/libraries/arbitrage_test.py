@@ -8,7 +8,7 @@ TODO:
     we can test e.g. detecting arbitrage between USD and CAD priced orderbooks.
 """
 
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 import gryphon.lib; gryphon.lib.prepare()
 
 import unittest

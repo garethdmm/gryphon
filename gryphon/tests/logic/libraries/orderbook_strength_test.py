@@ -1,7 +1,8 @@
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 
 import os
 import unittest
+import sure
 
 from cdecimal import Decimal
 
@@ -21,14 +22,14 @@ class TestLiquidityFunction(unittest.TestCase):
         self.exchange = None
 
         bid = ExchangeOrder(
-            Money('249', 'USD'), 
+            Money('249', 'USD'),
             Money('10', 'BTC'),
             self.exchange,
             Order.BID,
         )
-            
+
         ask = ExchangeOrder(
-            Money('251', 'USD'), 
+            Money('251', 'USD'),
             Money('10', 'BTC'),
             self.exchange,
             Order.ASK,

@@ -1,4 +1,5 @@
-import ConfigParser
+from __future__ import print_function
+from six.moves.configparser import RawConfigParser
 
 from gryphon.lib.logger import get_logger
 
@@ -6,9 +7,9 @@ logger = get_logger(__name__)
 
 
 def get_config_var(filepath, section, key):
-    print filepath
+    print(filepath)
 
-    config = ConfigParser.RawConfigParser()
+    config = RawConfigParser()
     config.read(filepath)
     section_dict = dict(config.items('live'))
 

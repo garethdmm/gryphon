@@ -1,3 +1,4 @@
+from __future__ import print_function
 # Simple test script for benchmarking regular python logging vs twisted's logging.
 
 import logging
@@ -25,7 +26,7 @@ def tx_log():
 
 
 def stop():
-    print "Log Counter: %s" % log_counter
+    print("Log Counter: %s" % log_counter)
     reactor.stop()
 
 

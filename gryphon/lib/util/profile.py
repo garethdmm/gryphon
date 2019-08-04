@@ -8,11 +8,12 @@ They use two different profiling methods (cprofile vs. line_profiler)
 the outputs of each can be different levels of usable for different
 cases, so I included both here.
 """
+from __future__ import absolute_import
 from collections import defaultdict
 import functools
 import timeit
 
-import monkeypatch_timeit; monkeypatch_timeit.monkeypatch_timeit()
+from . import monkeypatch_timeit; monkeypatch_timeit.monkeypatch_timeit()
 from line_profiler import LineProfiler
 
 def do_profile(follow=[]):

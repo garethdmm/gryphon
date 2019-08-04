@@ -4,6 +4,7 @@ import json
 import uuid
 
 from delorean import parse
+from six import text_type
 from sqlalchemy import Column, Integer, Unicode, Numeric, PickleType
 from sqlalchemy import or_, and_
 from sqlalchemy import func
@@ -102,11 +103,11 @@ class Balance(MutableDict):
         # Make a deep copy of self. copy.deepcopy() is 4x slower than this
         # because we know the exact structure and don't have to watch for recursions
         result = self.__class__()
-        for currency, m in self.iteritems():
+        for currency, m in self.items():
             result[currency] = Money(m.amount, m.currency)
 
         if isinstance(other, Balance):
-            all_currencies = list(set(self.keys() + other.keys()))
+            all_currencies = list(set(list(self.keys()) + list(other.keys())))
             for c in all_currencies:
                 result[c] += other[c]
         elif isinstance(other, Money):
@@ -117,7 +118,7 @@ class Balance(MutableDict):
 
     def __neg__(self):
         result = self.__class__()
-        for currency, balance in self.iteritems():
+        for currency, balance in self.items():
             result[currency] = -balance
         return result
 
@@ -138,7 +139,7 @@ class Balance(MutableDict):
 
     def total_usd_value(self, date=None):
         total_usd_value = Money(0, 'USD')
-        for currency, balance in self.iteritems():
+        for currency, balance in self.items():
             total_usd_value += balance.to('USD', date=date)
         return total_usd_value
 
@@ -168,7 +169,7 @@ class Exchange(Base):
     transactions = relationship('Transaction', cascade='all,delete-orphan', backref='exchange', lazy='dynamic')
 
     def __init__(self, name):
-        self.unique_id = unicode(uuid.uuid4().hex)
+        self.unique_id = text_type(uuid.uuid4().hex)
         self.name = name
         self.position = Position()
         self.target = Target()

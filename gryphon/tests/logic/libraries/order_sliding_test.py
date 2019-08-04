@@ -6,7 +6,7 @@ TODO:
   not guaranteed that our fee levels on a given exchange won't change.
 """
 
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 import gryphon.lib; gryphon.lib.prepare()
 
 import unittest
@@ -51,7 +51,7 @@ class TestOrderSliding(unittest.TestCase):
 
     def tearDown(self):
         pass
-  
+
     def test_trivial_bid(self):
         mode = Consts.BID
         initial_price = Money('999', 'USD')

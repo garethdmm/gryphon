@@ -12,6 +12,7 @@ import urllib
 
 from cdecimal import Decimal
 import coinbase.client
+from six import string_types, text_type
 
 from gryphon.lib.exchange import exceptions
 from gryphon.lib.exchange import order_types
@@ -298,7 +299,7 @@ class CoinbaseBTCUSDExchange(ExchangeAPIWrapper):
         self.load_creds()
 
         req_method = req_method.upper()
-        timestamp = unicode(int(round(time.time())))
+        timestamp = text_type(int(round(time.time())))
 
         # This has already been dumped to json by req().
         body = request_args['data']
@@ -538,7 +539,7 @@ class CoinbaseBTCUSDExchange(ExchangeAPIWrapper):
                 raise exceptions.CancelOrderNotFoundError()
 
     def withdraw_crypto(self, address, volume):
-        if not isinstance(address, basestring):
+        if not isinstance(address, string_types):
             raise TypeError('Withdrawal address must be a string')
 
         if not isinstance(volume, Money) or volume.currency != 'BTC':

@@ -6,7 +6,7 @@ Usage:
     gryphon-exec run-migrations [GDS | TRADING | DASHBOARD] [--execute]
 """
 
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 
 import logging
 import os
@@ -45,7 +45,7 @@ def run_migrations(target_db):
         location = resource_filename(PACKAGE_NAME, DASHBOARD_CONFIG_RELATIVE_PATH)
     elif target_db == TRADING_DB_NAME:
         location = resource_filename(PACKAGE_NAME, TRADING_CONFIG_RELATIVE_PATH)
-    
+
     alembic_cfg = Config(location)
     command.upgrade(alembic_cfg, 'head')
 

@@ -309,13 +309,13 @@ class CoinbaseOrderbookWebsocket(EmeraldWebSocketClientProtocol, WebsocketOrderb
 
         sorted_bid_keys = sorted(
             fancy_orderbook['bids'].keys(),
-            key=lambda (k): float(k),
+            key=lambda k: float(k),
             reverse=True,
         )
 
         sorted_ask_keys = sorted(
             fancy_orderbook['asks'].keys(),
-            key=lambda (k): float(k),
+            key=lambda k: float(k),
         )
 
         bids = [[k, str(fancy_orderbook['bids'][k]), ''] for k in sorted_bid_keys]

@@ -1,4 +1,5 @@
-import pyximport; pyximport.install()
+from __future__ import print_function
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 from cdecimal import Decimal
 import inspect
 import os
@@ -192,7 +193,7 @@ def exception_retry_loop(harness, sentry, db):
 
             return
 
-        # This is necessary to flush local db cache and pick up changes other processes 
+        # This is necessary to flush local db cache and pick up changes other processes
         # have made. For example, if this is a balance mismatch which was fixed by the
         # withdrawal tool.
         session.commit_mysql_session(db)
@@ -253,7 +254,7 @@ def live_run(configuration):
         while True:
             try:
                 tick_start = Delorean().epoch
-                print '\n\n%s' % strategy.name
+                print('\n\n%s' % strategy.name)
 
                 if warm_shutdown_flag:
                     return  # This takes us into the finally block.

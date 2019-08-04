@@ -61,6 +61,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 '''
+from __future__ import print_function
+from __future__ import absolute_import
 
 import urllib2
 import time
@@ -72,8 +74,8 @@ import matplotlib.dates as mdates
 from matplotlib.finance import candlestick
 import matplotlib
 import pylab
-from simple_moving_average import movingaverage
-from rsi import rsiFunc
+from .simple_moving_average import movingaverage
+from .rsi import rsiFunc
 matplotlib.rcParams.update({'font.size': 9})
 
 
@@ -207,8 +209,8 @@ def graphData(stock,MA1,MA2):
         plt.show()
         fig.savefig('example.png',facecolor=fig.get_facecolor())
            
-    except Exception,e:
-        print 'main loop',str(e)
+    except Exception as e:
+        print('main loop',str(e))
 
 while True:
     graphData('YHOO',10,50)

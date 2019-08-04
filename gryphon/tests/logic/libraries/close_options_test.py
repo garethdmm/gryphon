@@ -2,7 +2,7 @@
 Unit tests for gryphon.lib.gryphonfury.close_options
 """
 
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 import gryphon.lib; gryphon.lib.prepare()
 
 import mock
@@ -19,7 +19,7 @@ from gryphon.lib.models.transaction import Transaction
 from gryphon.lib.money import Money
 
 
-class TestCloseOptions():
+class TestCloseOptions(unittest.TestCase):
     def mockExchange(self):
         exchange = Exchange('TEST')
         exchange.currency = 'USD'

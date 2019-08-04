@@ -3,16 +3,15 @@ A simple script that allows us to run our test-suite from an installed console e
 point.
 """
 
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 
 import logging
 import os
 from pkg_resources import resource_filename
 import sys
 
-import nose
+import pytest
 
-import money
 
 def main():
     test_dir = resource_filename('gryphon', 'tests/logic')
@@ -24,13 +23,13 @@ def main():
 
     args = [
         '-s',
-        '--rednose',
-        '--where=%s' % test_dir,
+        test_dir
     ]
 
-    result = nose.run(argv=args)
+    result = pytest.main(args=args)
 
-    if result is True:
-        sys.exit(0)
-    else:
-        sys.exit(1)
+    sys.exit(result)
+
+
+if __name__ == "__main__":
+    main()

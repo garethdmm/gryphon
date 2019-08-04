@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 import base64
 from collections import OrderedDict
 import decimal
@@ -9,8 +10,8 @@ import time
 
 from cdecimal import *
 
-from base import *
-from exceptions import *
+from .base import *
+from .exceptions import *
 from gryphon.lib.models.exchange import Balance
 from gryphon.lib.money import Money
 

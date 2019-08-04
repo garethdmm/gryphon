@@ -1,4 +1,4 @@
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 
 import logging
 import os
@@ -9,7 +9,7 @@ import mock
 logger = logging.getLogger(__name__)
 
 
-class ExchangePublicMethodsTests(object):
+class ExchangePublicMethodsTests(unittest.TestCase):
     def test_orderbook(self):
         book = self.exchange.get_orderbook()
 

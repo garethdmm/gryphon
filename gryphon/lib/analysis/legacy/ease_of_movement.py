@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np
 import time
 
@@ -25,13 +26,13 @@ def EMV(d,c,h,l,o,v,tf):
         boxr = ( (v[x]/1000000.00)/ (h[x]-l[x]) )
         OnepEMVs = movement / boxr
         OnepEMV.append(OnepEMVs)
-        print OnepEMVs
+        print(OnepEMVs)
         x += 1
 
     tfEMV = movingaverage(OnepEMV,tf)
 
-    print len(tfEMV)
-    print len(d[tf:])
+    print(len(tfEMV))
+    print(len(d[tf:]))
 
     return d[tf:],tfEMV
 

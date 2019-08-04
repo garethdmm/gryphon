@@ -6,6 +6,7 @@ import os
 import uuid
 
 from decimal import *
+from six import text_type
 from sqlalchemy import ForeignKey, Column, Integer, Unicode, DateTime, UnicodeText, Numeric
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
@@ -18,6 +19,7 @@ from gryphon.lib import gryphon_json_serialize
 from gryphon.lib.exchange.consts import Consts
 from gryphon.lib.exchange.exchange_factory import make_exchange_from_key
 from gryphon.lib.models.base import Base
+from gryphon.lib.models.transaction import Transaction
 from gryphon.lib.money import Money
 
 metadata = Base.metadata
@@ -25,17 +27,17 @@ metadata = Base.metadata
 
 class Trade(Base):
     __tablename__ = 'trade'
-    
+
     #Trade Types
     BID = Consts.BID
     ASK = Consts.ASK
-    
+
     trade_id = Column(Integer, primary_key=True)
     trade_type = Column(Unicode(64))
     unique_id = Column(Unicode(64), nullable=False)
     exchange_trade_id = Column(Unicode(64))
     time_created = Column(DateTime, nullable=False)
-    
+
     _fee = Column('fee', Numeric(precision=24, scale=14))
     _fee_currency = Column('fee_currency', Unicode(3))
     _price = Column('price', Numeric(precision=24, scale=14))
@@ -52,9 +54,9 @@ class Trade(Base):
     fee_buyback_transaction = relationship("Transaction",  backref='fee_buyback_trades')
 
     order_id = Column(Integer, ForeignKey('order.order_id'))
-    
+
     def __init__(self, trade_type, price, fee,  volume, exchange_trade_id, order, meta_data={}):
-        self.unique_id = unicode(uuid.uuid4().hex)
+        self.unique_id = text_type(uuid.uuid4().hex)
         self.time_created = datetime.utcnow()
         self.trade_type = trade_type
         self.price = price
@@ -63,19 +65,19 @@ class Trade(Base):
         self.exchange_trade_id = exchange_trade_id
         self.order = order
         self.meta_data = json.dumps(meta_data)
-        
+
     def __unicode__(self):
         return u'[TRADE:%s, Order:%s] Price:%s, Volume:%s BTC, Exchange:%s' % (
             self.trade_type, self.order_id, self.price, self.volume, self.order.exchange.name)
-        
+
     def __repr__(self):
         return self.to_json()
-    
+
     def to_json(self):
         return json.dumps({
             'trade_id':self.trade_id,
             'trade_type':self.trade_type,
-            'time_created':unicode(self.time_created),
+            'time_created':text_type(self.time_created),
             'unique_id':self.unique_id,
             'exchange_trade_id':self.exchange_trade_id,
             'order_id':self.order_id,
@@ -83,7 +85,7 @@ class Trade(Base):
             'price':self.price,
             'volume':self.volume
         }, ensure_ascii=False)
-    
+
     @property
     def volume(self):
         return Money(self._volume, self._volume_currency)

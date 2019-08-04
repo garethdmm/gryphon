@@ -23,7 +23,7 @@ class BitcoinWisdom(object):
             self.symbol = 'btccad'
         elif self.exchange == 'kraken':
             self.symbol = 'btceur'
-        
+
         self.steps ={
                 '1m': 60,'3m': 180,'5m': 300,'15m': 900,'30m':1800,
                 '1h':3600,'2h':7200,'4h':14400,'6h':21600,'12h':43200,
@@ -32,7 +32,7 @@ class BitcoinWisdom(object):
 
     # currently caching for a day, maybe longer in the future
     @cache_me(time=86400, ignore_self=True)
-    def req_with_cache(self, url):        
+    def req_with_cache(self, url):
         return self.req(url)
 
     def req(self, url):
@@ -47,7 +47,7 @@ class BitcoinWisdom(object):
         url = 'period?step=%s&symbol=%s%s' % (step_seconds, self.exchange, self.symbol)
         url = self.base_url % url
         return url
-    
+
     def determine_step(self, start_date, end_date):
         if (end_date - start_date) >= timedelta(days=1):
             step = '1d'
@@ -56,8 +56,8 @@ class BitcoinWisdom(object):
         else:
             step = '1m'
         return step
-    
-   
+
+
     def period(self, start_date, end_date, step='1d', sid=''):
         if self.should_cache_this_result(start_date, end_date):
             points = self.req_with_cache(self.create_url(step))
@@ -70,7 +70,7 @@ class BitcoinWisdom(object):
         for p in points:
             point_hash[epoch(p[0]).naive] = Money(str(p[7]), 'BTC')
         return point_hash
-    
+
 
     def volume_in_period(self, start_date, end_date):
         start_date = Delorean(start_date, 'UTC').datetime
@@ -83,7 +83,7 @@ class BitcoinWisdom(object):
             step=self.determine_step(start_date, end_date),
         )
 
-        for k,v in periods.iteritems():
+        for k, v in periods.items():
             t=Delorean(k, 'UTC').datetime
             vol=v
             if t >= start_date and t < end_date:

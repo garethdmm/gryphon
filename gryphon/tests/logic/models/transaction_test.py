@@ -1,4 +1,4 @@
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 
 import os
 import unittest
@@ -13,7 +13,7 @@ from gryphon.lib.models.transaction import Transaction
 import logging
 logger = logging.getLogger(__name__)
 
-class TestTransaction():
+class TestTransaction(unittest.TestCase):
     def mockExchange(self, name=None):
         exchange_name = "TEST"
         if name:

@@ -1,7 +1,8 @@
-from admin_base import AdminBaseHandler
+from __future__ import absolute_import
+from .admin_base import AdminBaseHandler
 import tornado.web
 
-from mixins.start_and_end_time import StartAndEndTimeMixin
+from .mixins.start_and_end_time import StartAndEndTimeMixin
 import util.tick_times as tick_times
 
 

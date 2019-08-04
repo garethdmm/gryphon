@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 import tornado.web
 
-from admin_base import AdminBaseHandler
+from .admin_base import AdminBaseHandler
 
 
 class HomeHandler(AdminBaseHandler):

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 import logging
 import logging.handlers
 import os

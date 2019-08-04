@@ -5,10 +5,13 @@ database.
 
 Usage: gryphon-exec create-dashboard-user [--execute]
 """
+from __future__ import print_function
 
 import getpass
 import termcolor as tc
 import os
+
+from six.moves import input
 
 from gryphon.lib import session
 from gryphon.dashboards.models.user import User
@@ -43,29 +46,29 @@ Success! You should be able to log in with the new credentials now.'\
 
 
 def main(execute):
-    print tc.colored(WARNING_MESSAGE, 'red')
-    informed_consent = raw_input(WARNING_PROMPT)
+    print(tc.colored(WARNING_MESSAGE, 'red'))
+    informed_consent = input(WARNING_PROMPT).strip()
 
     if informed_consent != 'y':
-        print EXIT_MESSAGE
+        print(EXIT_MESSAGE)
         return
     else:
-        print CONTINUE_MESSAGE
+        print(CONTINUE_MESSAGE)
 
     dashboard_db = session.get_a_dashboard_db_mysql_session()
 
-    username = raw_input(ENTER_USERNAME_MESSAGE)
+    username = input(ENTER_USERNAME_MESSAGE).strip()
     password_text = getpass.getpass(ENTER_PASSWORD_MESSAGE)
 
     password = Password(plain=password_text)
-    
+
     user = User(username, password)
 
     if execute is True:
         dashboard_db.add(user)
         dashboard_db.commit()
 
-        print tc.colored(SUCCESS_MESSAGE, 'green')
+        print(tc.colored(SUCCESS_MESSAGE, 'green'))
     else:
-        print SUCCESS_NO_EXECUTE_MESSAGE
-     
+        print(SUCCESS_NO_EXECUTE_MESSAGE)
+

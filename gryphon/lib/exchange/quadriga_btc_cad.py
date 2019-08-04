@@ -8,6 +8,7 @@ import hashlib
 from cdecimal import *
 from delorean import Delorean
 from collections import OrderedDict, defaultdict
+from six import text_type
 
 from gryphon.lib.exchange import exceptions
 from gryphon.lib.exchange import order_types
@@ -85,13 +86,13 @@ class QuadrigaBTCCADExchange(ExchangeAPIWrapper):
         }
 
         return self.req('post', '/user_transactions', data=payload)
-    
+
     def transactions_resp(self, req):
         return self.resp(req)
-        
+
     def transactions(self):
-        return self.transactions_resp(self.transactions_req()) 
-    
+        return self.transactions_resp(self.transactions_req())
+
     def trades(self):
         raw_transactions =  self.transactions()
         trades = []
@@ -135,21 +136,21 @@ class QuadrigaBTCCADExchange(ExchangeAPIWrapper):
                 else:
                     raise exceptions.ExchangeAPIErrorException(
                         self,
-                        'Zero volume Trade #%s, so API doesn\'t tell us the side.' % ( 
+                        'Zero volume Trade #%s, so API doesn\'t tell us the side.' % (
                         raw_transaction['id'],
                     ))
 
                 trades.append({
                     'time': self._datetime_to_timestamp(raw_transaction['datetime']),
-                    'trade_id': unicode(raw_transaction['id']),
-                    'order_id': unicode(raw_transaction['order_id']),
+                    'trade_id': text_type(raw_transaction['id']),
+                    'order_id': text_type(raw_transaction['order_id']),
                     'btc': btc,
                     'fiat': fiat,
                     'fee': fee,
                 })
 
         return trades
-    
+
     def trades_for_order(self, order_id):
         trades = self.trades()
         return [t for t in trades if t['order_id'] == order_id]
@@ -177,7 +178,7 @@ class QuadrigaBTCCADExchange(ExchangeAPIWrapper):
         except KeyError:
             payload = request_args['data'] = {}
 
-        nonce = unicode(int(round(time.time() * 1000)))
+        nonce = text_type(int(round(time.time() * 1000)))
         message= nonce + self.api_key + self.client_id
 
         sig = hmac.new(
@@ -191,7 +192,7 @@ class QuadrigaBTCCADExchange(ExchangeAPIWrapper):
             'key': self.api_key,
             'signature':sig
         })
-        
+
     def get_balance_req(self):
         return self.req('post', '/balance')
 
@@ -209,10 +210,10 @@ class QuadrigaBTCCADExchange(ExchangeAPIWrapper):
         data['CAD'] = cad_balance
 
         return data
-        
+
     def _get_orderbook_from_api_req(self, verify=True):
         return self.req('get', '/order_book', no_auth=True, verify=verify)
-    
+
     def place_order_req(self, mode, volume, price, order_type=order_types.LIMIT_ORDER):
         payload = {
             'amount': '%.8f' % volume.amount,
@@ -230,16 +231,16 @@ class QuadrigaBTCCADExchange(ExchangeAPIWrapper):
         response = self.resp(req)
 
         try:
-            return {'success': True, 'order_id': unicode(response['id'])}
+            return {'success': True, 'order_id': text_type(response['id'])}
         except KeyError:
             raise exceptions.ExchangeAPIErrorException(
                 self,
                 'response does not contain an order_id. Response: %s' % response,
             )
-    
+
     def get_open_orders_req(self):
         return self.req('post', '/open_orders')
-        
+
     def get_open_orders_resp(self, req):
         raw_open_orders = self.resp(req)
         raw_open_orders = raw_open_orders if raw_open_orders else []
@@ -262,14 +263,14 @@ class QuadrigaBTCCADExchange(ExchangeAPIWrapper):
     def get_order_details(self, order_id):
         req = self.get_order_details_req(order_id)
         return self.get_order_details_resp(req)
-    
+
     def get_order_details_req(self, order_id):
         payload = {
-            'id': unicode(order_id),
+            'id': text_type(order_id),
         }
 
         return self.req('post', '/lookup_order', data=payload)
-    
+
     def get_order_details_resp(self, req):
         order = self.resp(req)
 
@@ -277,7 +278,7 @@ class QuadrigaBTCCADExchange(ExchangeAPIWrapper):
             order = order[0]
         except KeyError as e:
             ExchangeAPIErrorException(self, 'malformed response: %s' % order)
-            
+
         trades = self.trades_for_order(order['id'])
         time_created = self._datetime_to_timestamp(order['created'])
         mode = self._order_mode_to_const(str(order['type']))
@@ -291,7 +292,7 @@ class QuadrigaBTCCADExchange(ExchangeAPIWrapper):
         }
 
         return result
-    
+
     def get_multi_order_details_req(self, order_ids):
         data = {}
 
@@ -299,7 +300,7 @@ class QuadrigaBTCCADExchange(ExchangeAPIWrapper):
             data[oid] = self.get_order_details_req(oid)
 
         return data
-    
+
     def get_multi_order_details_resp(self, reqs):
         data = {}
 
@@ -310,7 +311,7 @@ class QuadrigaBTCCADExchange(ExchangeAPIWrapper):
 
     def get_ticker_req(self, verify=True):
         return self.req('get', '/ticker', no_auth=True, verify=verify)
-    
+
     def get_ticker_resp(self, req):
         response = self.resp(req)
 
@@ -320,14 +321,14 @@ class QuadrigaBTCCADExchange(ExchangeAPIWrapper):
             'last': Money(response['last'], 'CAD'),
             'volume': Money(response['volume'], 'BTC'),
         }
-    
+
     def cancel_order_req(self, order_id):
         payload = {
             'id': order_id,
         }
 
         return self.req('post', '/cancel_order', data=payload)
-    
+
     def cancel_order_resp(self, req):
         response = self.resp(req)
         return {'success': True}
@@ -352,12 +353,12 @@ class QuadrigaBTCCADExchange(ExchangeAPIWrapper):
 
     def get_order_audit_data(self, skip_recent=0):
         """
-        Returns an OrderedDict of order ids mapped to their filled volume (only include 
+        Returns an OrderedDict of order ids mapped to their filled volume (only include
         orders that have some trades)
-        """        
+        """
         orders = OrderedDict()
         trades_to_audit = self.trades()
-        
+
         # Trades from the same order aren't guaranteed to be next to each other, so we
         # need to group them.
         trades_to_audit.sort(key=lambda t:(t['time']), reverse=True)
@@ -369,7 +370,7 @@ class QuadrigaBTCCADExchange(ExchangeAPIWrapper):
             except KeyError:
                 orders[order_id] = abs(trade['btc'])
 
-        # Remove the oldest 2 orders, because its trades might be wrapped around a page 
+        # Remove the oldest 2 orders, because its trades might be wrapped around a page
         # gap this would give us an innacurate volume_filled number. We need to remove
         # 2 because there could be an ask and a bid
         try:

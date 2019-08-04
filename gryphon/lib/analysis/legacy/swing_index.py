@@ -1,3 +1,4 @@
+from __future__ import print_function
 #November 11th 2013:
 open1 = 1286.50
 high1 = 1287.70
@@ -18,25 +19,25 @@ def SwingIndex(O1,O2,H1,H2,L1,L2,C1,C2,LM):
         x = H2-C1
         y = L2-C1
         z = H2-L2
-        print x
-        print y
-        print z
+        print(x)
+        print(y)
+        print(z)
 
         if z < x > y:
-            print 'x wins!'
+            print('x wins!')
             R = (H2-C1)-(.5*(L2-C1))+(.25*(C1-O1))
-            print R
+            print(R)
             return R
         elif x < y > z:
-            print 'y wins!'
+            print('y wins!')
             R = (L2-C1)-(.5*(H2-C1))+(.25*(C1-O1))
-            print R
+            print(R)
             return R
 
         elif x < z > y:
-            print 'z wins!'
+            print('z wins!')
             R = (H2-L2)+(.25*(C1-O1))
-            print R
+            print(R)
             return R
 
 
@@ -46,11 +47,11 @@ def SwingIndex(O1,O2,H1,H2,L1,L2,C1,C2,LM):
 
         if x > y:
             K=x
-            print K
+            print(K)
             return K
         elif x < y:
             K=y
-            print K
+            print(K)
             return K
 
     L = LM
@@ -58,8 +59,8 @@ def SwingIndex(O1,O2,H1,H2,L1,L2,C1,C2,LM):
     K = calc_K(H2,L2,C1)
 
     SwIn = 50*((C2-C1+(.5*(C2-O2))+(.25*(C1-O1)))/R)*(K/L)
-    print '###'
-    print SwIn
+    print('###')
+    print(SwIn)
     
 
 

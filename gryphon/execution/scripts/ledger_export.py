@@ -182,7 +182,7 @@ def table_entries_from_transaction(transaction):
         entry['date'] = date
         entry['details'] = ''.join([
             '%s:%s ' % (k, v)
-            for k, v in transaction.transaction_details.iteritems()
+            for k, v in transaction.transaction_details.items()
             if k in ['external_transaction_id', 'notes'] and v not in ['xxx']
         ])
 
@@ -238,7 +238,7 @@ def export_ledger_for_exchange(exchange_name, start_time, end_time):
             fiat_balance,
             date,
         )
-    
+
     filename = '%s_ledger_%s_%s.csv' % (
         exchange_name.lower(),
         start_time.strftime('%Y-%m-%d'),

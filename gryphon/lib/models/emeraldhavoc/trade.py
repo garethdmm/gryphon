@@ -5,6 +5,7 @@ import json
 import uuid
 from decimal import *
 from collections import defaultdict
+from six import text_type
 
 from gryphon.lib.money import Money
 from gryphon.lib.exchange.consts import Consts
@@ -39,7 +40,7 @@ class Trade(EmeraldHavocBase):
     )
 
     def __init__(self, price, volume, exchange, timestamp, exchange_trade_id, source='EXCHANGE'):
-        self.unique_id = unicode(uuid.uuid4().hex)
+        self.unique_id = text_type(uuid.uuid4().hex)
         self.time_created = datetime.utcnow()
         self.timestamp = timestamp
         self.price = price
@@ -58,7 +59,7 @@ class Trade(EmeraldHavocBase):
     def to_json(self):
         return json.dumps({
             'trade_id':self.trade_id,
-            'timestamp':unicode(self.timestamp),
+            'timestamp':text_type(self.timestamp),
             'unique_id':self.unique_id,
             'exchange':self.exchange,
             'price':self.price,
@@ -72,7 +73,7 @@ class Trade(EmeraldHavocBase):
     @volume.setter
     def volume(self, value):
         self._volume = value.amount
-        self._volume_currency = unicode(value.currency)
+        self._volume_currency = text_type(value.currency)
 
     @property
     def price(self):
@@ -81,4 +82,4 @@ class Trade(EmeraldHavocBase):
     @price.setter
     def price(self, value):
         self._price = value.amount
-        self._price_currency = unicode(value.currency)
+        self._price_currency = text_type(value.currency)
