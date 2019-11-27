@@ -106,7 +106,7 @@ Notice how much functionality is in play here: `gryphon-exec` sets up the enviro
 
 If you want help with an issue, there are a few ways to ask:
 
-* Join the [gryphon slack](https://join.slack.com/t/gryphonframework/shared_invite/enQtNjYxNjEzNTUzNzY0LTA5MWExYWM4ZTk1YTg1MzVjMTkwMDU4ZTA5ZWVmYWJmZjk1MTQ3MjdkNmZiNDQ1ODRjM2U2MTBhMjc5YWIzYWM) to ask a question to the developers
+* Join the [gryphon slack](https://join.slack.com/t/gryphonframework/shared_invite/enQtODUwMTQzMDUyMDE2LWY2ZjdkZWU1YWRiNmQ2MGYzMTQ0YTM2NzZiMjk4MDU0ZGJiZTgxNjdhY2M3ZmEyNWQ2MWI5OGYzMzNkZmNhMzE) to ask a question to the developers
 * Report [a bug](https://github.com/garethdmm/gryphon/issues)
 * Search or read in [the docs](https://gryphon.readthedocs.io/en/latest/)
 * Ask a question on stackoverflow with the tag [‘gryphonframework’](https://stackoverflow.com/questions/tagged/gryphonframework)
