@@ -305,9 +305,9 @@ class ItbitBTCUSDExchange(ExchangeAPIWrapper):
 
         # Truncate the volume instead of rounding it because it's better# to trade too
         # little than too much.
-        volume = volume.round_to_decimal_places(2, rounding=cdecimal.ROUND_DOWN)
+        volume = volume.round_to_decimal_places(8, rounding=cdecimal.ROUND_DOWN)
 
-        volume_str = '%.2f' % volume.amount
+        volume_str = '%.8f' % volume.amount
         price_str = '%.2f' % price.amount
 
         payload = {
