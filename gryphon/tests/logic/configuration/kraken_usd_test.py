@@ -13,7 +13,7 @@ class KrakenUSDConfigurationTest(BaseConfiguration, unittest.TestCase):
     def __init__(self, *args, **kwargs):
         self.exchange_class = KrakenBTCUSDExchange
 
-        self.DEFAULT_MARKET_FEE = Decimal('0.0024')
+        self.DEFAULT_MARKET_FEE = Decimal('0.0026')
         self.DEFAULT_FIAT_TOLERANCE = Money('0.0001', 'USD')
         self.DEFAULT_VOLUME_TOLERANCE = Money('0.00000001', 'BTC')
 
