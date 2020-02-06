@@ -39,7 +39,7 @@ class CoinbaseBTCUSDExchange(ExchangeAPIWrapper):
         self.price_decimal_precision = 2
 
         # Configurables with defaults.
-        self.market_order_fee = Decimal('0.005') # Updated fees 31 JAN 2020
+        self.market_order_fee = Decimal('0.005')  # Updated fees 31 JAN 2020
         self.limit_order_fee = Decimal('0.005')
         # NOTE: Fees can and do change.  Present fees aren't guaranteed accurate
         # For this exchange you can find them here:

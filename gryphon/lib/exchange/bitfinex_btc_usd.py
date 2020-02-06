@@ -42,7 +42,10 @@ class BitfinexBTCUSDExchange(ExchangeAPIWrapper):
         self.fiat_balance_tolerance = Money('0.01', 'USD')
         self.volume_balance_tolerance = Money('0.00000001', 'BTC')
         self.max_tick_speed = 1
-        self.min_order_size = Money('0.001', 'BTC')
+        self.min_order_size = Money('0.0008', 'BTC')
+        # NOTE: And minimum order sizes can be found here:
+        # https://api.bitfinex.com/v1/symbols_details
+
         self.use_cached_orderbook = False
 
         if configuration:

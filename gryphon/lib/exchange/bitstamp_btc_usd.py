@@ -58,7 +58,7 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
         self.fiat_balance_tolerance = Money('0.0001', 'USD')
         self.volume_balance_tolerance = Money('0.00000001', 'BTC')
         self.max_tick_speed = 1
-        self.min_order_size = Money('0.001', 'BTC')
+        self.min_order_size = Money('0.003', 'BTC')  # min orders are $25 USD, this is $30 (2/20) for safety
         self.use_cached_orderbook = False
 
         if configuration:

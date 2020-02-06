@@ -14,7 +14,8 @@ class BitstampETHEURExchange(BitstampBTCUSDExchange):
 
         self.fiat_balance_tolerance = Money('0.0001', 'EUR')
         self.volume_balance_tolerance = Money('0.00000001', 'ETH')
-        self.min_order_size = Money('0.001', 'ETH')
+        self.min_order_size = Money('0.14', 'ETH')
+        # NOTE: min orders are 25EUR, this is 29EUR (2/20) for safety
 
         if configuration:
             self.configure(configuration)
