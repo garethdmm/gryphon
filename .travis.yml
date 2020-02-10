@@ -5,9 +5,6 @@ addons:
     packages:
       - libmysqlclient-dev
 
-python:
-  - "2.7"
-
 install:
   - pip install .
 
