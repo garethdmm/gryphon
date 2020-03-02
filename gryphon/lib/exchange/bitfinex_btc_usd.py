@@ -35,11 +35,17 @@ class BitfinexBTCUSDExchange(ExchangeAPIWrapper):
         # Configurables with defaults.
         self.market_order_fee = Decimal('0.002')
         self.limit_order_fee = Decimal('0.001')
+        # NOTE: Fees can and do change.  Present defaults aren't guaranteed accurate
+        # For this exchange you can find them here: https://www.bitfinex.com/fees
+
         self.fee = Decimal('0.00')
         self.fiat_balance_tolerance = Money('0.01', 'USD')
         self.volume_balance_tolerance = Money('0.00000001', 'BTC')
         self.max_tick_speed = 1
-        self.min_order_size = Money('0.001', 'BTC')
+        self.min_order_size = Money('0.0008', 'BTC')
+        # NOTE: And minimum order sizes can be found here:
+        # https://api.bitfinex.com/v1/symbols_details
+
         self.use_cached_orderbook = False
 
         if configuration:

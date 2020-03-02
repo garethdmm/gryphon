@@ -42,8 +42,12 @@ class KrakenBTCEURExchange(ExchangeAPIWrapper):
         self.orderbook_depth = 100000
 
         # Configurables with defaults.
-        self.market_order_fee = Decimal('0.0014')
-        self.limit_order_fee = Decimal('0.0004')
+        self.market_order_fee = Decimal('0.0026')  # updated fees 31 JAN 2020
+        self.limit_order_fee = Decimal('0.00016')
+        # NOTE: Fees can and do change.  Present fees aren't guaranteed accurate
+        # For this exchange you can find them here:
+        # https://www.kraken.com/en-us/features/fee-schedule
+
         self.fee = self.market_order_fee
         self.fiat_balance_tolerance = Money('0.0001', 'EUR')
         self.volume_balance_tolerance = Money('0.00000001', 'BTC')

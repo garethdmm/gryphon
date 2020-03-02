@@ -77,8 +77,16 @@ class OKCoinBTCUSDExchange(ExchangeAPIWrapper):
         }
 
         # Configurables with defaults.
-        self.market_order_fee = Decimal('0.001')
-        self.limit_order_fee = Decimal('0.002')
+        self.market_order_fee = Decimal('0.002')  # Updated 31 JAN 2020
+        self.limit_order_fee = Decimal('0.001')
+        # NOTE: Fees can and do change.  Present fees aren't guaranteed accurate
+        # For this exchange you can find them here:
+        # https://support.okcoin.com/hc/en-us/articles/360015261532-OKCoin-Fee-Rates
+
+        self.min_order_size = Money('0.001', 'BTC')
+        # NOTE: And minimum order sizes can be found here:
+        # https://www.okcoin.com/api/spot/v3/instruments
+
         self.fee = self.market_order_fee
         self.withdrawal_fee = Money('0.001', 'BTC')
         self.use_cached_orderbook = False

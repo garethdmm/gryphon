@@ -14,7 +14,7 @@ class CoinbaseConfigurationTest(BaseConfiguration, unittest.TestCase):
         self.exchange_class = CoinbaseBTCUSDExchange
 
         # These need to match gryphon/lib/exchange/bitstamp.py
-        self.DEFAULT_MARKET_FEE = Decimal('0.0022')
+        self.DEFAULT_MARKET_FEE = Decimal('0.005')
         self.DEFAULT_FIAT_TOLERANCE = Money('0.0001', 'USD')
         self.DEFAULT_VOLUME_TOLERANCE = Money('0.00000001', 'BTC')
 

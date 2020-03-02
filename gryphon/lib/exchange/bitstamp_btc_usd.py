@@ -51,11 +51,14 @@ class BitstampBTCUSDExchange(ExchangeAPIWrapper):
         # Configurables defaults.
         self.market_order_fee = self.fee
         self.limit_order_fee = self.fee
-        self.fee = Decimal('0.0005')  # TODO: update these.
+        # NOTE: Fees can and do change.  Present fees aren't guaranteed accurate
+        # For this exchange you can find them here: https://www.bitstamp.net/fee-schedule/
+
+        self.fee = Decimal('0.005')  # updated 31 JAN 2020
         self.fiat_balance_tolerance = Money('0.0001', 'USD')
         self.volume_balance_tolerance = Money('0.00000001', 'BTC')
         self.max_tick_speed = 1
-        self.min_order_size = Money('0.001', 'BTC')
+        self.min_order_size = Money('0.003', 'BTC')  # min orders are $25 USD, this is $30 (2/20) for safety
         self.use_cached_orderbook = False
 
         if configuration:
