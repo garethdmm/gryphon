@@ -16,9 +16,8 @@ class KrakenBTCUSDExchange(KrakenBTCEURExchange):
         self.currency = 'USD'
         self.price_decimal_precision = 1 # As of Feb 2018
 
-        # Updated by Gareth on 2016-9-20
-        self.market_order_fee = Decimal('0.0024')
-        self.limit_order_fee = Decimal('0.0014')
+        self.market_order_fee = Decimal('0.0026') # updated 31 JAN 2020
+        self.limit_order_fee = Decimal('0.0016')
         self.fee = self.market_order_fee
         self.fiat_balance_tolerance = Money('0.0001', 'USD')
         self.volume_balance_tolerance = Money('0.00000001', 'BTC')

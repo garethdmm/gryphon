@@ -14,7 +14,7 @@ class GeminiETHUSDConfigurationTest(BaseConfiguration, unittest.TestCase):
         self.exchange_class = GeminiETHUSDExchange
 
         # These need to match gryphon/lib/exchange/bitstamp.py
-        self.DEFAULT_MARKET_FEE = Decimal('0.0025')
+        self.DEFAULT_MARKET_FEE = Decimal('0.0035')
         self.DEFAULT_FIAT_TOLERANCE = Money('0.0001', 'USD')
         self.DEFAULT_VOLUME_TOLERANCE = Money('0.00000001', 'ETH')
 

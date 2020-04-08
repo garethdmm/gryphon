@@ -14,7 +14,7 @@ class KrakenConfigurationTest(BaseConfiguration, unittest.TestCase):
         self.exchange_class = KrakenBTCEURExchange
 
         # These need to match gryphon/lib/exchange/bitstamp.py
-        self.DEFAULT_MARKET_FEE = Decimal('0.0014')
+        self.DEFAULT_MARKET_FEE = Decimal('0.0026')
         self.DEFAULT_FIAT_TOLERANCE = Money('0.0001', 'EUR')
         self.DEFAULT_VOLUME_TOLERANCE = Money('0.00000001', 'BTC')
 

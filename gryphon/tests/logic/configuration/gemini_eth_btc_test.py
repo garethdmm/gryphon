@@ -14,7 +14,7 @@ class GeminiETHBTCConfigurationTest(BaseConfiguration, unittest.TestCase):
         self.exchange_class = GeminiETHBTCExchange
 
         # These need to match gryphon/lib/exchange/bitstamp.py
-        self.DEFAULT_MARKET_FEE = Decimal('0.0025')
+        self.DEFAULT_MARKET_FEE = Decimal('0.0035')
         self.DEFAULT_FIAT_TOLERANCE = Money('0.0001', 'BTC')
         self.DEFAULT_VOLUME_TOLERANCE = Money('0.00000001', 'ETH')
 

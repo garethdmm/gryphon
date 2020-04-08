@@ -38,8 +38,11 @@ class ItbitBTCUSDExchange(ExchangeAPIWrapper):
         self.nonce = 1
 
         # Configurables with defaults.
-        self.market_order_fee = Decimal('0.002')
-        self.limit_order_fee = Decimal('0')
+        self.market_order_fee = Decimal('0.0035')  # updated fees 31 JAN 2020
+        self.limit_order_fee = Decimal('-0.0003')
+        # NOTE: Fees can and do change.  Present fees aren't guaranteed accurate
+        # For this exchange you can find them here: https://www.itbit.com/fees
+
         self.fee = self.market_order_fee
         self.fiat_balance_tolerance = Money('0.0001', 'USD')
         self.volume_balance_tolerance = Money('0.00000001', 'BTC')
@@ -64,7 +67,7 @@ class ItbitBTCUSDExchange(ExchangeAPIWrapper):
         assert '?' not in url
 
         if 'params' in kwargs:
-            if kwargs['params']: # Check that it's not empty.
+            if kwargs['params']:  # Check that it's not empty.
                 url += '?' + urllib.urlencode(kwargs['params'])
 
             del kwargs['params']

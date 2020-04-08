@@ -40,8 +40,12 @@ class GeminiBTCUSDExchange(ExchangeAPIWrapper):
         self.gemini_pair_symbol = 'btcusd'
 
         # Configurables with defaults.
-        self.market_order_fee = Decimal('0.0025')  # Updated by Gareth on 2016-9-20.
-        self.limit_order_fee = Decimal('0.0000')
+        self.market_order_fee = Decimal('0.0035')  # Updated fees 31 JAN 2020
+        self.limit_order_fee = Decimal('0.0010')
+        # NOTE: Fees can and do change.  Present fees aren't guaranteed accurate
+        # For this exchange you can find them here:
+        # https://gemini.com/fees/api-fee-schedule#block-trading
+
         self.fee = self.market_order_fee
         self.fiat_balance_tolerance = Money('0.0001', 'USD')
         self.volume_balance_tolerance = Money('0.00000001', 'BTC')
