@@ -1,5 +1,4 @@
 import uuid
-from gryphon.lib.exchange.base import Exchange
 from gryphon.lib.exchange.consts import Consts
 
 class Trade(object):

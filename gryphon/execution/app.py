@@ -118,7 +118,7 @@ class GryphonFuryBaseController(controller.CementBaseController):
         if self.app.pargs.more_logging:
             loggers = [
                 'requests.packages.urllib3',
-                'gryphon.lib.exchange.base',
+                'gryphon.lib.exchange.exchange_api_wrapper',
                 'strategies.harness',
                 'strategies.base',
             ]

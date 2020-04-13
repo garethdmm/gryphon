@@ -16,7 +16,7 @@ from delorean import Delorean, parse
 from urllib import urlencode
 
 from gryphon.lib.exchange.consts import Consts
-from gryphon.lib.exchange.base import *
+from gryphon.lib.exchange.exchange_api_wrapper import ExchangeAPIWrapper
 from gryphon.lib.exchange.exceptions import *
 from gryphon.lib.exchange.exchange_order import Order
 from gryphon.lib.logger import get_logger
@@ -26,7 +26,7 @@ from gryphon.lib.money import Money
 logger = get_logger(__name__)
 
 
-class CoinsetterExchange(Exchange):
+class CoinsetterExchange(ExchangeAPIWrapper):
     def __init__(self, session=None, use_cached_orderbook=False):
         super(CoinsetterExchange, self).__init__(session)
         self.name = u'COINSETTER'

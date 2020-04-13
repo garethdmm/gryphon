@@ -27,7 +27,25 @@ GDS has it's own library requirements which are kept in a requirements file. Fro
     
       pip install -r requirements/gryphon+gds.txt
 
-After this, make sure you have redis and RabbitMQ installed.
+Now, install redis and RabbitMQ. On Ubuntu this is done with aptitude as follows:
+
+   .. code-block:: bash
+
+      sudo apt-get install redis-server
+      sudo apt-get install rabbitmq-server
+
+On OSX, use :code:`brew`:
+
+   .. code-block:: bash
+
+      brew install redis
+      brew install rabbitmq
+
+Finally, install :code:`foreman`.
+
+   .. code-block:: bash
+
+      gem install foreman
 
 At this point you should be able to cd into the :code:`gryphon/data_service` directory and try to start GDS with the command:
 
