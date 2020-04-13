@@ -211,6 +211,8 @@ class StrategyTradingHandler(AdminBaseHandler, StartAndEndTimeMixin, Configurabl
             volume_currency=self.volume_currency,
         )
 
+        open_pl = Money('0', self.price_currency)
+
         if fundamental_value:
             open_pl = revenue_lib.open_pl(
                 position_trades,
@@ -218,8 +220,6 @@ class StrategyTradingHandler(AdminBaseHandler, StartAndEndTimeMixin, Configurabl
                 price_currency=currency,
                 volume_currency=self.volume_currency,
             )
-        else:
-            open_pl = None
 
         open_position = positions.position_delta(
             position_trades,

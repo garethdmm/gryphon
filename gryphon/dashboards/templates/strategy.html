@@ -8,6 +8,7 @@
 <script type='text/javascript' src='/static/js/libs/jquery.flot.js'></script>
 <script type='text/javascript' src='/static/js/libs/jquery.flot.time.js'></script>
 <script type='text/javascript' src='/static/js/libs/jquery.flot.resize.js'></script>
+<script type="text/javascript" src="/static/js/jquery.flot.watermark.js"></script>
 <script type='text/javascript' src='/static/js/exchange_colours.js'></script>
 
 <script type='text/javascript'>
@@ -34,51 +35,53 @@
 {% end %}
 
 {% block content %}
-<div class='row' id='title-row'>
-  <div class='col'>
-    <h4>{{ args['display_name'] }} Trading</h4>
+<div class='row justify-content-center' id='title-row'>
+  <div class='col-10'>
+    <h3>Active Strategy</h3>
+    <h1>{{ args['display_name'] }}</h1>
+    <div class='row'>
+    {% module StartEnd(args['start_end_widget']['start_time'], args['start_end_widget']['end_time']) %}
+    </div>
   </div>
-  {% module StartEnd(args['start_end_widget']['start_time'], args['start_end_widget']['end_time']) %}
 </div>
 <div class='row justify-content-center' id="report">
-  <div class='col-1'>
-    {% if args['end_timestamp'] < args['now_timestamp'] %}
-      <h2>Net</h2>
-    {% else %}
-      <h2>Current</h2>
-    {% end %}
-    <h3>{{ '%s %.2f' % (args['open_position'].currency, args['open_position'].amount) }}</h3>
-    <h3>{{ '%s %.2f' % (args['open_pl'].currency, args['open_pl'].amount) }}</h3>
-  </div>
-  <div class='col-1'>
-    <h2>Volume</h2>
-    <h3>{{ '%s %.2f' % (args['volume'].currency, args['volume'].amount) }}</h3>
-  </div>
-  <div class='col-2'>
-    <h2 title="Profit: {{ args['profit'] }}">
-      Revenue/Fees <small title="matched">(m)</small>
-    </h2>
-    <h3>{{ args['revenue'] }}</h3>
-    <h3>
-      {{ args['matched_fees'] }}
-      {% if args['matched_volume_currency_fees'] %}
-        <br/>
-        ({{ "%s %0.2f" % (
-          args['volume_currency'],
-          args['matched_volume_currency_fees'].amount,
-        )}})
-      {% end %}
-    </h3>
+  <div class='col-10'>
+    <div class='row justify-content-left'>
+      <div class='col-2'>
+        <h4>Vol</h4>
+        <h5>{{ '%s %.2f' % (args['volume'].currency, args['volume'].amount) }}</h5>
+      </div>
+      <div class='col-2'>
+        <h4>P&L</h4>
+        <h5>{{ "${:,.2f}".format(args['revenue'].amount) }}</h5>
+      </div>
+      <div class='col-2'>
+        <h4>Fees</h4>
+        <h5>{{ "${:,.2f}".format(args['matched_fees'].amount) }}</h5>
+      </div>
+      <div class='col-3'>
+        {% if args['end_timestamp'] < args['now_timestamp'] %}
+          <h4>Flux</h4>
+        {% else %}
+          <h4>Current</h4>
+        {% end %}
+        <h5>{{ '%s %.2f' % (args['open_position'].currency, args['open_position'].amount) }}</h5>
+      </div>
+    </div>
   </div>
 </div>
-<div class='row' id='graph-row'>
-  <div class='col d-flex flex-column'>
-    <div class='flex-grow-1' id='gryphon-graph'></div>
-  </div>
-</div>
-<div class='row' id='revenue-graph-row'>
-  <div class='col d-flex flex-column'>
-    <div class='flex-grow-1' id='revenue-graph'></div>
+<div class='row justify-content-center' id='main-content'>
+  <div class='col-10'>
+    <div class='row justify-content-center' id='graph-row'>
+      <div class='col d-flex flex-column'>
+        <div class='flex-grow-1' id='gryphon-graph'></div>
+      </div>
+    </div>
+    <div class='row justify-content-center' id='revenue-graph-row'>
+      <div class='col d-flex flex-column'>
+        <div class='flex-grow-1' id='revenue-graph'></div>
+      </div>
+    </div>
   </div>
 </div>
 
