@@ -15,7 +15,7 @@ coinbase==1.0.4
 colorama==0.4.1
 constantly==15.1.0
 contextlib2==0.5.5
-cryptography==2.4.2
+cryptography==3.2
 Cython==0.20.1
 decorator==4.3.0
 Delorean==1.0.0
