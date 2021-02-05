@@ -154,19 +154,19 @@ class Harness(ConfigurableObject):
 
         self.pre_tick_algo()
 
-        current_orders = self.consolidate_ledgers()
+        current_orders, eaten_order_ids = self.consolidate_ledgers()
 
-        self.pre_tick_logging(current_orders)
+        self.pre_tick_logging(current_orders, eaten_order_ids)
 
-        self.tick_algo(current_orders)
+        self.tick_algo(current_orders, eaten_order_ids)
 
     @tick_profile
     def pre_tick_algo(self):
         self.strategy.pre_tick()
 
     @tick_profile
-    def tick_algo(self, current_orders):
-        self.strategy.tick(current_orders)
+    def tick_algo(self, current_orders, eaten_order_ids):
+        self.strategy.tick(current_orders, eaten_order_ids)
 
     def post_tick(self, tick_count):
         self.strategy.post_tick(tick_count)
@@ -176,7 +176,7 @@ class Harness(ConfigurableObject):
         # It can be a property of the strategy and still a built-in argument.
         return self.strategy.tick_sleep
 
-    def pre_tick_logging(self, current_orders):
+    def pre_tick_logging(self, current_orders, eaten_order_ids):
         self.log_position()
         self.log_balances()
         self.log_orders(current_orders)
@@ -188,12 +188,12 @@ class Harness(ConfigurableObject):
         """
 
         current_orders = {}
-
+        eaten_order_ids = {}
         for exchange in self.active_exchanges:
-            exchange_current_orders = exchange.consolidate_ledger()
+            exchange_current_orders, eaten_order_ids = exchange.consolidate_ledger()
             current_orders[exchange.name] = exchange_current_orders
 
-        return current_orders
+        return current_orders, eaten_order_ids
 
     ## Harness Interface Functions. ##
 
@@ -215,7 +215,7 @@ class Harness(ConfigurableObject):
 
         self.log('Consolidating Ledgers')
 
-        current_orders = self.consolidate_ledgers()
+        current_orders, eaten_order_ids = self.consolidate_ledgers()
 
         # All orders should have been cancelled by now.
         assert all([len(orders) == 0 for orders in current_orders.values()])

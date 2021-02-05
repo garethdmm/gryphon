@@ -76,7 +76,7 @@ class ExchangeCoordinator(object):
         eaten_order_ids, current_orders = self._get_current_orders(open_orders)
         self._run_accounting(eaten_order_ids, current_orders)
 
-        return current_orders
+        return current_orders, eaten_order_ids
 
     @tick_profile
     def _get_current_orders(self, exchange_open_orders):
