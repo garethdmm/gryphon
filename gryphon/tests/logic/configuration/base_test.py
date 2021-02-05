@@ -2,7 +2,7 @@
 Tests for the gryphon.lib configuration library.
 """
 
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 import unittest
 import mock
 import sure
@@ -52,7 +52,7 @@ class TestConfiguration(unittest.TestCase):
         value = 'bitstamp'
 
         output = configuration.parse_configurable_as_list(value)
-      
+
         len(output).should.equal(1)
         output[0].should.equal('bitstamp')
 
@@ -60,8 +60,8 @@ class TestConfiguration(unittest.TestCase):
         value = 'bitstamp,coinbase,kraken'
 
         output = configuration.parse_configurable_as_list(value)
-      
-        len(output).should.equal(3) 
+
+        len(output).should.equal(3)
         output[0].should.equal('bitstamp')
         output[1].should.equal('coinbase')
         output[2].should.equal('kraken')
@@ -70,16 +70,16 @@ class TestConfiguration(unittest.TestCase):
         value = 'bitstamp,'
 
         output = configuration.parse_configurable_as_list(value)
-      
-        len(output).should.equal(1) 
+
+        len(output).should.equal(1)
         output[0].should.equal('bitstamp')
 
     def test_parse_list_more_trailing_comma(self):
         value = 'bitstamp,coinbase,kraken,'
 
         output = configuration.parse_configurable_as_list(value)
-      
-        len(output).should.equal(3) 
+
+        len(output).should.equal(3)
         output[0].should.equal('bitstamp')
         output[1].should.equal('coinbase')
         output[2].should.equal('kraken')
@@ -88,8 +88,8 @@ class TestConfiguration(unittest.TestCase):
         value = ',bitstamp,coinbase,,,kraken,,,,'
 
         output = configuration.parse_configurable_as_list(value)
-      
-        len(output).should.equal(3) 
+
+        len(output).should.equal(3)
         output[0].should.equal('bitstamp')
         output[1].should.equal('coinbase')
         output[2].should.equal('kraken')
@@ -169,8 +169,8 @@ class TestConfiguration(unittest.TestCase):
 
         parsed = configuration.parse_sections(parser)
 
-        len(parsed.keys()).should.equal(1)
-        parsed.keys().should.equal(['strategy'])
+        len(list(parsed.keys())).should.equal(1)
+        list(parsed.keys()).should.equal(['strategy'])
         parsed['strategy'].should.equal({'midpoint': Decimal('0.001')})
 
     def test_parse_sections_simple(self):
@@ -178,8 +178,8 @@ class TestConfiguration(unittest.TestCase):
 
         parsed = configuration.parse_sections(parser)
 
-        len(parsed.keys()).should.equal(1)
-        parsed.keys().should.equal(['strategy'])
+        len(list(parsed.keys())).should.equal(1)
+        list(parsed.keys()).should.equal(['strategy'])
         parsed['strategy']['midpoint'].should.equal(Decimal('0.001'))
         parsed['strategy']['quote_depth'].should.equal(Money('20', 'BTC'))
         parsed['strategy']['use_gds'].should.equal(True)
@@ -190,8 +190,8 @@ class TestConfiguration(unittest.TestCase):
 
         parsed = configuration.parse_sections(parser)
 
-        len(parsed.keys()).should.equal(2)
-        parsed.keys().should.equal(['platform', 'strategy'])
+        len(list(parsed.keys())).should.equal(2)
+        list(parsed.keys()).should.equal(['platform', 'strategy'])
         parsed['strategy']['tick_sleep'].should.equal(Decimal('1'))
         parsed['platform']['audit'].should.equal(False)
 
@@ -200,12 +200,12 @@ class TestConfiguration(unittest.TestCase):
 
         parsed = configuration.parse_sections(parser)
 
-        len(parsed.keys()).should.equal(2)
-        parsed.keys().should.equal(['platform', 'strategy'])
+        len(list(parsed.keys())).should.equal(2)
+        list(parsed.keys()).should.equal(['platform', 'strategy'])
         parsed['strategy']['tick_sleep'].should.equal(Decimal('1'))
         parsed['platform']['audit'].should.equal(False)
 
-        parsed['strategy']['midpoint_weights'].keys().should.equal([
+        list(parsed['strategy']['midpoint_weights'].keys()).should.equal([
             'coinbase_btc_usd',
             'bitstamp_btc_usd',
         ])
@@ -215,5 +215,3 @@ class TestConfiguration(unittest.TestCase):
 
         parsed['strategy']['midpoint_weights']['bitstamp_btc_usd']\
             .should.equal(Decimal('0.5'))
-
-

@@ -13,6 +13,7 @@ import urllib
 
 import cdecimal
 from cdecimal import Decimal
+from six import string_types
 
 from gryphon.lib.exchange import exceptions
 from gryphon.lib.exchange import order_types
@@ -438,7 +439,7 @@ class ItbitBTCUSDExchange(ExchangeAPIWrapper):
         return {'success': True}
 
     def withdraw_crypto_req(self, address, volume):
-        if not isinstance(address, basestring):
+        if not isinstance(address, string_types):
             raise TypeError('Withdrawal address must be a string')
 
         if not isinstance(volume, Money) or volume.currency != self.volume_currency:
@@ -469,7 +470,7 @@ class ItbitBTCUSDExchange(ExchangeAPIWrapper):
         Dropped the skip_recent flag because we don't seem to be using it anywhere.
         """
         if skip_recent != 0:
-            raise ValueEror('skip_recent is deprecated')
+            raise ValueError('skip_recent is deprecated')
 
         orders = OrderedDict()
         trades_to_audit = self.all_trades(page=page)

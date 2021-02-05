@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 import os
-from base import Base
+from .base import Base
 import os
 import json
 import uuid
 from datetime import datetime, timedelta
+from six import text_type
 from sqlalchemy import ForeignKey, Column, Integer, Unicode, DateTime, UnicodeText, Numeric, desc
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
@@ -15,12 +17,12 @@ from gryphon.lib.money import Money
 metadata = Base.metadata
 
 class MarketDataRetriever(object):
-    
+
     BITSTAMP=u'STMP'
     BTCE=u'BTCE'
     TRADE = u'TRADE'
     XBTUSD = u'XBT/USD'
-    
+
     @staticmethod
     def trades(exchange=BITSTAMP, ticker_symbol=XBTUSD, start_time=datetime.utcnow()-timedelta(days=30), end_time=datetime.utcnow()):
         db = session.get_a_gds_db_mysql_session()
@@ -31,11 +33,11 @@ class MarketDataRetriever(object):
             MarketData.timestamp.between(start_time, end_time)).order_by(
             desc(MarketData.timestamp)).all()
         return trades
-        
+
 
     def orderbook(self):
         pass
-     
+
 
 
 class MarketData(Base):
@@ -52,7 +54,7 @@ class MarketData(Base):
     volume = Column('volume', Numeric(precision=20, scale=10))
     entry_type = Column(Unicode(32), nullable=True)
     ticker_symbol = Column(Unicode(256))
-    
+
     def __init__(self, timestamp, exchange, price, currency, volume, entry_type, ticker_symbol):
         self.unique_id = u'mkd_%s' % uuid.uuid4().hex
         self.time_added = datetime.utcnow()
@@ -64,10 +66,10 @@ class MarketData(Base):
         self.volume = volume
         self.entry_type = entry_type
         self.ticker_symbol = ticker_symbol
-   
+
     def __str__(self):
-        return unicode(self)
- 
+        return text_type(self)
+
     def __unicode__(self):
         return '%s,%s,%s,%s,%s,%s,%s' % (
             self.timestamp,

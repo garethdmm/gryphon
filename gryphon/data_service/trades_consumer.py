@@ -1,4 +1,4 @@
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 
 import json
 import os
@@ -6,6 +6,7 @@ import subprocess
 
 from delorean import epoch
 from raven import Client
+from six import text_type
 from sqlalchemy import exc
 
 from gryphon.data_service.consts import *
@@ -27,9 +28,9 @@ def trades_consumer_function(message, db):
     t = Trade(
         price=Money(trade_json['price'], price_currency),
         volume=Money(trade_json['volume'], volume_currency),
-        exchange=unicode(trade_json['exchange']),
+        exchange=text_type(trade_json['exchange']),
         timestamp=timestamp,
-        exchange_trade_id=unicode(trade_json['trade_id']),
+        exchange_trade_id=text_type(trade_json['trade_id']),
     )
 
     db.add(t)

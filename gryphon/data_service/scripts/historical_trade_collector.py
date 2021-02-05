@@ -1,3 +1,4 @@
+from __future__ import print_function
 import csv
 from datetime import timedelta
 import gzip
@@ -161,7 +162,7 @@ def get_our_recorded_ticker_volume_for_period(exchange, start_date, end_date):
 def audit_ticker_volume_individual_days(exchange_list, start_date=test_start_date, end_date=test_end_date):
     d = start_date
     while d < test_end_date:
-        print '\n\nAuditing: %s' % d
+        print('\n\nAuditing: %s' % d)
         day_after = d + timedelta(days=1)
         audit_all_ticker_volume(exchange_list, d, day_after)
         d = day_after
@@ -191,12 +192,12 @@ def audit_ticker_volume(exchange, start_date, end_date):
         end_date,
     )
 
-    print '%s  Our Volume:%s  Ticker Volume:%s, Accuracy: %s' % (
+    print('%s  Our Volume:%s  Ticker Volume:%s, Accuracy: %s' % (
         exchange,
         our_volume,
         ticker_volume,
         our_volume / ticker_volume,
-    )
+    ))
 
 
 def audit_bw_volume(exchange, start_date, end_date):
@@ -204,7 +205,7 @@ def audit_bw_volume(exchange, start_date, end_date):
     bw_volume = bw_exchange.volume_in_period(start_date, end_date)
 
     our_volume = get_our_recorded_exchange_trade_volume_for_period(exchange, start_date, end_date)
-    print '%s  Our Volume:%s  BW Volume:%s, Accuracy: %s' % (exchange, our_volume, bw_volume, our_volume / bw_volume)
+    print('%s  Our Volume:%s  BW Volume:%s, Accuracy: %s' % (exchange, our_volume, bw_volume, our_volume / bw_volume))
 
 
 def compare_all_exchanges():
@@ -222,15 +223,15 @@ def compare_ours_to_history(our_exchange_id, exchange, price_currency, volume_cu
     start = parse('2015-11-27 0:0:0').datetime.replace(tzinfo=None)
     end = parse('2015-11-27 11:59:59').datetime.replace(tzinfo=None)
 
-    print our_exchange_id.upper()
+    print(our_exchange_id.upper())
     hist_in_range = [t for t in hist_trades if t[0] >= start and t[0] <= end]
     ours_in_range = [t for t in our_trades if t[0] >= start and t[0] <= end]
 
     for t in hist_in_range:
         if t not in ours_in_range:
-            print 'Hist Trade not in ours: %s' % t
+            print('Hist Trade not in ours: %s' % t)
 
     for t in ours_in_range:
         if t not in hist_in_range:
-            print'Our trade not in history: %s' % t
-    print'\n\n\n\n\n'
+            print('Our trade not in history: %s' % t)
+    print('\n\n\n\n\n')

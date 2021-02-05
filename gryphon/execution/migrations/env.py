@@ -1,5 +1,5 @@
 from __future__ import with_statement
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 from alembic import context
 from sqlalchemy import engine_from_config, pool, create_engine
 from logging.config import fileConfig
@@ -72,9 +72,9 @@ def run_migrations_online():
     and associate a connection with the context.
 
     """
-    
+
     engine = create_engine(os.environ.get('TRADING_DB_CRED'))
-        
+
     # engine = engine_from_config(
     #             config.get_section(config.config_ini_section),
     #             prefix='sqlalchemy.',

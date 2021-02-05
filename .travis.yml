@@ -1,14 +1,29 @@
 dist: xenial
 language: python
 addons:
-  apt: 
+  apt:
     packages:
       - libmysqlclient-dev
 
 python:
-  - "2.7"
+  - 2.7
+  - 3.6
+  - 3.7
+
+matrix:
+  allow_failures:
+    - python: 3.7  # blocked until rkern/line_profiler#153 is merged and pushed to pypi
 
 install:
   - pip install .
+
+before_script:
+  - pip install flake8
+  - LEGACY="./gryphon/lib/analysis/legacy/"
+  - UTIL="./gryphon/dashboards/util/"
+  - EXCLUDE="${LEGACY}standard_deviation.py,${LEGACY}bollinger_bands.py,${UTIL}queries.py"
+  - flake8 . --count --exclude=${EXCLUDE} --select=E9,F63,F7,F82 --show-source --statistics
+  # TODO: Fix the flake8 tests and then remove "|| true"
+  - flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics || true
 
 script: gryphon-runtests

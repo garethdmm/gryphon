@@ -142,7 +142,7 @@ class LedgerHandler(AdminBaseHandler, StartAndEndTimeMixin):
         """
 
         if address and address in self.address_map:
-            return address_map[address]
+            return self.address_map[address]
         else:
             return 'External transfer'
 
@@ -261,7 +261,7 @@ class LedgerHandler(AdminBaseHandler, StartAndEndTimeMixin):
             entry['date'] = date
             entry['details'] = ''.join([
                 '%s:%s ' % (k, v)
-                for k, v in transaction.transaction_details.iteritems()
+                for k, v in transaction.transaction_details.items()
                 if k in ['external_transaction_id', 'notes'] and v not in ['xxx']
             ])
 

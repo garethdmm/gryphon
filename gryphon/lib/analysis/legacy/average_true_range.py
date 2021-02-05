@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np
 from exponential_moving_average import ExpMovingAverage
 
@@ -12,9 +13,9 @@ def TR(d,c,h,l,o,yc):
     y = abs(h-yc)
     z = abs(l-yc)
 
-    print x
-    print y
-    print z
+    print(x)
+    print(y)
+    print(z)
 
     if y <= x >= z:
         TR = x
@@ -23,7 +24,7 @@ def TR(d,c,h,l,o,yc):
     elif x <= z >= y:
         TR = z
 
-    print d, TR
+    print(d, TR)
     return d, TR
 
 x = 1
@@ -39,7 +40,7 @@ while x < len(date):
 
 
 
-print len(TrueRanges)
+print(len(TrueRanges))
 ATR = ExpMovingAverage(TrueRanges,14)
 
-print ATR
+print(ATR)

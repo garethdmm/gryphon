@@ -1,3 +1,4 @@
+from __future__ import print_function
 from gryphon.execution.lib.exchange_color import exchange_color
 from gryphon.lib.exchange.exchange_factory import *
 from gryphon.lib.logger import get_logger

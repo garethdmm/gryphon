@@ -13,7 +13,7 @@ import tornadotoad
 from gryphon.lib import environment
 environment.load_environment_variables()
 
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 import gryphon.lib; gryphon.lib.prepare()
 
 from gryphon.dashboards.routes import url_patterns
@@ -50,7 +50,7 @@ class PentecostApp(tornado.web.Application):
             self.gds_db = None
 
         self.configuration = configuration.read_config_from_file('dashboards.conf')
-        
+
 
 def main():
     tornadotoad.register(
@@ -58,7 +58,7 @@ def main():
       environment=os.environ.get('APP_ENV'),
     )
 
-    app = PentecostApp() 
+    app = PentecostApp()
     http_server = tornado.httpserver.HTTPServer(app)
     http_server.listen(options.port)
     tornado.ioloop.IOLoop.instance().start()

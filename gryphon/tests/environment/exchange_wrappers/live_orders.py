@@ -2,7 +2,7 @@
 Tests authenticated and order-placing endpoints.
 """
 
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 import gryphon.lib; gryphon.lib.prepare()
 
 import logging
@@ -55,7 +55,7 @@ class LiveOrdersTest(object):
         )
 
         assert result['success'] is True
-        order1_id = result['order_id'] 
+        order1_id = result['order_id']
 
         time.sleep(self.sleep_time)
 
@@ -68,7 +68,7 @@ class LiveOrdersTest(object):
         assert open_orders[0]['id'] == order1_id
         assert open_orders[0]['price'] == order1_price
         assert open_orders[0]['volume_remaining'] == order_volume
-      
+
         time.sleep(self.sleep_time)
 
         # Test the get_order_details function.
@@ -91,7 +91,7 @@ class LiveOrdersTest(object):
         )
 
         assert result['success'] is True
-        order2_id = result['order_id'] 
+        order2_id = result['order_id']
 
         time.sleep(self.sleep_time)
 

@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np
 import time
 import math
@@ -23,7 +24,7 @@ def GAPO(d,h,l,tf):
         gapos = ( (math.log(HighestHigh - LowestLow)) /
                   math.log(tf))
 
-        print gapos
+        print(gapos)
         gapo.append(gapos)
         x+=1
     return d[tf:],gapo

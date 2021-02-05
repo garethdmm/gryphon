@@ -1,13 +1,15 @@
+from __future__ import absolute_import
 import json
 from datetime import datetime
 
 import numpy as np
 import pandas as pd
+from six import text_type
 from sqlalchemy.dialects.mysql import DATETIME
 from sqlalchemy import Column, Integer, Numeric, Index, DateTime
 
-from metric_types import get_metric_type_int
-from base import AtlasZeroBase
+from .metric_types import get_metric_type_int
+from .base import AtlasZeroBase
 
 metadata = AtlasZeroBase.metadata
 
@@ -34,7 +36,7 @@ class Metric(AtlasZeroBase):
         self.value = value
 
     def __unicode__(self):
-        return unicode(repr(self))
+        return text_type(repr(self))
 
     def __repr__(self):
         d = {

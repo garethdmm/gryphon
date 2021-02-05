@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 import time
 import os
 import datetime
@@ -15,10 +16,10 @@ from collections import OrderedDict
 
 from gryphon.lib.money import Money
 from gryphon.lib.models.datum import DatumRecorder
-from exchange_order import Order
+from .exchange_order import Order
 from gryphon.lib.exchange.consts import Consts
-from base import *
-from exceptions import *
+from .base import *
+from .exceptions import *
 from gryphon.lib.models.exchange import Balance
 
 from gryphon.lib.logger import get_logger

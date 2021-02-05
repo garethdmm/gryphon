@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 import logging
 import tornado
 import tornado.template
@@ -6,7 +7,7 @@ import os
 from os.path import dirname, abspath
 from tornado.options import define, options
 from gryphon.lib.logperf import log_request_perf
-import uimodules
+from . import uimodules
 
 # Make filepaths relative to settings.
 path = lambda root,*a: os.path.join(root, *a)

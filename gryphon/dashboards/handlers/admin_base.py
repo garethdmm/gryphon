@@ -2,6 +2,7 @@
 import logging
 import traceback
 
+from six import text_type
 import tornado.web
 
 from gryphon.dashboards.handlers.base import BaseHandler
@@ -27,7 +28,7 @@ class AdminBaseHandler(BaseHandler):
             exc_info = kwargs.get('exc_info')
 
             error_readout = [
-                unicode(line, 'utf8') for line in traceback.format_exception(*exc_info)
+                text_type(line, 'utf8') for line in traceback.format_exception(*exc_info)
             ]
 
             logger.critical(u''.join(error_readout))
@@ -47,7 +48,7 @@ class AdminBaseHandler(BaseHandler):
 
     def get_secure_cookie(self, name, include_name=True, value=None):
         cookie_value = super(AdminBaseHandler, self).get_secure_cookie(name)
-        return unicode(cookie_value or '', 'utf8')
+        return text_type(cookie_value or b'', 'utf8')
 
     def show_error_message(self, message):
         self.set_secure_cookie('error_message', message)

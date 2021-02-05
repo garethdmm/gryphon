@@ -1,7 +1,8 @@
 """
 """
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 import os
+import time
 
 from gryphon.lib.exchange.kraken_btc_eur import KrakenBTCEURExchange
 from gryphon.fury.harness.exchange_coordinator import ExchangeCoordinator
@@ -45,7 +46,7 @@ class TestKrakentExchangeCoordinator():
         self.db.commit()
 
         assert result['success'] is True
-        order1_exchange_order_id = result['order_id'] 
+        order1_exchange_order_id = result['order_id']
 
         db_order = self.db.query(Order)\
             .filter(Order.exchange_order_id == order1_exchange_order_id)\

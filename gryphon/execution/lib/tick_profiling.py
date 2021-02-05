@@ -21,7 +21,7 @@ def record_tick_data(tick_start, strategy_name):
 
 
 def record_tick_block_data(algo, tick_count, strategy_name):
-    for function_name, profile_times in tick_profile_data.iteritems():
+    for function_name, profile_times in tick_profile_data.items():
         datum_name = datum_name_for_function_block(strategy_name, function_name)
 
         for block_time in profile_times:

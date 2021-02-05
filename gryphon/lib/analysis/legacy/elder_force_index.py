@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np
 import time
 
@@ -23,7 +24,7 @@ def EFI(d,c,v,tf):
     x = 1
     while x < len(d):
         forceIndex = (c[x] - c[x-1]) * v[x]
-        print forceIndex
+        print(forceIndex)
         efi.append(forceIndex)
         x+=1
     efitf = ExpMovingAverage(efi,tf)

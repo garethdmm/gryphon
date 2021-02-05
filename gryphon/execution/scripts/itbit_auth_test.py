@@ -2,6 +2,7 @@
 This is a minimal script that demonstrates authentication on itbit. This is useful for
 debugging if you ever run into issues with authenticating on itbit.
 """
+from __future__ import print_function
 
 import base64
 import hashlib
@@ -59,5 +60,5 @@ def main(script_arguments, execute):
 
     full_url = 'https://api.itbit.com/v1' + url
 
-    print requests.get(full_url, data=request_args).text
+    print(requests.get(full_url, data=request_args).text)
 

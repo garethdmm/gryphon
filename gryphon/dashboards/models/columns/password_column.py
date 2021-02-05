@@ -1,5 +1,6 @@
 import bcrypt
 import re
+import sys
 import logging
 import sqlalchemy.types as types
 
@@ -46,7 +47,10 @@ class Password(object):
             if self._hashed:
                 self._salt = self._hashed[:30]
             else:
-                self._salt = bcrypt.gensalt(log_rounds=self.DIFFICULTY)
+                if sys.version_info[0] < 3:
+                    self._salt = bcrypt.gensalt(log_rounds=self.DIFFICULTY)
+                else:
+                    self._salt = bcrypt.gensalt(rounds=self.DIFFICULTY)
         return self._salt
 
     @property

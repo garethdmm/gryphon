@@ -1,3 +1,4 @@
+from __future__ import print_function
 import prompter
 import termcolor as tc
 
@@ -14,7 +15,7 @@ def buyback():
     prompt_msg = tc.colored('Did you stop the Coinbase Bot before running this?', 'red')
     bot_stopped = prompter.yesno(prompt_msg)
     if not bot_stopped:
-        print tc.colored('Go stop the bot first.', 'red')
+        print(tc.colored('Go stop the bot first.', 'red'))
         return
 
     db = session.get_a_trading_db_mysql_session()
@@ -33,7 +34,7 @@ def buyback():
         transactions_buyback_amount = sum([t.fee for t in transactions_with_outstanding_fees])
         btc_buyback_amount = trades_buyback_amount + transactions_buyback_amount
 
-        print 'Go buy %s on Coinbase (not the exchange)' % btc_buyback_amount
+        print('Go buy %s on Coinbase (not the exchange)' % btc_buyback_amount)
 
         prompt_msg = 'How much USD did it cost (total including Coinbase Fee): USD'
         raw_usd_cost = prompter.prompt(prompt_msg)

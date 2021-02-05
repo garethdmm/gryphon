@@ -4,6 +4,7 @@
 # share some table names.
 # Reference: http://stackoverflow.com/questions/8264686/sqlalchemy-multiple-databases-with-same-table-names-not-working
 
+from six import text_type
 from sqlalchemy.ext.declarative import declarative_base
 
 AtlasZeroBase = declarative_base()
@@ -11,7 +12,7 @@ metadata = AtlasZeroBase.metadata
 
 
 def unicode_string(self):
-    return unicode(self).encode('utf-8')
+    return text_type(self).encode('utf-8')
 
 AtlasZeroBase.__str__ == unicode_string
 

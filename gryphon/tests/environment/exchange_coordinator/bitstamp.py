@@ -1,6 +1,6 @@
 """
 """
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(language_level=2 if bytes == str else 3)
 import os
 import time
 import unittest
@@ -60,12 +60,12 @@ class TestBitstampBTCUSDExchangeCoordinator(unittest.TestCase):
         result = self._place_simple_order_1()
 
         assert result['success'] is True
-        order1_exchange_order_id = result['order_id'] 
-       
+        order1_exchange_order_id = result['order_id']
+
         self.exchange.cancel_order(order1_exchange_order_id)
 
         time.sleep(2)
- 
+
         open_orders = self.exchange.get_open_orders()
         eaten_order_ids, current_orders = self.exchange._get_current_orders(open_orders)
         self.exchange._run_accounting(eaten_order_ids, current_orders)
@@ -90,10 +90,10 @@ class TestBitstampBTCUSDExchangeCoordinator(unittest.TestCase):
         result = self._place_simple_order_1()
 
         assert result['success'] is True
-        order1_exchange_order_id = result['order_id'] 
-       
+        order1_exchange_order_id = result['order_id']
+
         time.sleep(2)
- 
+
         open_orders = self.exchange.get_open_orders()
         eaten_order_ids, current_orders = self.exchange._get_current_orders(open_orders)
 
@@ -156,7 +156,7 @@ class TestBitstampBTCUSDExchangeCoordinator(unittest.TestCase):
         result = self._place_simple_order_1()
 
         assert result['success'] is True
-        order1_exchange_order_id = result['order_id'] 
+        order1_exchange_order_id = result['order_id']
 
         # Account the order as 'filled'
         db_order = self.exchange._get_orders_by_order_ids([order1_exchange_order_id])[0]
@@ -193,7 +193,7 @@ class TestBitstampBTCUSDExchangeCoordinator(unittest.TestCase):
         result = self._place_simple_order_1()
 
         assert result['success'] is True
-        order1_exchange_order_id = result['order_id'] 
+        order1_exchange_order_id = result['order_id']
 
         db_order = self.exchange._get_orders_by_order_ids([order1_exchange_order_id])[0]
         db_order.status = Order.CANCELLED
@@ -206,7 +206,7 @@ class TestBitstampBTCUSDExchangeCoordinator(unittest.TestCase):
         exchange_open_orders = self.exchange.get_open_orders()
         self.exchange._get_current_orders(exchange_open_orders)
         self.db.commit()  # Have to force commit here since we're not in a tick.
-        
+
         # Since the order was cancelled in the database, but open on the exchange,
         # handle_unexpected should have triggered re-cancelling logic, which just
         # assumes a previous request failed and tries again.
@@ -226,12 +226,12 @@ class TestBitstampBTCUSDExchangeCoordinator(unittest.TestCase):
         result = self._place_simple_order_1()
 
         assert result['success'] is True
-        order1_exchange_order_id = result['order_id'] 
+        order1_exchange_order_id = result['order_id']
 
         result = self._place_simple_order_2()
 
         assert result['success'] is True
-        order2_exchange_order_id = result['order_id'] 
+        order2_exchange_order_id = result['order_id']
 
         self.exchange.cancel_order(order1_exchange_order_id)
 
@@ -255,7 +255,7 @@ class TestBitstampBTCUSDExchangeCoordinator(unittest.TestCase):
         result = self._place_simple_order_1()
 
         assert result['success'] is True
-        order1_exchange_order_id = result['order_id'] 
+        order1_exchange_order_id = result['order_id']
 
         db_open_orders = self.exchange._get_db_open_orders()
 
@@ -271,12 +271,12 @@ class TestBitstampBTCUSDExchangeCoordinator(unittest.TestCase):
         result = self._place_simple_order_1()
 
         assert result['success'] is True
-        order1_exchange_order_id = result['order_id'] 
+        order1_exchange_order_id = result['order_id']
 
         result = self._place_simple_order_2()
 
         assert result['success'] is True
-        order2_exchange_order_id = result['order_id'] 
+        order2_exchange_order_id = result['order_id']
 
         orders = self.exchange._get_orders_by_order_ids([
             order1_exchange_order_id,
@@ -297,7 +297,7 @@ class TestBitstampBTCUSDExchangeCoordinator(unittest.TestCase):
         result = self._place_simple_order_1()
 
         assert result['success'] is True
-        order1_exchange_order_id = result['order_id'] 
+        order1_exchange_order_id = result['order_id']
 
         db_order = self.db.query(Order)\
             .filter(Order.exchange_order_id == order1_exchange_order_id)\
