@@ -115,7 +115,7 @@ The [Gryphon Website](https://www.gryphonframework.org) can also be used as an a
 
 ## Enterprise Support
 
-Enterprise support, custom deployments, strategy development, and other services are available through [Gryphon Labs](http://www.gryphonlabs.co/). If you're a firm interested in using Gryphon, you can [schedule a chat with us](https://calendly.com/gryphonlabs) or contact one of the maintainers directly.
+Enterprise support, custom deployments, strategy development, and other services are available through [Gryphon Labs](https://www.gryphonframework.org/). If you're a firm interested in using Gryphon, you can [schedule a chat with us](https://calendly.com/gryphonlabs) or contact one of the maintainers directly.
 
 ## Contribution guidelines
 
