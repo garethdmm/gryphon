@@ -81,7 +81,7 @@ setuptools.setup(
         'pickleshare==0.7.4',
         'prompt-toolkit==1.0.15',
         'ptyprocess==0.6.0',
-        'Pygments==2.2.0',
+        'Pygments==2.7.4',
         'pylibmc>=1.5.2,<2',
         'python-dotenv==0.8.2',
         'pytz==2018.5',

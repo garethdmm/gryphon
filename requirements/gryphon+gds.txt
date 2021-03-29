@@ -47,7 +47,7 @@ ptyprocess==0.6.0
 pyasn1==0.4.4
 pyasn1-modules==0.2.2
 pycparser==2.19
-Pygments==2.2.0
+Pygments==2.7.4
 pylibmc==1.6.0
 pyOpenSSL==18.0.0
 python-dateutil==2.7.5
