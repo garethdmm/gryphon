@@ -81,7 +81,7 @@ The Ledger Audit checks that the ledger-implied balance matches the balance in t
 
 It's easy to confuse the Ledger audit with the Balance audit. Here's the difference: the Balance audit checks the Exchange table against the response from exchange's API, so it's an internal-external check. The Ledger audit is a check for internal consistency in the trading database.
 
-You can enable order audits by adding the key :code:`ledger` to the :code:`audit_types` config setting.
+You can enable ledger audits by adding the key :code:`ledger` to the :code:`audit_types` config setting.
 
 -----------
 Order Audit
