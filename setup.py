@@ -100,7 +100,7 @@ setuptools.setup(
         'termcolor==1.1.0',
         'traitlets==4.3.2',
         'tzlocal==1.5.1',
-        'urllib3==1.23',
+        'urllib3==1.26.5',
         'wcwidth==0.1.7',
         'websocket-client==0.48.0',
     ],
