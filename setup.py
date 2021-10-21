@@ -51,7 +51,7 @@ setuptools.setup(
     include_package_data=True,
     install_requires=[
         'alembic==0.6.0',
-        'Babel==2.6.0',
+        'Babel==2.9.1',
         'backports.shutil-get-terminal-size==1.0.0',
         'cement==2.10.12',
         'certifi==2018.4.16',
