@@ -67,7 +67,7 @@ setuptools.setup(
         'gryphon-money',  # Our fork of Python Money.
         'gryphon-pusherclient',  # Our duplicate of PythonPusherClient.
         'idna==2.7',
-        'ipython==5.7.0',
+        'ipython==7.16.3',
         'ipython-genutils==0.2.0',
         'line-profiler==2.1.2',
         'Mako==1.0.7',
