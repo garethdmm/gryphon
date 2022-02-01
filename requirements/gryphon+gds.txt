@@ -69,7 +69,7 @@ sure==1.2.9
 termcolor==1.1.0
 termstyle==0.1.11
 traitlets==4.3.2
-treq==18.6.0
+treq==22.1.0
 Twisted==17.9.0
 txaio==18.8.1
 txredis==2.4
