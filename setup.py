@@ -70,7 +70,7 @@ setuptools.setup(
         'ipython==5.7.0',
         'ipython-genutils==0.2.0',
         'line-profiler==2.1.2',
-        'Mako==1.0.7',
+        'Mako==1.2.2',
         'MarkupSafe==1.0',
         'mock==1.0.1',
         'more-itertools>=4.2.0,<5',
