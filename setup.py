@@ -54,7 +54,7 @@ setuptools.setup(
         'Babel==2.6.0',
         'backports.shutil-get-terminal-size==1.0.0',
         'cement==2.10.12',
-        'certifi==2018.4.16',
+        'certifi==2022.12.7',
         'chardet==3.0.4',
         'coinbase==1.0.4',
         'contextlib2==0.5.5',
